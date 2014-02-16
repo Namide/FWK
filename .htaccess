@@ -1,0 +1,16 @@
+# 1and1
+# AddType x-mapp-php6 .php								# 1and1
+# AddHandler x-mapp-php6 .php							# 1and1
+
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /namide-v3/index.php?page=$1 [L,QSA]			# local
+# RewriteRule ^(.*)$ /index.php?page=$1 [L,QSA]		# 1and1
+</IfModule>
+
+
+# ErrorDocument 404 /error404.php
+
