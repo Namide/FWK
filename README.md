@@ -3,51 +3,67 @@ FWK
 
 Lightweight framework PHP without database.
 
+- Quick to install
+- No database
+- Cache Management
+- Simple and permissive urls
+- Lightweight
 
 
-Initialize list of `languages` ( fwk-content/languages.php )
+Initialize
 ------------------------
 
-> $language->addDefaultLanguage('en');
-> $language->addLanguage('fr');
+##### list of languages
+`fwk-content/languages.php`
+
+```php
+$language->addDefaultLanguage('en');
+$language->addLanguage('fr');
+```
+
+##### list of pages
+`fwk-content/pages.php`
+
+```php
+$pageList->addDefaultPage( 'basic/homepage' );
+$pageList->addError404Page( 'basic/error404' );
+$pageList->addPage( 'basic/sitemap' );
+$pageList->addPage( 'basic/debug' );
+```
 
 
+Configure page
+------------------------
 
-Initialize list of `pages` ( fwk-content/pages.php )
---------------------
+##### initialisation
+`{language}-init.php`
 
-> $pageList->addDefaultPage( 'basic/homepage' );
-> $pageList->addError404Page( 'basic/error404' );
-> 
-> $pageList->addPage( 'basic/sitemap' );
-> $pageList->addPage( 'basic/debug' );
+```php
+$url
+$template
+$visible:Bool
+$cachable:Bool
+$title
+$categories:Array
 
+$header
+$preface
+```
 
+##### content
+`{language}-build.php`
 
-Initialize `page` ( fwk-content/languages.php )
---------------------
-
-List of `properties` to initialisation:
-
-> $url
-> $template
-> $visible:Bool
-> $cachable:Bool
-> $title
-> $categories:Array
-> 
-> $header
-> $preface
+```php
+$body
+```
 
 
-Content `Property`:
+Internals URL
+------------------------
 
-> $body
-
-To use internals URL:
-
-> {{urlPageToAbsoluteUrl:en/post/min-max}}
-> {{idPageToAbsoluteUrl:basic/homepage}}
-> {{pathTemplate:css/alternative-slideshow.css}}
-> {{pathCurrentPage:img/test.jpg}}
-
+```php
+{{urlPageToAbsoluteUrl:en/post/min-max}}
+{{idPageToAbsoluteUrl:basic/homepage}}
+{{pathTemplate:css/alternative-slideshow.css}}
+{{pathCurrentPage:img/test.jpg}}
+```
