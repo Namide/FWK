@@ -1,6 +1,6 @@
 <?php
 
-//if ( $_DEBUG ) error_reporting(E_ALL);
+if ( $_DEBUG ) error_reporting(E_ALL);
 
 if ( $_CACHE )
 {

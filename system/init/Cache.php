@@ -28,7 +28,8 @@ class Cache
 	public function isCachable()
 	{
 		global $_MAX_PAGE_CACHE;
-        return $this->getNumPages() < $_MAX_PAGE_CACHE;
+		global $_CACHE_DIRECTORY;
+        return self::getNumPages( $_CACHE_DIRECTORY ) < $_MAX_PAGE_CACHE;
 	}
 	public function startSaveCache()
 	{
@@ -66,9 +67,8 @@ allow from all
 		echo $pageContent ;
 	}
 	
-	public function getNumPages()
+	public static function getNumPages( $cacheDirectory )
 	{
-		global $_CACHE_DIRECTORY;
-        return count( glob($_CACHE_DIRECTORY.'*.cache') );
+		return count( glob($cacheDirectory.'*.cache') );
 	}
 }

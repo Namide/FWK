@@ -9,6 +9,9 @@ class Url
     public function getUrl() { return $this->url; }
     
     private static $_arg = 'page';
+	public static function getPageGetArg() { return self::$_arg; }
+	
+	
 	public static $BASE_PAGE_URL = 'index.php?page=';
 	//public static function getMainArgName() { return Url::$arg; }
     
@@ -36,7 +39,6 @@ class Url
 		{
 			$invalid = array( '/'=>'.', '\\'=>'.', ':'=>'.', '?'=>'.', '"'=>'.', '*'=>'.', '<'=>'.', '>'=>'.', '|'=>'.' );
 			$url = str_replace(array_keys($invalid), array_values($invalid), htmlentities( $_GET[self::$_arg] ) );
-
 		}
 		else
 		{
