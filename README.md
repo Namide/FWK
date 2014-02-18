@@ -45,6 +45,7 @@ $visible:Bool
 $cachable:Bool
 $title
 $categories:Array
+$phpHeader
 
 $header
 $preface

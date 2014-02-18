@@ -14,6 +14,7 @@
 
 $url = 'en';
 $title = 'Homepage';
+$template = 'default';
 $header = ' <title>Namide</title>
     <meta name="description" content="Damien Doussaud aka Namide is a french creative developer." />
 	<meta name="robots" content="all" />';

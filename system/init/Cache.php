@@ -19,8 +19,18 @@ class Cache
 	{
 		return file_exists( $this->pageFile );
 	}
+	
 	public function echoCache()
 	{
+		$file_extension = strtolower(substr(strrchr( str_replace ( '.cache', '', $this->pageFile ) ,"."),1));
+
+		
+		switch ($file_extension)
+		{
+			case "xml": header('Content-Type: application/xml;'); break;
+			default: $ctype="application/force-download";
+		}
+		
 		readfile( $this->pageFile );
 	}
 	

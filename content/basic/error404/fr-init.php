@@ -2,6 +2,7 @@
 
 $url = 'fr/erreur404';      
 $title = 'Erreur 404';
+$template = 'default';
 $header = ' <title>Erreur 404 - FWK</title>
     <meta name="description" content="Erreur 404" />
 	<meta name="robots" content="all" />';

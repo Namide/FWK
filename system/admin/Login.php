@@ -4,9 +4,10 @@ class Login
 {
 	
 	function __construct()
-	{
+	{		
 		//session_start();
 		session_start();
+		
 		
 		if ( isset( $_POST['disconnect'] ) )
 		{
@@ -17,7 +18,7 @@ class Login
 		{
 			if( !$this->tryConnect() )
 			{
-				$this->disconnect();
+				$this->disconnect( FALSE );
 				echo self::getLoginForm();
 				exit();
 			}
@@ -65,25 +66,29 @@ class Login
 		//session_start();
 		//session_destroy();
 		global $_ADMIN_USERS;
+		global $_ADMIN_IP;
 		
 		if( isset( $_POST ) &&
 			!empty( $_POST['userName'] ) &&
 			!empty( $_POST['userPass'] ) )
 		{
 			
-			
 			$inputUserName = htmlentities( $_POST['userName'] );
 			$inputUserPass = sha1( htmlentities( $_POST['userPass'] ) );
+			$inputIp = htmlentities( $_SERVER["REMOTE_ADDR"] );
 			
-			foreach ( $_ADMIN_USERS as $userId => $userDatas )
+			$inputId = array_search( [$inputUserName, $inputUserPass], $_ADMIN_USERS );
+			if ( !($inputId === FALSE) )
 			{
-				if (	$inputUserName === $userDatas[0] && 
-						$inputUserPass === $userDatas[1] )
+				if (	$inputUserName === $_ADMIN_USERS[$inputId][0] &&
+						$inputUserPass === $_ADMIN_USERS[$inputId][1] &&
+						in_array( $inputIp, $_ADMIN_IP, TRUE ) )
 				{
-					$this->connect( $userId, $userDatas[0] );
+					$this->connect( $inputId, $inputUserName );
 					return TRUE;
 				}
 			}
+			
 		}
 		
 		return FALSE;
@@ -91,7 +96,6 @@ class Login
 	
 	private function connect( $id, $name )
 	{
-		
 		$token = htmlentities( sha1( rand( 0, 999999999 ) ) );
 		
 		$_SESSION['userId'] = $id;
@@ -119,7 +123,7 @@ class Login
 		return $output;
 	}
 	
-	public function disconnect()
+	public function disconnect( $destroy = TRUE )
 	{
 		if( isset( $_SESSION['userId'] ) &&
 			isset( $_SESSION['userName'] ) )
@@ -132,8 +136,13 @@ class Login
 			{
 				unlink( $tokenFile );
 			}
+			
+			unset($_SESSION['userId']);
+			unset($_SESSION['userName']);
+			
 		}
-		session_destroy();
+		
+		if ( $destroy ) session_destroy();
 	}
 	
 	private static function getLoginForm()

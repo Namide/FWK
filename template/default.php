@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="<?php echo $templateUtils->getLanguage(); ?>">
+<html lang="<?php echo TemplateUtils::getInstance()->getLanguage(); ?>">
 
 <head>
 
-    <meta charset="UTF-8" />
+    <meta charset="utf-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="You" />
@@ -22,7 +22,7 @@
 <body>
     
     <header>
-        <h1><a href="<?php echo $templateUtils->getAbsoluteUrl( 'basic/homepage' ); ?>">FWK</a></h1>
+        <h1><a href="<?php echo TemplateUtils::getInstance()->getAbsoluteUrl( 'basic/homepage' ); ?>">FWK</a></h1>
         <nav>
             <?php echo getMenu(); ?>
         </nav>
@@ -31,7 +31,7 @@
     <div id="content">
     
         <?php
-	        echo $page->getBody();
+	        echo TemplateUtils::getInstance()->getCurrentPage()->getBody();
         ?>
 		
     </div>
@@ -49,7 +49,7 @@
 
 function getMenu()
 {
-	global $templateUtils;
+	$templateUtils = TemplateUtils::getInstance();
    
    	if ( $templateUtils->getLanguage() == 'all' ) return '';
 	
@@ -70,10 +70,10 @@ function getMenu()
 
 function getFooter()
 {
-    global $templateUtils;
+    //global $templateUtils;
     global $page;
     
-	$lang = $templateUtils->getLanguage();
+	$lang = TemplateUtils::getInstance()->getLanguage();
     
     $output = '<ul>';
     

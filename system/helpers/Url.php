@@ -37,7 +37,7 @@ class Url
 	{
 		if( isset( $_GET[self::$_arg] ) )
 		{
-			$invalid = array( '/'=>'.', '\\'=>'.', ':'=>'.', '?'=>'.', '"'=>'.', '*'=>'.', '<'=>'.', '>'=>'.', '|'=>'.' );
+			$invalid = array( '/'=>'-', '\\'=>'-', ':'=>'-', '?'=>'-', '"'=>'-', '*'=>'-', '<'=>'-', '>'=>'-', '|'=>'-' );
 			$url = str_replace(array_keys($invalid), array_values($invalid), htmlentities( $_GET[self::$_arg] ) );
 		}
 		else

@@ -12,9 +12,9 @@ class TemplateUtils
     
     final private function __construct()
     {
-        global $pagesInitialised;
+		global $pagesInitialised;
         if ( !isset($pagesInitialised) ) trigger_error( 'All pages must be initialised after use TemplateUtils class', E_USER_ERROR );
-        
+		
         $urlClass = Url::getInstance();
         $urlString = $urlClass->getUrl();
         
@@ -22,7 +22,7 @@ class TemplateUtils
         
         $page = $pagesClass->getPageByUrl( $urlString );
         $this->_page = $page;
-        $this->_language = $page->getLanguage();
+        $this->_language = $page->getLanguage();        
     }
     
     public function getAbsoluteUrl( $idPage )

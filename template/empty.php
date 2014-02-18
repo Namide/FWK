@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?php echo $templateUtils->getLanguage(); ?>">
+<html lang="<?php echo TemplateUtils::getInstance()->getLanguage(); ?>">
 
 <head>
 

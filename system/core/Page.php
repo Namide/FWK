@@ -8,6 +8,10 @@ class Page
     private $_id;
     public function getId() { return $this->_id; }
     
+	private $_phpHeader;
+    public function setPhpHeader( $phpHeader ) { $this->_phpHeader = $phpHeader; }
+    public function getPhpHeader() { return $this->_phpHeader; }
+	
     private $_visible;
     public function setVisible( $visible ) { $this->_visible = $visible; }
     public function getVisible() { return $this->_visible; }
@@ -112,7 +116,7 @@ class Page
         return $_ROOT_URL.$_CONTENT_DIRECTORY.$this->getId().'/'.$file;
     }
     
-    public function __construct( $id )
+	public function __construct( $id )
     {
         $this->_id = $id;
         $this->_categories = array();
@@ -122,7 +126,7 @@ class Page
         // DEFAULT
         $this->_linkTitle = $id;
         $this->_title = $id;
-        $this->_template = 'default';
+        //$this->_template = 'default';
 		$this->_file2 = '';
 		$this->_cachable = TRUE;
     }

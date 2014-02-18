@@ -2,6 +2,7 @@
 
 $url = 'en/sitemap';
 $title = 'Sitemap';
+$template = 'default';
 $header = '
     <title>Sitemap - FWK</title>
     <meta name="description" content="Sitemap of FWK/en" />

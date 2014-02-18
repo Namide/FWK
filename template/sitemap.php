@@ -1,6 +1,4 @@
 <?php
-    header('Content-Type: application/xml; charset=utf-8');  
-?>
-<?php 
+    //header('Content-Type: application/xml; charset=utf-8');  
 
-echo $page->getBody();
+echo TemplateUtils::getInstance()->getCurrentPage()->getBody();

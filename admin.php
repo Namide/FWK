@@ -6,13 +6,14 @@
  */
 
 //$_ADMIN_URL = 'admin';
-$_ADMIN_IP = [ '92.103.8.10' ];
+$_ADMIN_IP = [ '92.103.8.10', '127.0.0.1', '::1' ];
 $_ADMIN_USERS = [ [ 'Damien', sha1('Damien') ] ];
 
 
 
 
 $timestart = microtime(true);
+
 
 include_once( 'config.php' );
 include_once( $_SYSTEM_DIRECTORY.'admin/start.php' );

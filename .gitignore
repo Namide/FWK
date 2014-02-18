@@ -2,6 +2,7 @@
 ## FWK
 #################
 cache/
+system/admin/logs/*
 
 #################
 ## Eclipse

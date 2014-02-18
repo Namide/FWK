@@ -2,6 +2,7 @@
 
 $url = 'fr/sitemap';
 $title = 'Plan du site';
+$template = 'default';
 $header = '
     <title>plan du site - FWK</title>
     <meta name="description" content="Plan du site : liste de toutes les pages référencées de FWK/fr" />

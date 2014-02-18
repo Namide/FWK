@@ -9,6 +9,7 @@
 	{
 		font-family: Arial, sans-serif;
 		font-size: 12px;
+		color: #444;
 	}
 	body>header
 	{
@@ -21,10 +22,15 @@
 		margin-left:256px;
 		padding:16px;
 	}
-	table tr:nth-child(odd)
-	{
-		background-color:#EEE;
-	}
+	
+	h1 { font-size: 30px; color:#000; margin: 50px 0 0 0; }
+	h2 { font-size: 20px; color:#000; margin: 30px 0 0 0; }
+	h3 { font-size: 18px; color:#000; margin: 18px 0 0 0; }
+	h4 { font-size: 16px; color:#000; margin: 15px 0 0 0; }
+	h5 { font-size: 14px; color:#000; margin: 12px 0 0 0; }
+	h6 { font-size: 12px; color:#000; margin: 10px 0 0 0; }
+	
+	table tr:nth-child(odd) { background-color:#EEE; 	}
 	table td { padding:8px; }
 	table th { padding:16px 8px; }
 	table { border-spacing: 0; }
@@ -38,18 +44,31 @@
 		<h1>Admin</h1>
 		<nav>
 			<ul>
-				<li></li>
+				<li><a href="admin.php?p=debug">Debug</a></li>
 				<li><?php echo Login::getLogoutForm(); ?></li>
 			</ul>
 		</nav>
 	</header>
 	
 	<section>
-		<?php 
+		<?php
+		
 			global $_SYSTEM_DIRECTORY;
 			
-			include_once( $_SYSTEM_DIRECTORY.'admin/PageListDebug.php' );
-			echo PageListDebug::getInstance()->getAnalyse();
+			if( !empty($_GET["p"]) )
+			{
+				switch ( $_GET["p"] )
+				{
+					case 'debug':
+
+						include $_SYSTEM_DIRECTORY.'admin/pages/debug.php';
+						break;
+
+					default:
+						break;
+				}
+			}
+			
 		?>
 	</section>
 

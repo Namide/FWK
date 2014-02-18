@@ -33,10 +33,18 @@ class PageList
         
         foreach( $pages as $page )
         {
-            $page->setVisible( FALSE );
-			$page->setType( Page::$TYPE_ERROR_404 );
+            //$page = $this->$page;
         }
     }
+	
+	private function makeError404Page( &$page )
+	{
+		$page->setVisible( FALSE );
+		$page->setType( Page::$TYPE_ERROR_404 );
+		$page->setCachable( FALSE );
+		$page->setPhpHeader( 'HTTP/1.0 404 Not Found' );
+		return $page;
+	}
     
 
     public function addPage( $folderName )
@@ -90,6 +98,7 @@ class PageList
 		if ( isset($title) )		$page->setTitle($title);
 		if ( isset($categories) )	$page->addCategories($categories);
 		if ( isset($cachable) )		$page->setCachable($cachable);
+		if ( isset($phpHeader) )	$page->setPhpHeader($phpHeader);
 
 		if ( isset($body) )			$page->setBody ( PageUtils::mustache($body, $page) );
 		if ( isset($header) )		$page->setHeader ( PageUtils::mustache($header, $page) );
@@ -120,7 +129,8 @@ class PageList
 		if ( isset($title) )		$page->setTitle($title);
         if ( isset($categories) )	$page->addCategories($categories);
         if ( isset($cachable) )		$page->setCachable($cachable);
-        
+        if ( isset($phpHeader) )	$page->setPhpHeader($phpHeader);
+
         if ( isset($body) )			$page->setBody ( PageUtils::mustache($body, $page) );
         if ( isset($header) )		$page->setHeader ( PageUtils::mustache($header, $page) );
 		if ( isset($preface) )		$page->setPreface ( PageUtils::mustache($preface, $page) );
@@ -207,24 +217,37 @@ class PageList
         }
         
         // IS ERROR 404
-		global $_CACHE;
-		$_CACHE = FALSE;
+		//global $_CACHE;
 		
-        foreach ( $this->pagesByUrl as $page )
-        {
-            $idTemp = $page->getId();
-            $langTemp = $page->getLanguage();
-            if ( $idTemp == $this->error404PageId && $langTemp == $lang )
-            {
-            	header('HTTP/1.0 404 Not Found');
-                return $page;
-            }
-        }
+		if ( !empty( $this->error404PageId ) )
+		{
+			foreach ( $this->pagesByUrl as $page )
+			{
+				$idTemp = $page->getId();
+				$langTemp = $page->getLanguage();
+				if ( $idTemp == $this->error404PageId && $langTemp == $lang )
+				{
+					header('HTTP/1.0 404 Not Found');
+					return $page;
+				}
+			}
+		}
+        
         
         if( !isset($this->_page) )
         {
+			//$_CACHE = FALSE;
         	//trigger_error( 'Page "error404" not declared', E_USER_ERROR );
-        	header('HTTP/1.0 404 Not Found');
+			
+			$page = new Page(0);
+			$page->setHeader( '<title>Error 404 - Not found</title>
+					<meta name="robots" content="noindex,nofollow" />
+					<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' );
+			$page->setBody( '<h1>Error 404 - Not found</h1>' );
+			$this->makeError404Page($page);
+			return $page;
+			
+        	/*header('HTTP/1.0 404 Not Found');
 			echo '<html>
 				<head>
 					<title>Error 404 - Not found</title>
@@ -235,7 +258,7 @@ class PageList
 					<h1>Error 404 - Not found</h1>
 				</body>
 			</html>';
-        	exit();
+        	exit();*/
         }
     }
 	
