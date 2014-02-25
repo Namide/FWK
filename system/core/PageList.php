@@ -6,6 +6,10 @@ class PageList
     private static $_instances = array();
         
     protected $_pagesByUrl;
+	public function getPagesByUrl()
+	{
+		return $this->_pagesByUrl;
+	}
 
 	protected $_defaultPageId;
     protected $_error404PageId;
@@ -69,7 +73,7 @@ class PageList
 				if( file_exists ( $file2 ) ) { $page->setFile2($file2); }
 				
                 $pageUrl = $page->getUrl();
-                $this->pagesByUrl[$pageUrl] = $page;
+                $this->_pagesByUrl[$pageUrl] = $page;
                 array_push( $pages, $page );
             }
             
@@ -143,7 +147,7 @@ class PageList
 		}
         
         $pageUrl = $page->getUrl();
-        if (isset($this->pagesByUrl[$pageUrl]) )
+        if (isset($this->_pagesByUrl[$pageUrl]) )
         {
             trigger_error( 'This page already exist: '.$pageUrl.' ('.$folderName.', '.$lang.')', E_USER_ERROR);
         }
@@ -168,7 +172,7 @@ class PageList
 		
 		$pages = array();
         
-		foreach ( $this->pagesByUrl as $page )
+		foreach ( $this->_pagesByUrl as $page )
         {
 			if( $page->getLanguage() == $lang && $page->hasCategory($category) )
 			{
@@ -183,7 +187,7 @@ class PageList
 		if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getPagesByCategories() method', E_USER_ERROR );
 		
 		$pages = array();
-        foreach ( $this->pagesByUrl as $page )
+        foreach ( $this->_pagesByUrl as $page )
         {
             foreach ( $categories as $category )
             {
@@ -201,8 +205,11 @@ class PageList
     {
         if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getPageByUrl() method', E_USER_ERROR );
 		
-		// IS PAGE
-        foreach ( $this->pagesByUrl as $page )
+		// EXIST
+		if( $this->hasUrl( $url ) ) return $this->_pagesByUrl[$url];
+		
+		// EXIST WITHOUT "/" AT THE END
+		foreach ( $this->_pagesByUrl as $page )
         {
             $urlTemp = $page->getUrl();
             if ( $url == $urlTemp || $url == $urlTemp.'/' ) { return $page; }
@@ -221,7 +228,7 @@ class PageList
 		
 		if ( !empty( $this->error404PageId ) )
 		{
-			foreach ( $this->pagesByUrl as $page )
+			foreach ( $this->_pagesByUrl as $page )
 			{
 				$idTemp = $page->getId();
 				$langTemp = $page->getLanguage();
@@ -270,7 +277,7 @@ class PageList
         $languages = LanguageList::getInstance();
         $lang = $languages->getLangByNavigator();
         
-        foreach ( $this->pagesByUrl as $page )
+        foreach ( $this->_pagesByUrl as $page )
         {
             $idTemp = $page->getId();
             $langTemp = $page->getLanguage();
@@ -286,7 +293,7 @@ class PageList
         if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getAllPages() method', E_USER_ERROR );
 		
 		$pages = array();
-        foreach ( $this->pagesByUrl as $page )
+        foreach ( $this->_pagesByUrl as $page )
         {
             $langTemp = $page->getLanguage();
             $visible = $page->getVisible();
@@ -302,7 +309,7 @@ class PageList
     {
 		if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getPage() method', E_USER_ERROR );
 		
-		foreach ( $this->pagesByUrl as $page )
+		foreach ( $this->_pagesByUrl as $page )
         {
             $idTemp = $page->getId();
             $langTemp = $page->getLanguage();
@@ -314,11 +321,32 @@ class PageList
         return $this->getDefaultPage();
     }
     
+	public function hasPage( $id, $lang )
+    {
+		if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use hasPage() method', E_USER_ERROR );
+		
+		foreach ( $this->_pagesByUrl as $page )
+        {
+            $idTemp = $page->getId();
+            $langTemp = $page->getLanguage();
+            if ( $idTemp === $id && $langTemp === $lang )
+            {
+                return TRUE;
+            }
+        }
+        return FALSE;
+    }
+	
+	public function hasUrl( $url )
+    {
+		return !empty( $this->_pagesByUrl[$url] );
+    }
+	
     private function getLanguageByUrl( $url )
     {
         if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getLanguageByUrl() method', E_USER_ERROR );
 		
-		if ( isset( $this->pagesByUrl[$url] ) )
+		if ( isset( $this->_pagesByUrl[$url] ) )
         {
             $page = $this->pagesByUrl[$url];
             return $page->getLanguage();

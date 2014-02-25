@@ -3,7 +3,7 @@
 	$ACTUAL_PAGE_URL = 'admin.php?p=debug';
 
 	$pageList = PageList::getInstance();
-	$pages = $pageList->pagesByUrl;
+	$pages = $pageList->getPagesByUrl();
 
 	
 			
@@ -30,8 +30,8 @@
 
 
 
-<h2>Parameters</h2>
 <table>
+	<caption><h2>Parameters</h2></caption>
 	<tr>
 		<th>URL rewriting</th>
 		<td><?php echo (($_URL_REWRITING)?'<span style="color:green;">activated</span>':'<strong style="color:red;">disabled</strong>') ?></td>
@@ -48,14 +48,17 @@
 	</tr>
 </table>
 
-<?php if ( !$_DEBUG ) { echo 'To see this page you must to activate debug mode.'; } ?>
 
 
-<h2>Cache</h2>
-<p>The debug mode takes all pages in cache if the cache is activated.<br />
-To see the real number of the pages in cache you must to reload this page.<br />
-Pages cached number represent all pages without the uncachables pages.</p>
 <table>
+	
+	<caption>
+		<h2>Cache</h2>
+		<p>The debug mode takes all pages in cache if the cache is activated.
+		To see the real number of the pages in cache you must to reload this page.
+		Pages cached number represent all pages without the uncachables pages.</p>
+	</caption>
+	
 	<tr>
 		<th>Total weight cache</th>
 		<td>
@@ -73,7 +76,7 @@ Pages cached number represent all pages without the uncachables pages.</p>
 			&nbsp;
 			<form action="<?php echo $ACTUAL_PAGE_URL; ?>" method="POST" style="display:inline;">
 				<input type="hidden" name="clear" value="ALL" />
-				<input type="submit" value="Clear all" /> 
+				<input type="submit" value="Clear all" style="color:red;" /> 
 			</form>
 		</td>
 	</tr>
@@ -91,10 +94,11 @@ Pages cached number represent all pages without the uncachables pages.</p>
 </table>
 
 
-<h2>Pages</h2>
 
-<h3>Global</h3>
 <table>
+	
+	<caption><h2>Pages - global</h2></caption>
+	
 	<tr>
 		<th>Visible pages number</th>
 		<td><?php echo count( $pageList->getAllPages( 'all' ) ); ?> / <?php echo count($pages); ?></td>
@@ -110,9 +114,10 @@ Pages cached number represent all pages without the uncachables pages.</p>
 </table>
 
 
-<h3>Details</h3>
 
 <table>
+	<caption><h2>Pages - details</h2></caption>
+	
 	<tr>
 		<th>num</th>
 		<th>urls</th>

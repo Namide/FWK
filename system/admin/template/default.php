@@ -5,6 +5,7 @@
 <title>Admin</title>
 
 <style type="text/css">
+	
 	body
 	{
 		font-family: Arial, sans-serif;
@@ -23,7 +24,9 @@
 		padding:16px;
 	}
 	
-	h1 { font-size: 30px; color:#000; margin: 50px 0 0 0; }
+	p { text-align: left; }
+	
+	h1 { font-size: 30px; color:#000; margin: 0; }
 	h2 { font-size: 20px; color:#000; margin: 30px 0 0 0; }
 	h3 { font-size: 18px; color:#000; margin: 18px 0 0 0; }
 	h4 { font-size: 16px; color:#000; margin: 15px 0 0 0; }
@@ -33,7 +36,8 @@
 	table tr:nth-child(odd) { background-color:#EEE; 	}
 	table td { padding:8px; }
 	table th { padding:16px 8px; }
-	table { border-spacing: 0; }
+	table { border-spacing: 0; float:left; margin: 0 32px 32px 0; }
+	
 </style>
 
 </head>
@@ -45,6 +49,7 @@
 		<nav>
 			<ul>
 				<li><a href="admin.php?p=debug">Debug</a></li>
+				<li><a href="admin.php?p=page-list">Pages list</a></li>
 				<li><?php echo Login::getLogoutForm(); ?></li>
 			</ul>
 		</nav>
@@ -62,6 +67,16 @@
 					case 'debug':
 
 						include $_SYSTEM_DIRECTORY.'admin/pages/debug.php';
+						break;
+
+					case 'page-list':
+
+						include $_SYSTEM_DIRECTORY.'admin/pages/pageList.php';
+						break;
+
+					case 'page-edit':
+
+						include $_SYSTEM_DIRECTORY.'admin/pages/pageEdit.php';
 						break;
 
 					default:

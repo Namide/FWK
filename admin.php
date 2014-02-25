@@ -5,7 +5,7 @@
  *		ADMIN
  */
 
-//$_ADMIN_URL = 'admin';
+
 $_ADMIN_IP = [ '127.0.0.1', '::1' ];
 $_ADMIN_USERS = [ [ 'Damien', sha1('Damien') ] ];
 
