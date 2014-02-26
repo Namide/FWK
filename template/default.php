@@ -1,3 +1,11 @@
+<?php
+
+include_once $_TEMPLATE_DIRECTORY.'includes/menu.php';
+include_once $_TEMPLATE_DIRECTORY.'includes/footer.php';
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="<?php echo TemplateUtils::getInstance()->getLanguage(); ?>">
 
@@ -43,56 +51,3 @@
 </body>
 
 </html>
-
-
-<?php
-
-function getMenu()
-{
-	$templateUtils = TemplateUtils::getInstance();
-   
-   	if ( $templateUtils->getLanguage() == 'all' ) return '';
-	
-    
-	$lang = $templateUtils->getLanguage();
-	$pageList = PageList::getInstance();
-
-	$output = '<ul>';
-	foreach( $pageList->getAllPages($lang) as $pageTemp )
-	{
-		$output .= '<li><a href="'.PageUtils::urlPageToAbsoluteUrl( $pageTemp->getUrl() ).'">';
-		$output .= $pageTemp->getTitle().'</a></li>';
-	}
-	$output .= '</ul>';
-
-    return $output;
-}
-
-function getFooter()
-{
-    //global $templateUtils;
-    global $page;
-    
-	$lang = TemplateUtils::getInstance()->getLanguage();
-    
-    $output = '<ul>';
-    
-    if( $lang == 'all' )
-    {
-    	$output .= '<li><a href="'.PageUtils::getAbsoluteUrl( 'basic/homepage', 'en' ).'">en</a></li>';
-    	$output .= '<li><a href="'.PageUtils::getAbsoluteUrl( 'basic/homepage', 'fr' ).'">fr</a></li>';
-    }
-    else if ( $lang == 'fr' )
-    {
-    	$output .= '<li><a href="'.PageUtils::getAbsoluteUrl( $page->getId(), 'en' ).'">en</a></li>';
-    }
-    else
-    {
-    	$output .= '<li><a href="'.PageUtils::getAbsoluteUrl( $page->getId(), 'fr' ).'">fr</a></li>';
-    }
-    
-    $output .= '</ul>';
-    return $output;
-}
-
-?>

@@ -8,10 +8,18 @@ class TemplateUtils
     public function getLanguage() { return $this->_language; }
     
     private $_page;
+	/**
+	 * @return Page
+	 */
     public function getCurrentPage() { return $this->_page; }
     
     final private function __construct()
     {
+		  $this->reset();  
+    }
+	
+	public function reset()
+	{
 		global $pagesInitialised;
         if ( !isset($pagesInitialised) ) trigger_error( 'All pages must be initialised after use TemplateUtils class', E_USER_ERROR );
 		
@@ -22,8 +30,8 @@ class TemplateUtils
         
         $page = $pagesClass->getPageByUrl( $urlString );
         $this->_page = $page;
-        $this->_language = $page->getLanguage();        
-    }
+        $this->_language = $page->getLanguage();
+	}
     
     public function getAbsoluteUrl( $idPage )
     {
@@ -44,6 +52,9 @@ class TemplateUtils
         trigger_error( 'You can\'t clone.', E_USER_ERROR );
     }
  
+	/**
+	 * @return TemplateUtils
+	 */
     final public static function getInstance()
     {
         $c = get_called_class();

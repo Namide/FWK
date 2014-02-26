@@ -68,10 +68,10 @@ if( !empty($_GET["p"]) )
 		<h1>Admin</h1>
 		<nav>
 			<ul>
-				<li><a href="admin.php?p=debug">Debug</a></li>
+				<li><a href="admin.php?p=page-debug">Debug</a></li>
 				<li><a href="admin.php?p=page-list">Pages list</a></li>
 				<li><a href="admin.php?p=page-edit">Edition</a></li>
-				<li><a href="admin.php?p=page-save">Import content</a></li>
+				<li><a href="admin.php?p=page-save">Export content</a></li>
 				<li><?php echo Login::getLogoutForm(); ?></li>
 			</ul>
 		</nav>
@@ -84,9 +84,9 @@ if( !empty($_GET["p"]) )
 			{
 				switch ( $_GET["p"] )
 				{
-					case 'debug':
+					case 'page-debug':
 
-						include $_SYSTEM_DIRECTORY.'admin/pages/debug.php';
+						include $_SYSTEM_DIRECTORY.'admin/pages/pageDebug.php';
 						break;
 
 					case 'page-list':

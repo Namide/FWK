@@ -5,6 +5,7 @@ class Cache
 {
 	
 	private $pageFile;
+	private $pageContent;
 	
 	function __construct()
 	{
@@ -68,25 +69,47 @@ allow from all
 
 		ob_start();
 	}
-	public function stopSaveCacheAndEcho()
+	/*public function stopSaveCache()
 	{
-		global $_SYSTEM_DIRECTORY;
-		include_once $_SYSTEM_DIRECTORY.'helpers/TemplateUtils.php';
-		$page = TemplateUtils::getInstance()->getCurrentPage();;
-		
-		
+		echo $this->stopSaveCache();
+	}*/
+	public function getSavedCache()
+	{
+		return $this->pageContent;
+	}
+	public function stopSaveCache()
+	{
 		$pageContent = ob_get_contents();
 		ob_end_clean();
 
+		
+		$this->pageContent = $pageContent;
+		return $pageContent;
+	}
+	
+	public function writesCache( &$newContent = '' )
+	{
+		if ( $newContent == '' )
+		{
+			$pageContent = $this->pageContent;
+		}
+		else
+		{
+			$pageContent = $newContent;
+		}
+		
+		global $_SYSTEM_DIRECTORY;
+		include_once $_SYSTEM_DIRECTORY.'helpers/TemplateUtils.php';
+		$page = TemplateUtils::getInstance()->getCurrentPage();;
 		if ( $page->getCachable() )
 		{
 			$this->writesCacheFile( $pageContent );
 		}
-		echo $pageContent;
 	}
-	
-	private function writesCacheFile( &$pageContent )
+	private function writesCacheFile( $pageContent )
 	{
+		//$pageContent = $this->pageContent;
+		
 		$path = explode("/", $this->pageFile);
 		$dir = '';
 		while ( count($path) > 1 )

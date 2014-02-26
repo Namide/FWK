@@ -4,27 +4,7 @@
 	$PAGE_EDIT_URL = 'admin.php?p=page-edit';
 
 	$pageList = PageList::getInstance();
-	$pages = $pageList->getPagesByUrl();
-
-	
-	/*		
-	if( !empty($_POST['clear']) && $_POST['clear'] === 'ALL' )
-	{
-		if ( is_dir($_CACHE_DIRECTORY) ) { delTree( $_CACHE_DIRECTORY ); }
-		echo '<script>window.location.href = "'.$ACTUAL_PAGE_URL.'";</script>';
-	}
-
-	function delTree( $dir )
-	{
-		$files = array_diff( scandir($dir), array('.','..') );
-		foreach ($files as $file)
-		{
-			if (is_dir("$dir/$file")) { delTree("$dir/$file"); }
-			else { unlink("$dir/$file"); }
-		}
-		return rmdir($dir);
-	}
-	*/			
+	$pages = $pageList->getPagesByUrl();	
 ?>
 
 <h1>Pages list</h1>

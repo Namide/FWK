@@ -25,7 +25,11 @@ if ( $_CACHE )
 		
 		$cache->startSaveCache();
 			echoPage( $page ); //include $_TEMPLATE_DIRECTORY.$page->getTemplate().'.php';
-		$cache->stopSaveCacheAndEcho();
+		//$cache->stopSaveCacheAndEcho();
+		$cache->stopSaveCache();
+		$cache->writesCache();
+		echo $cache->getSavedCache();
+	
 		
 		if ( $_DEBUG ) echo '<!-- execute PHP and write cache time: ', number_format( microtime(true) - $timestart , 3), 's -->';
 		

@@ -17,7 +17,12 @@ class Url
     
     final private function __construct()
     {
-    	if( isset( $_GET[self::$_arg] ) )
+    	$this->reset();
+    }
+	
+	public function reset()
+	{
+		if( isset( $_GET[self::$_arg] ) )
         {
             $this->url = htmlentities( $_GET[self::$_arg] );//filter_input('INPUT_GET', 'page', 'FILTER_SANITIZE_URL');
         }
@@ -31,7 +36,7 @@ class Url
             header( 'Location:'.PageUtils::urlPageToAbsoluteUrl( $page->getUrl() ) );
             exit();
         }
-    }
+	}
 
 	public static function getURICacheID()
 	{
@@ -72,6 +77,9 @@ class Url
         trigger_error( 'You can\'t clone.', E_USER_ERROR );
     }
  
+	/**
+	* @return Url
+	*/
     final public static function getInstance()
     {
         $c = get_called_class();

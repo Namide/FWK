@@ -20,11 +20,19 @@ class PageList
 
 	final private function __construct()
     {
-        $this->pages = array();
-		$this->_initialised = FALSE;
+        $this->reset();
 	}
- 
-    public function addDefaultPage( $id )
+	
+	public function reset()
+	{
+		$this->pages = array();
+		$this->_initialised = FALSE;
+		
+		$this->_pagesByUrl = array();
+	}
+
+
+	public function addDefaultPage( $id )
     {
         $this->defaultPageId = $id;
         $this->addPage($id);
@@ -114,8 +122,6 @@ class PageList
 				$page->addContent( $label, PageUtils::mustache($value, $page) );
 			}
 		}
-		
-		
 		
 		return $page;
 	}
@@ -361,6 +367,10 @@ class PageList
         trigger_error( 'You can\'t clone.', E_USER_ERROR );
     }
  
+	/**
+	 * 
+	 * @return PageList
+	 */
     final public static function getInstance()
     {
         $c = get_called_class();

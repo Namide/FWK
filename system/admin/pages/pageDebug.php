@@ -1,12 +1,100 @@
 <?php
 
-	$ACTUAL_PAGE_URL = 'admin.php?p=debug';
+	$ACTUAL_PAGE_URL = 'admin.php?p=page-debug';
 
 	$pageList = PageList::getInstance();
-	$pages = $pageList->getPagesByUrl();
+	$pagesDebugPage = $pageList->getPagesByUrl();
 
 	
+	
+	if( !empty($_POST['standaloneHtml']) && $_POST['standaloneHtml'] === 'ALL' )
+	{
+		if ( is_dir($_CACHE_DIRECTORY) ) { delTree( $_CACHE_DIRECTORY ); }
+		
 			
+		foreach( $pagesDebugPage as $pageDebugPage )
+		{
+			
+			/*
+			$_ROOT_URL = 'http://localhost:80/FWK/';
+			$_SYSTEM_DIRECTORY = 'system/';
+			$_CONTENT_DIRECTORY = 'content/';
+			$_TEMPLATE_DIRECTORY = 'template/';
+			$_CACHE_DIRECTORY = 'cache/';
+
+			$_URL_REWRITING = FALSE;
+			$_DEBUG = TRUE;
+			$_CACHE = TRUE;
+			 */
+			
+			
+			include_once $_SYSTEM_DIRECTORY.'init/Cache.php';
+			
+			
+			
+			$_URL_REWRITING = TRUE;
+			
+			foreach ( $_GET as $key => $value )
+			{
+				unset($_GET[$key]);
+			}
+			$_GET[Url::getPageGetArg()] = $pageDebugPage->getUrl();
+			$urlPath = explode( '/', $pageDebugPage->getUrl() );
+			$newRootRelativeUrl = '../';
+			//$_ROOT_URL = '';
+			while ( count( $urlPath ) > 1 ) 
+			{
+				$newRootRelativeUrl .= '../';
+				array_pop( $urlPath );
+			}
+			
+			
+			
+			$cache = new Cache();
+			if( $cache->isCachable() && $pageDebugPage->getType() != Page::$TYPE_ERROR_404 )
+			{
+				
+				//include_once $_SYSTEM_DIRECTORY.'init/imports.php';
+				//include_once $_SYSTEM_DIRECTORY.'init/loadPages.php';
+				//include_once $_SYSTEM_DIRECTORY.'init/buildPage.php';
+				Url::getInstance()->reset();
+				
+				/*$pageList->reset();
+				include $_CONTENT_DIRECTORY.'pages.php';
+				$pageList->go();*/
+				
+				$templateUtils = TemplateUtils::getInstance();
+				$templateUtils->reset();
+				$page = TemplateUtils::getInstance()->getCurrentPage();
+				$pageList->updatePage( $page );
+				
+				
+				
+				$cache->startSaveCache();
+					global $_TEMPLATE_DIRECTORY;
+					if ( !empty( $pageDebugPage->getTemplate() ) && $pageDebugPage->getTemplate() != '' )
+					{
+						include $_TEMPLATE_DIRECTORY.$pageDebugPage->getTemplate().'.php';
+					}
+					else
+					{
+						echo '<!doctype html>';
+						echo '<html><head>' , $pageDebugPage->getHeader();
+						echo '</head><body>' , $pageDebugPage->getBody();
+						echo '</body></html>';
+					}
+				$cache->stopSaveCache();
+				$cacheContent = $cache->getSavedCache();
+				$cacheContent = str_replace( $_ROOT_URL.Url::$BASE_PAGE_URL, $newRootRelativeUrl, $cacheContent );
+				$cacheContent = str_replace( $_ROOT_URL, $newRootRelativeUrl, $cacheContent );
+				$cache->writesCache( $cacheContent );
+	
+			}
+		}
+		
+		//echo '<script>window.location.href = "'.$ACTUAL_PAGE_URL.'";</script>';
+	}
+	
 	if( !empty($_POST['clear']) && $_POST['clear'] === 'ALL' )
 	{
 		if ( is_dir($_CACHE_DIRECTORY) ) { delTree( $_CACHE_DIRECTORY ); }
@@ -91,6 +179,16 @@
 		}
 	?>
 	
+	<tr>
+		<th style="color:red;">!Replace cache to standalone HTML<br/>
+			(Clear and generate relative cache)<br />
+			don't work with GET and dynamics pages</th>
+		<td><form action="<?php echo $ACTUAL_PAGE_URL; ?>" method="POST" style="display:inline;">
+				<input type="hidden" name="standaloneHtml" value="ALL" />
+				<input type="submit" value="Replace!" style="color:red;" /> 
+			</form></td>
+	</tr>
+	
 </table>
 
 
@@ -101,7 +199,7 @@
 	
 	<tr>
 		<th>Visible pages number</th>
-		<td><?php echo count( $pageList->getAllPages( 'all' ) ); ?> / <?php echo count($pages); ?></td>
+		<td><?php echo count( $pageList->getAllPages( 'all' ) ); ?> / <?php echo count($pagesDebugPage); ?></td>
 	</tr>
 	<tr>
 		<th>Internal links</th>
@@ -129,7 +227,7 @@
 <?php
 
 	$i = 0;
-	foreach( $pages as $page )
+	foreach( $pagesDebugPage as $page )
 	{
 ?>
 	<tr>
