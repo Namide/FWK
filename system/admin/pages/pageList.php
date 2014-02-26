@@ -38,7 +38,7 @@
 		<th>num</th>
 		<th>directory</th>
 		<th>url</th>
-		<th>edition</th>
+		<!-- <th>edition</th> -->
 		
 	</tr>
 
@@ -66,13 +66,12 @@
 		</td>
 
 		<!-- url -->
-		<td>
+		<!-- <td>
 			<form action="<?php echo $PAGE_EDIT_URL; ?>" method="POST" style="display:inline;">
-				<!-- <input type="hidden" name="type" value="edit" /> -->
 				<input type="hidden" name="pageId" value="<?php echo $page->getID(); ?>" />
 				<input type="submit" value="Edit" /> 
 			</form>
-		</td>
+		</td> -->
 
 	</tr>
 		

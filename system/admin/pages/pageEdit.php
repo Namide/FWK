@@ -86,7 +86,7 @@ function formDir( $parent = '', $directory = '/' )
 			if( $file_extension == 'php' )
 			{
 				echo '<li>',$file;
-				echo '<form action="',$ACTUAL_PAGE_URL,'" method="POST" style="display:inline;">
+				echo '<form action="',$ACTUAL_PAGE_URL,'#edit-page" method="POST" style="display:inline;">
 				<input type="hidden" name="type" value="edit" />
 				<input type="hidden" name="file" value="',$parent.$file,'" />
 				<input type="submit" value="Edit" style="color:red;" /> 
@@ -164,12 +164,16 @@ echo '</ul>';
 		
 	?>
 
-		<form  action="<?php echo $ACTUAL_PAGE_URL; ?>" method="POST" >
-			<h2><?php echo $_POST['file']; ?></h2>
-			<textarea name="update" rows="20" cols="100" style="padding:16px;"><?php readfile( $_CONTENT_DIRECTORY.$_POST['file'] ); ?></textarea>
+<h2>File: <code><?php echo $_POST['file']; ?></code></h2>
+		<form  action="<?php echo $ACTUAL_PAGE_URL; ?>#edit-page" method="POST" id="edit-page">
+			
+			<div style="padding: 16px; border: 1px solid #CCC;">
+				<textarea name="update" rows="50" cols="100" style="width:100%; border:none; font-family: 'Courier New', Courier, monospace; font-size: 13px;"><?php readfile( $_CONTENT_DIRECTORY.$_POST['file'] ); ?></textarea>
+			</div>
+			
 			<input type="hidden" name="file" value="<?php echo $_POST['file']; ?>" />
 			<input type="hidden" name="type" value="edit" />
-			<input type="submit" value="Update" style="color:red;" /> 
+			<input type="submit" value="Update" style="color:red; margin:8px 0; font-size: 16px;" /> 
 		</form>
 
 <?php 

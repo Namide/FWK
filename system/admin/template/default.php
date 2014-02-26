@@ -1,3 +1,23 @@
+<?php
+
+global $_SYSTEM_DIRECTORY;
+
+if( !empty($_GET["p"]) )
+{
+	switch ( $_GET["p"] )
+	{
+		case 'page-save':
+
+			include $_SYSTEM_DIRECTORY.'admin/pages/pageSave.php';
+			break;
+
+		default:
+			break;
+	}
+}
+
+?>
+
 <!doctype html>
 <html>
 <head>
@@ -50,6 +70,8 @@
 			<ul>
 				<li><a href="admin.php?p=debug">Debug</a></li>
 				<li><a href="admin.php?p=page-list">Pages list</a></li>
+				<li><a href="admin.php?p=page-edit">Edition</a></li>
+				<li><a href="admin.php?p=page-save">Import content</a></li>
 				<li><?php echo Login::getLogoutForm(); ?></li>
 			</ul>
 		</nav>
@@ -58,8 +80,6 @@
 	<section>
 		<?php
 		
-			global $_SYSTEM_DIRECTORY;
-			
 			if( !empty($_GET["p"]) )
 			{
 				switch ( $_GET["p"] )

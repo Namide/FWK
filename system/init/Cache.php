@@ -79,6 +79,30 @@ allow from all
 	
 	public static function getNumPages( $cacheDirectory )
 	{
-		return count( glob($cacheDirectory.'*.cache') );
+		$dir = $cacheDirectory;
+		if ( substr($dir, -1, 1) === '/' ) $dir = substr($dir, 0, -1);
+		return self::getNumPageRecurs($dir);//count( glob($cacheDirectory.'*.cache') );
+	}
+	
+	private static function getNumPageRecurs( $dir )
+	{
+		$num = 0;
+		if ( !file_exists($dir) ) return $num;
+		
+		$MyDirectory = opendir($dir) or die('Erreur');
+		while ( $Entry = @readdir($MyDirectory) )
+		{
+			if ( is_dir($dir.'/'.$Entry) && $Entry != '.' && $Entry != '..' )
+			{
+				$num += self::getNumPageRecurs($dir.'/'.$Entry);
+			}
+			elseif ( substr($Entry, 0, 1) != '.' ) 
+			{
+				$num++;
+			}
+		}
+		closedir($MyDirectory);
+		
+		return $num;
 	}
 }

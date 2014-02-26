@@ -3,6 +3,7 @@
 #################
 cache/
 system/admin/logs/*
+content.zip
 
 #################
 ## Eclipse
