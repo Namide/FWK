@@ -21,6 +21,11 @@ class LanguageList
         $this->addLanguage( $lang );
     }
     
+	public function getDefaultLanguage()
+    {
+        return $this->_defaultLanguage;
+    }
+	
     public function addLanguage( $lang )
     {
         array_push( $this->_languages, $lang );
@@ -47,6 +52,10 @@ class LanguageList
         trigger_error( 'You can\'t clone.', E_USER_ERROR );
     }
  
+	/**
+	 * 
+	 * @return LanguageList
+	 */
     final public static function getInstance()
     {
         $c = get_called_class();

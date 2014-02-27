@@ -8,7 +8,12 @@ if( !empty($_GET["p"]) )
 	{
 		case 'page-save':
 
-			include $_SYSTEM_DIRECTORY.'admin/pages/pageSave.php';
+			include $_SYSTEM_DIRECTORY.'admin/pages/zipAndDownloadContent.php';
+			break;
+
+		case 'page-html-save':
+
+			include $_SYSTEM_DIRECTORY.'admin/pages/zipAndDownloadHtml.php';
 			break;
 
 		default:
@@ -17,7 +22,6 @@ if( !empty($_GET["p"]) )
 }
 
 ?>
-
 <!doctype html>
 <html>
 <head>

@@ -129,6 +129,8 @@ class Page
         //$this->_template = 'default';
 		$this->_file2 = '';
 		$this->_cachable = TRUE;
+		$this->_template = '';
+		$this->_phpHeader = '';
     }
     
 }

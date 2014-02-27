@@ -33,7 +33,9 @@ class Cache
 
 		switch ($file_extension)
 		{
-			case "xml": header('Content-Type: application/xml;'); break;
+			case "xml":
+				header('Content-Type: application/xml;');
+				break;
 			default: $ctype="application/force-download";
 		}
 		
@@ -87,7 +89,7 @@ allow from all
 		return $pageContent;
 	}
 	
-	public function writesCache( &$newContent = '' )
+	public function writesCache( &$newContent = '', $dir = '' )
 	{
 		if ( $newContent == '' )
 		{
@@ -100,17 +102,28 @@ allow from all
 		
 		global $_SYSTEM_DIRECTORY;
 		include_once $_SYSTEM_DIRECTORY.'helpers/TemplateUtils.php';
-		$page = TemplateUtils::getInstance()->getCurrentPage();;
+		$page = TemplateUtils::getInstance()->getCurrentPage();
 		if ( $page->getCachable() )
 		{
-			$this->writesCacheFile( $pageContent );
+			$this->writesCacheFile( $pageContent, $dir );
 		}
 	}
-	private function writesCacheFile( $pageContent )
+	public function writesCacheFile( $pageContent, $baseDir = '', $fileName = '' )
 	{
-		//$pageContent = $this->pageContent;
+		if( $fileName == '' ) $fileName = $this->pageFile;
 		
-		$path = explode("/", $this->pageFile);
+		$path = explode( '/', $fileName );
+		if ( $baseDir != '' )
+		{
+			$path[0] = $baseDir;
+			$file = implode( '/', $path );
+		}
+		else
+		{
+			$file = $fileName;
+		}
+		
+		
 		$dir = '';
 		while ( count($path) > 1 )
 		{
@@ -131,7 +144,7 @@ allow from all
 		{
 			$file = $dir.'index.html';
 		}
-
+		
 		file_put_contents( $file, $pageContent );
 		//file_put_contents( $this->pageFile, $pageContent );
 	}

@@ -3,6 +3,8 @@
 
 /*
  *		ADMIN
+ * 
+ * For the release you can delete this file (admin.php) and the repertory (system/admin)
  */
 
 

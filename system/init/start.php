@@ -49,12 +49,12 @@ function echoPage( &$page )
 {
 	global $_TEMPLATE_DIRECTORY;
 	
-	if ( !empty( $page->getPhpHeader() ) )
+	if ( $page->getPhpHeader() != '' )
 	{
 		header( $page->getPhpHeader() );
 	}
 	
-	if ( !empty( $page->getTemplate() ) && $page->getTemplate() != '' )
+	if ( $page->getTemplate() != '' )
 	{
 		include $_TEMPLATE_DIRECTORY.$page->getTemplate().'.php';
 	}

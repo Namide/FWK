@@ -29,12 +29,17 @@ class Url
         // if no URL -> redirection to good url
         else
         {
-            $pages = PageList::getInstance();
-            $page = $pages->getDefaultPage();
-            $this->url = $page->getUrl();
-            
-            header( 'Location:'.PageUtils::urlPageToAbsoluteUrl( $page->getUrl() ) );
-            exit();
+			$path = $_SERVER['PHP_SELF'];
+			$file = basename($path);
+			if ( $file == 'index.php' )
+			{
+				$pages = PageList::getInstance();
+				$page = $pages->getDefaultPage();
+				$this->url = $page->getUrl();
+
+				header( 'Location:'.PageUtils::urlPageToAbsoluteUrl( $page->getUrl() ) );
+				exit();
+			}
         }
 	}
 

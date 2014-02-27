@@ -275,14 +275,23 @@ class PageList
         }
     }
 	
-    public function getDefaultPage()
+	/**
+	 * 
+	 * @param string $lang
+	 * @return Page
+	 */
+    public function getDefaultPage( $lang = '' )
     {
         if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getDefaultPage() method', E_USER_ERROR );
 		
 		$id = $this->defaultPageId;
-        $languages = LanguageList::getInstance();
-        $lang = $languages->getLangByNavigator();
         
+        if ( $lang == '' )
+		{
+			$languages = LanguageList::getInstance();
+			$lang = $languages->getLangByNavigator();
+		}
+		
         foreach ( $this->_pagesByUrl as $page )
         {
             $idTemp = $page->getId();
