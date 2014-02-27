@@ -272,6 +272,14 @@ $cachable = '. ( ( (bool) $_POST['cachable'] ) ? 'TRUE' : 'FALSE' ) .';
 			{
 				$fileBuild = fopen( $fileBuildName , "w" );
 				$fileBuildContent = '<?php
+/*
+	Mustaches
+
+	{{urlPageToAbsoluteUrl:en/post/min-max}}
+	{{idPageToAbsoluteUrl:basic/homepage}}
+	{{pathTemplate:css/alternative-slideshow.css}}
+	{{pathCurrentPage:img/test.jpg}}
+*/
 
 $body = <<<EOF
 <p>Empty page</p>

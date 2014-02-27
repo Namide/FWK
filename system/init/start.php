@@ -1,6 +1,6 @@
 <?php
 
-if ( $_DEBUG ) error_reporting(E_ALL);
+if ( $_DEBUG ) { error_reporting(E_ALL); }
 
 if ( $_CACHE )
 {
@@ -24,8 +24,7 @@ if ( $_CACHE )
 		include_once $_SYSTEM_DIRECTORY.'init/buildPage.php';
 		
 		$cache->startSaveCache();
-			echoPage( $page ); //include $_TEMPLATE_DIRECTORY.$page->getTemplate().'.php';
-		//$cache->stopSaveCacheAndEcho();
+			echoPage( $page );
 		$cache->stopSaveCache();
 		$cache->writesCache();
 		echo $cache->getSavedCache();
@@ -42,9 +41,16 @@ include_once $_SYSTEM_DIRECTORY.'init/loadPages.php';
 include_once $_SYSTEM_DIRECTORY.'init/buildPage.php';
 echoPage( $page );
 
-if ( $_DEBUG ) echo '<!-- execute PHP time: ',number_format( microtime(true) - $timestart , 3),'s -->';
+if ( $_DEBUG )
+{
+	echo '<!-- execute PHP time: ', number_format( microtime(true) - $timestart , 3),'s -->';
+}
 
-
+/**
+ * 
+ * @global string $_TEMPLATE_DIRECTORY
+ * @param Page $page
+ */
 function echoPage( &$page )
 {
 	global $_TEMPLATE_DIRECTORY;

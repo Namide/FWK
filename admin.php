@@ -14,11 +14,13 @@ $_ADMIN_USERS = [ [ 'Damien', sha1('Damien') ] ];
 
 
 
-$timestart = microtime(true);
 
+$timestart = microtime(true);
 
 include_once( 'config.php' );
 include_once( $_SYSTEM_DIRECTORY.'admin/start.php' );
 
-
-if ( $_DEBUG ) echo '<!-- all page php time: ',number_format( microtime(true) - $timestart , 3),'s -->';
+if ( $_DEBUG )
+{
+	echo '<!-- all page php time: ',number_format( microtime(true) - $timestart , 3),'s -->';
+}

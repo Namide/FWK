@@ -22,6 +22,10 @@ class Cache
 		
     }
 	
+	/**
+	 * 
+	 * @return boolean
+	 */
 	public function isCached()
 	{
 		return file_exists( $this->pageFile );
@@ -42,13 +46,19 @@ class Cache
 		readfile( $this->pageFile );
 	}
 	
-	
+	/**
+	 * 
+	 * @global int $_MAX_PAGE_CACHE
+	 * @global string $_CACHE_DIRECTORY
+	 * @return boolean
+	 */
 	public function isCachable()
 	{
 		global $_MAX_PAGE_CACHE;
 		global $_CACHE_DIRECTORY;
         return self::getNumPages( $_CACHE_DIRECTORY ) < $_MAX_PAGE_CACHE;
 	}
+	
 	public function startSaveCache()
 	{
 		global $_CACHE_DIRECTORY;
@@ -71,14 +81,16 @@ allow from all
 
 		ob_start();
 	}
-	/*public function stopSaveCache()
-	{
-		echo $this->stopSaveCache();
-	}*/
+	
+	/**
+	 * 
+	 * @return string
+	 */
 	public function getSavedCache()
 	{
 		return $this->pageContent;
 	}
+	
 	public function stopSaveCache()
 	{
 		$pageContent = ob_get_contents();
@@ -89,6 +101,12 @@ allow from all
 		return $pageContent;
 	}
 	
+	/**
+	 * 
+	 * @global string $_SYSTEM_DIRECTORY
+	 * @param string $newContent
+	 * @param string $dir
+	 */
 	public function writesCache( &$newContent = '', $dir = '' )
 	{
 		if ( $newContent == '' )
@@ -108,9 +126,16 @@ allow from all
 			$this->writesCacheFile( $pageContent, $dir );
 		}
 	}
-	public function writesCacheFile( $pageContent, $baseDir = '', $fileName = '' )
+	
+	/**
+	 * 
+	 * @param string $pageContent
+	 * @param string $baseDir
+	 * @param string $fileName
+	 */
+	public function writesCacheFile( &$pageContent, $baseDir = '', $fileName = '' )
 	{
-		if( $fileName == '' ) $fileName = $this->pageFile;
+		if( $fileName == '' ) { $fileName = $this->pageFile; }
 		
 		$path = explode( '/', $fileName );
 		if ( $baseDir != '' )
@@ -122,7 +147,6 @@ allow from all
 		{
 			$file = $fileName;
 		}
-		
 		
 		$dir = '';
 		while ( count($path) > 1 )
@@ -146,9 +170,13 @@ allow from all
 		}
 		
 		file_put_contents( $file, $pageContent );
-		//file_put_contents( $this->pageFile, $pageContent );
 	}
 	
+	/**
+	 * 
+	 * @param string $cacheDirectory
+	 * @return int
+	 */
 	public static function getNumPages( $cacheDirectory )
 	{
 		$dir = $cacheDirectory;
@@ -156,6 +184,11 @@ allow from all
 		return self::getNumPageRecurs($dir);
 	}
 	
+	/**
+	 * 
+	 * @param string $dir
+	 * @return int
+	 */
 	private static function getNumPageRecurs( $dir )
 	{
 		$num = 0;

@@ -5,6 +5,10 @@ class TemplateUtils
     private static $instances = array();
     
     private $_language;
+	/**
+	 * 
+	 * @return string
+	 */
     public function getLanguage() { return $this->_language; }
     
     private $_page;
@@ -33,12 +37,24 @@ class TemplateUtils
         $this->_language = $page->getLanguage();
 	}
     
+	/**
+	 * 
+	 * @param string $idPage
+	 * @return string
+	 */
     public function getAbsoluteUrl( $idPage )
     {
 		$lang = $this->getLanguage();
         return PageUtils::getAbsoluteUrl($idPage, $lang);
     }
 	
+	/**
+	 * 
+	 * @param string $idPage
+	 * @param string $tagBefore
+	 * @param string $tagAfter
+	 * @return string
+	 */
 	public function getLink( $idPage, $tagBefore = '', $tagAfter = '' )
 	{
 		$lang = $this->getLanguage();

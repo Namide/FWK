@@ -6,15 +6,21 @@ class Url
     private static $_instances = null;
 
     private $url = '';
+	/**
+	 * 
+	 * @return string
+	 */
     public function getUrl() { return $this->url; }
     
     private static $_arg = 'page';
+	/**
+	 * 
+	 * @return string
+	 */
 	public static function getPageGetArg() { return self::$_arg; }
 	
-	
 	public static $BASE_PAGE_URL = 'index.php?page=';
-	//public static function getMainArgName() { return Url::$arg; }
-    
+	
     final private function __construct()
     {
     	$this->reset();
@@ -43,6 +49,10 @@ class Url
         }
 	}
 
+	/**
+	 * 
+	 * @return string
+	 */
 	public static function getURICacheID()
 	{
 		if( isset( $_GET[self::$_arg] ) )
@@ -66,13 +76,24 @@ class Url
 		return $url;
 	}
 	
-	public static function hasArg( $arg )
+	/**
+	 * 
+	 * @param string $arg
+	 * @return boolean
+	 */
+	public static function hasArg( $label )
 	{
-		return isset( $_GET[$arg] );
+		return isset( $_GET[$label] );
 	}
-	public static function getArg( $arg )
+	
+	/**
+	 * 
+	 * @param string $arg
+	 * @return string
+	 */
+	public static function getArg( $label )
 	{
-		if( self::hasArg( $arg ) ) return htmlentities( $_GET[$arg] );
+		if( self::hasArg( $label ) ) return htmlentities( $_GET[$label] );
 		return NULL;
 	}
 

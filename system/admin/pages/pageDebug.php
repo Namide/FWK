@@ -186,23 +186,9 @@
 </table>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-<!-- <script type="text/javascript" src="'.PageUtils::getRootAbsoluteUrl('---/js/LinkChecker.js').'"></script> -->
 <?php include $_SYSTEM_DIRECTORY.'admin/pages/includes/linkChecker.php'; ?>
 
 <script>
-
-	// This sneaky bit tries to disable the Same Origin Policy
-	/*if (navigator.userAgent.indexOf("Firefox") != -1)
-	{
-		try
-		{
-			netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-		} 
-		catch (e)
-		{
-			alert("Permission UniversalBrowserRead denied -- not running Mozilla?");
-		}
-	}*/
 
 	var errorsNum = 0;
 

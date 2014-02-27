@@ -6,6 +6,10 @@ class LanguageList
     private static $instances = array();
  
     private $_languages;
+	/**
+	 * 
+	 * @return array
+	 */
     public function getList() { return $this->_languages; }
     
     private $_defaultLanguage;
@@ -15,22 +19,38 @@ class LanguageList
         $this->_languages = array('all');
     }
     
+	/**
+	 * 
+	 * @param string $lang
+	 */
     public function addDefaultLanguage( $lang )
     {
         $this->_defaultLanguage = $lang;
         $this->addLanguage( $lang );
     }
     
+	/**
+	 * 
+	 * @return string
+	 */
 	public function getDefaultLanguage()
     {
         return $this->_defaultLanguage;
     }
 	
+	/**
+	 * 
+	 * @param string $lang
+	 */
     public function addLanguage( $lang )
     {
         array_push( $this->_languages, $lang );
     }
     
+	/**
+	 * 
+	 * @return string
+	 */
     public function getLangByNavigator()
     {
         $lang = explode( ',', htmlentities($_SERVER['HTTP_ACCEPT_LANGUAGE']) );

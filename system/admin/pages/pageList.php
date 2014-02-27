@@ -18,7 +18,6 @@
 		<th>num</th>
 		<th>directory</th>
 		<th>url</th>
-		<!-- <th>edition</th> -->
 		
 	</tr>
 
@@ -44,14 +43,6 @@
 		<td>
 			<a href="<?php echo PageUtils::urlPageToAbsoluteUrl( $page->getUrl()) ?>" class="checkURL"><?php echo $page->getUrl() ?></a><br />
 		</td>
-
-		<!-- url -->
-		<!-- <td>
-			<form action="<?php echo $PAGE_EDIT_URL; ?>" method="POST" style="display:inline;">
-				<input type="hidden" name="pageId" value="<?php echo $page->getID(); ?>" />
-				<input type="submit" value="Edit" /> 
-			</form>
-		</td> -->
 
 	</tr>
 		
@@ -143,7 +134,6 @@
 
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-<!-- <script type="text/javascript" src="'.PageUtils::getRootAbsoluteUrl('---/js/LinkChecker.js').'"></script> -->
 <?php include $_SYSTEM_DIRECTORY.'admin/pages/includes/linkChecker.php'; ?>
 
 <?php

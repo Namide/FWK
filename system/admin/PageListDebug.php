@@ -9,7 +9,6 @@ class PageListDebug extends PageList
 	{
 		
 		global $_DEBUG;
-		//global $_ROOT_DIRECTORY;
 		global $_CACHE;
 		global $_URL_REWRITING;
 		global $_MAX_PAGE_CACHE;
@@ -37,7 +36,6 @@ class PageListDebug extends PageList
 			return $results;
 		}
 		
-		//$_CACHE = FALSE;
 		$results .= '<h2>Global tests</h2>';
 		$results .= '<p>The debug mode takes all pages in cache if the cache is activated.<br />';
 		$results .= 'To see the real number of the pages in cache you must to reload this page.<br />';
@@ -114,9 +112,6 @@ class PageListDebug extends PageList
 			
 			
 			// links
-			/*$pattern = '/([^"]|^)((http|ftp|https):\/\/[\w.?\/=%)(+;&-~#]+)/';
-			preg_match($pattern, $body, $links);*/
-			
 			$regex = "\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))"; // Anchor		
 			preg_match_all("%$regex%s",$body, $links);
 			$links = $links[0];
@@ -125,7 +120,6 @@ class PageListDebug extends PageList
 			foreach ($links as $link)
 			{
 				$results .= '<a href="'.$link.'" class="checkURL">'.$link.'</a>';
-				//$results .= '<a href="'.$link.'" class="checkURL">'.substr($link, 0, 10).'[...]'.substr($link, -10).'</a>';
 				$results .= '<br />';
 			}	
 			$results .= '</td>';
@@ -136,7 +130,6 @@ class PageListDebug extends PageList
 		$results .= '</table>';
 		
 		$results .= '<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>';
-		//$results .= '<script type="text/javascript" src="'.PageUtils::getRootAbsoluteUrl('system/debug/js/LinkChecker.js').'"></script>';
 		$results .= $this->getJsLinkChecker();
 		
 		$results .= '<script>
@@ -191,32 +184,6 @@ class PageListDebug extends PageList
 		
 		return $results;
 	}
-	
-	/*protected function getFolderSizeOctets($path)
-	{
-		$total_size = 0;
-		$files = scandir($path);
-		
-		foreach($files as $t)
-		{
-			if (is_dir($t))
-			{
-				if ($t<>"." && $t<>"..")
-				{
-					$size = foldersize($path . "/" . $t);
-					
-					$total_size += $size;
-				}
-			}
-			else
-			{
-				$size = filesize($path . "/" . $t);
-				
-				$total_size += $size;
-			}
-		}
-		return $total_size;
-	}*/
 	
 	protected function dirSize($directory)
 	{
@@ -545,27 +512,5 @@ class PageListDebug extends PageList
 </script>';
 		return $output;
 	}
-
-
-	/*protected function checkDeadLink ($url)
-	{
-		$a = @get_headers($url);
-		if ($a)
-		{
-			//*** On a retour : on test le header HTTP
-			if (strstr($a[0],'404'))
-			{
-				return FALSE; // Erreur 404	
-			}
-			else
-			{
-				return TRUE; // OK
-			}
-		}
-		else
-		{
-			return FALSE; // Erreur accès au site
-		}
-	}*/
 	
 }
