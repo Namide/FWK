@@ -9,6 +9,7 @@ include_once $_SYSTEM_DIRECTORY.'admin/pages/includes/helpers.php';
 
 $zipName = 'html.zip';
 
+cleanDirRecurs( 'html' );
 if( zipper_repertoire_recursif( $zipName, 'html' ) )
 {
 	delTree( 'html' );

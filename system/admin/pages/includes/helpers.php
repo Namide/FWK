@@ -1,5 +1,38 @@
 <?php
 
+// delete directories empty
+function cleanDirRecurs( $dir )
+{
+	
+	$numChilds = 0;
+	
+	if ( !file_exists($dir) ) { return 0; }
+	if ( is_file($dir) ) { return 1; }
+	
+	$files = array_diff( scandir($dir), array( '.', '..', '.DS_Store', 'Thumbs.db' ) );
+	foreach ($files as $file)
+	{
+		if (is_dir("$dir/$file"))
+		{
+			$numChilds += cleanDirRecurs("$dir/$file");
+		}
+		else
+		{
+			//unlink("$dir/$file");
+			$numChilds++;
+		}
+	}
+	
+	
+	if ( $numChilds < 1 )
+	{
+		rmdir($dir);
+	}
+	
+	return $numChilds;
+}
+
+
 function delTree( $dir )
 {
 	if ( !file_exists($dir) )
