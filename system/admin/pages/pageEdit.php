@@ -64,14 +64,36 @@ function formDir( $parent = '', $directory = '/' )
 	global $_CONTENT_DIRECTORY;
 	global $ACTUAL_PAGE_URL;
 	
-    $rep = opendir($_CONTENT_DIRECTORY.$parent) or die('the directory '.$_CONTENT_DIRECTORY.$parent.' don\'t exist');
+   
 	
 	
-	echo '<strong style="margin:12px 0 4px -2px; display:inline-block;">'.$directory.'</strong>';
-    echo '<ul style="border-left:1px solid #CCC;">';
+	$childNum = 0;
+	$rep = opendir($_CONTENT_DIRECTORY.$parent) or die('the directory '.$_CONTENT_DIRECTORY.$parent.' don\'t exist');
+	while($file = @readdir($rep))
+    {
+        if ( $file === "." || $file === ".." || substr( $file, 0, 1 ) === '.' ) continue;
+		
+		if( is_dir($_CONTENT_DIRECTORY.$parent.$file) )
+		{
+			$childNum++;
+		}
+		else if( !is_dir($_CONTENT_DIRECTORY.$parent.$file) )
+		{
+			$file_extension = strtolower(substr(strrchr($file, "."), 1));
+			if( $file_extension == 'php' )
+			{
+				$childNum++;
+			}
+		}
+    }
+	closedir($rep);
 	
 	
+	echo '<div><strong style="margin:12px 0 4px -2px; display:block;" '.( ($childNum>0)?'onclick="javascript:seeHide(this);"':'').'>'.( ($childNum>0)?'+ ':'').''.$directory.'</strong>';
+    echo '<ul style="border-left:1px solid #CCC; display:'.( ($directory == '/' ) ? 'block' : 'none' ).';" >';
 	
+	
+	$rep = opendir($_CONTENT_DIRECTORY.$parent) or die('the directory '.$_CONTENT_DIRECTORY.$parent.' don\'t exist');
 	while($file = @readdir($rep))
     {
 
@@ -119,10 +141,35 @@ function formDir( $parent = '', $directory = '/' )
 	
 	
 	
-	echo '</ul>';
+	echo '</ul></div>';
 
     
 }
+
+?>
+
+
+<script language="javascript">
+	
+	function seeHide(target)
+	{
+		var ul = target.parentNode.children[1];
+		//alert(target.childNodes[1]);
+		
+		if( ul.style.display == "none" )
+		{
+			ul.style.display="block";
+		}
+		else
+		{
+			ul.style.display="none";
+		}
+		
+	}
+	
+</script>
+
+<?php
 
 echo '<ul>';
 formDir();
