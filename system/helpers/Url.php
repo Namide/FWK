@@ -12,14 +12,16 @@ class Url
 	 */
     public function getUrl() { return $this->url; }
     
-    private static $_arg = 'page';
+    private static $_arg = 'u';
 	/**
+	 * Label of the variable of the GET who content the URL.
+	 * If you change it, change to the Url::BASE_PAGE_URL() and the root .htaccess
 	 * 
 	 * @return string
 	 */
 	public static function getPageGetArg() { return self::$_arg; }
 	
-	public static $BASE_PAGE_URL = 'index.php?page=';
+	public static $BASE_PAGE_URL = 'index.php?u=';
 	
     final private function __construct()
     {
