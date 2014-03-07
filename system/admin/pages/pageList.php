@@ -68,7 +68,7 @@
 			<td><input type=text name="pageId" /></td>
 			<td>basic/homepage</td>
 		</tr>
-		
+				
 		<tr>
 			<td><strong>URL</strong></td>
 			<td><input type=text name="url" /></td>
@@ -92,6 +92,7 @@
 			<td>en</td>
 		</tr>
 		
+		<!--
 		<tr>
 			<td><strong>Template</strong></td>
 			<td><input type=text name="template" value="default" /></td>
@@ -115,7 +116,8 @@
 			<td><input type=text name="title" /></td>
 			<td>Homepage of FWK</td>
 		</tr>
-
+		-->
+		
 		<tr>
 			<td></td>
 			<td><input type="hidden" name="type" value="add" /></td>

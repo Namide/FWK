@@ -127,12 +127,10 @@ function formDir( $parent = '', $directory = '/' )
 
         if ( $file === "." || $file === ".." || substr( $file, 0, 1 ) === '.' ) continue;
 
-
         if( is_dir($_CONTENT_DIRECTORY.$parent.$file) )
         {
 			formDir( $parent.$file.'/' , $file );
         }
-        
 
     }
 	closedir($rep);
@@ -253,10 +251,10 @@ echo '</ul>';
 		
 		if ( empty( $_POST['url'] ) )		{ echoError( 'no variable url' ); }
 		if ( empty( $_POST['language'] ) )	{ echoError( 'no variable language' ); }
-		if ( !isset( $_POST['template'] ) )	{ echoError( 'no variable template' ); }
+		/*if ( !isset( $_POST['template'] ) )	{ echoError( 'no variable template' ); }
 		if ( empty( $_POST['visible'] ) )	{ echoError( 'no variable visible' ); }
 		if ( empty( $_POST['cachable'] ) )	{ echoError( 'no variable cachable' ); }
-		if ( !isset( $_POST['title'] ) )		{ echoError( 'no variable title' ); }
+		if ( !isset( $_POST['title'] ) )		{ echoError( 'no variable title' ); }*/
 
 		if ( PageList::getInstance()->hasPage( $_POST['pageId'], $_POST['language'] ) )	{ echoError( 'this directory already exist' ); }
 		if ( PageList::getInstance()->hasUrl( $_POST['url'] ) )	{ echoError( 'this URL already exist' ); }
@@ -283,7 +281,7 @@ echo '</ul>';
 			if( !file_exists($fileInitName) )
 			{
 				$fileInit = fopen( $fileInitName , "w" );
-				$fileInitContent = '<?php
+				/*$fileInitContent = '<?php
 
 $url = \''.$_POST['url'].'\';      
 $title = \''.$_POST['title'].'\';
@@ -296,7 +294,39 @@ $cachable = '. ( ( (bool) $_POST['cachable'] ) ? 'TRUE' : 'FALSE' ) .';
 
 //$categories = [];
 //$phpHeader;
-//$preface;';
+//$preface;';*/
+				$fileInitContent = '<?php
+
+// URL like "en/homepage"
+$url = \'url\';
+
+// title of the page like "homepage"
+$title = \'Title\';
+
+// Name of the template like "default"
+$template = \'default\';
+
+
+$header = \' <title>\'.$title.\'</title>
+	<meta name="robots" content="all" />\';
+
+// Is the page visible ? (in the sitemap...)
+$visible = TRUE;
+
+// Is the page cachable ? (dynamics page are\'nt cachable)
+$cachable = TRUE;
+
+// Add tags to the page
+//$categories = array( \'home\', \'info\' );
+
+// Header of the page (for other type than HTML, like XML)
+//$phpHeader = \'Content-Type: application/xml; charset=utf-8\';
+
+// Convenient to store a resume for the other pages (deprecied)
+//$preface;
+
+// Additionnal contents accessible from other pages
+//$contents = array( \'resume\'=>\'The homepage is a [...]\' );';
 				fwrite($fileInit, $fileInitContent);
 				fclose($fileInit);
 			
@@ -305,6 +335,8 @@ $cachable = '. ( ( (bool) $_POST['cachable'] ) ? 'TRUE' : 'FALSE' ) .';
 			{
 				echoError( $fileInitName.' exist!' ); 
 			}
+			$_POST['type'] = 'edit';
+			$_POST['file'] = $_POST['pageId'].'/'.$_POST['language'].'-init.php';
 		}
 		catch (Exception $e)
 		{
@@ -329,23 +361,25 @@ $cachable = '. ( ( (bool) $_POST['cachable'] ) ? 'TRUE' : 'FALSE' ) .';
 */
 
 $body = <<<EOF
+
 <p>Empty page</p>
+
 EOF;
 ';
 				fwrite($fileBuild, $fileBuildContent);
-				fclose($fileBuild); 
+				fclose($fileBuild);
 			}
 			else
 			{
-				echoError( $fileBuildName.' exist!' ); 
+				echoError( $fileBuildName.' already exist!' ); 
 			}
 		}
 		catch (Exception $e)
 		{
 			echo echoError( $e->getMessage() );
 		}
-		
 	}
+		
 	
 	function echoError( $text = '' )
 	{
