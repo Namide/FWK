@@ -133,8 +133,6 @@
 
 
 
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-<?php include $_SYSTEM_DIRECTORY.'admin/pages/includes/linkChecker.php'; ?>
 
 <?php
 

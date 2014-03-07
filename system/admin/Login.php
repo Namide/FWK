@@ -77,7 +77,7 @@ class Login
 			$inputUserPass = sha1( htmlentities( $_POST['userPass'] ) );
 			$inputIp = htmlentities( $_SERVER["REMOTE_ADDR"] );
 			
-			$inputId = array_search( [$inputUserName, $inputUserPass], $_ADMIN_USERS );
+			$inputId = array_search( array($inputUserName, $inputUserPass), $_ADMIN_USERS );
 			if ( !($inputId === FALSE) )
 			{
 				if (	$inputUserName === $_ADMIN_USERS[$inputId][0] &&
