@@ -89,8 +89,8 @@ class PageList
 				
                 $page = $this->initPage( $folderName, $lang, $filename );
                 
-				$file2 = $_ROOT_DIRECTORY.$_CONTENT_DIRECTORY.$folderName.'/'.$lang.'-build.php';
-				if( file_exists ( $file2 ) ) { $page->setFile2($file2); }
+				$buildFile = $_ROOT_DIRECTORY.$_CONTENT_DIRECTORY.$folderName.'/'.$lang.'-build.php';
+				if( file_exists ( $buildFile ) ) { $page->setBuildFile($buildFile); }
 				
                 $pageUrl = $page->getUrl();
                 $this->_pagesByUrl[$pageUrl] = $page;
@@ -114,23 +114,24 @@ class PageList
 	 */
 	public function updatePage( &$page )
 	{
-		if( $page->getFile2() == '' ) return $page;
+		if( $page->getBuildFile() == '' ) return $page;
 		
-		$file2 = $page->getFile2();
-		$page->setFile2('');
-		include $file2;
+		$buildFile = $page->getBuildFile();
+		$page->setBuildFile('');
+		include $buildFile;
 		
 		if ( isset($url) )			$page->setUrl ($url);
 		if ( isset($template) )		$page->setTemplate ($template);
 		if ( isset($visible) )		$page->setVisible($visible);
 		if ( isset($title) )		$page->setTitle($title);
+		if ( isset($description) )	$page->setDescription($description);
 		if ( isset($categories) )	$page->addCategories($categories);
 		if ( isset($cachable) )		$page->setCachable($cachable);
 		if ( isset($phpHeader) )	$page->setPhpHeader($phpHeader);
-
+		
 		if ( isset($body) )			$page->setBody ( PageUtils::mustache($body, $page) );
 		if ( isset($header) )		$page->setHeader ( PageUtils::mustache($header, $page) );
-		if ( isset($preface) )		$page->setPreface ( PageUtils::mustache($preface, $page) );
+		//if ( isset($preface) )		$page->setPreface ( PageUtils::mustache($preface, $page) );
 		if ( isset($contents) )
 		{
 			foreach( $contents as $label => $value )
@@ -153,13 +154,14 @@ class PageList
         if ( isset($template) )		$page->setTemplate ($template);
         if ( isset($visible) )		$page->setVisible($visible);
 		if ( isset($title) )		$page->setTitle($title);
-        if ( isset($categories) )	$page->addCategories($categories);
+        if ( isset($description) )	$page->setDescription($description);
+		if ( isset($categories) )	$page->addCategories($categories);
         if ( isset($cachable) )		$page->setCachable($cachable);
         if ( isset($phpHeader) )	$page->setPhpHeader($phpHeader);
 
         if ( isset($body) )			$page->setBody ( PageUtils::mustache($body, $page) );
         if ( isset($header) )		$page->setHeader ( PageUtils::mustache($header, $page) );
-		if ( isset($preface) )		$page->setPreface ( PageUtils::mustache($preface, $page) );
+		//if ( isset($preface) )		$page->setPreface ( PageUtils::mustache($preface, $page) );
         if ( isset($contents) )
 		{
 			foreach( $contents as $label => $value )

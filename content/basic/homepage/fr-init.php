@@ -2,7 +2,6 @@
 
 $url = 'fr';       
 $title = 'Accueil';
+$description = 'Un framework qui déchire!';
 $template = 'default';
-$header = ' <title>FWK</title>
-    <meta name="description" content="Accueil - FWK" />
-    <meta name="robots" content="all" />';
+$header = ' <meta name="robots" content="all" />';

@@ -298,17 +298,19 @@ $cachable = '. ( ( (bool) $_POST['cachable'] ) ? 'TRUE' : 'FALSE' ) .';
 				$fileInitContent = '<?php
 
 // URL like "en/homepage"
-$url = \'url\';
+$url = \''.$_POST['url'].'\';
 
 // title of the page like "homepage"
 $title = \'Title\';
 
+// description of the page like "FWK is a realy fun framework!"
+$description = \'Description\';
+
 // Name of the template like "default"
 $template = \'default\';
 
-
-$header = \' <title>\'.$title.\'</title>
-	<meta name="robots" content="all" />\';
+// Additional tags in the head (like CSS, JS, meta...)
+$header = \' <meta name="robots" content="all" />\';
 
 // Is the page visible ? (in the sitemap...)
 $visible = TRUE;
@@ -319,11 +321,8 @@ $cachable = TRUE;
 // Add tags to the page
 //$categories = array( \'home\', \'info\' );
 
-// Header of the page (for other type than HTML, like XML)
+// Arguments to the php function header() of the page (for other type than HTML, like XML)
 //$phpHeader = \'Content-Type: application/xml; charset=utf-8\';
-
-// Convenient to store a resume for the other pages (deprecied)
-//$preface;
 
 // Additionnal contents accessible from other pages
 //$contents = array( \'resume\'=>\'The homepage is a [...]\' );';

@@ -120,17 +120,29 @@ class Page
 	 */
     public function getTitle() { return $this->_title; }
 
-    private $_preface;
+	private $_description;
 	/**
 	 * 
-	 * @param string $preface
+	 * @param string $_description
 	 */
-    public function setPreface( $preface ) { $this->_preface = $preface; }
+    public function setDescription( $description ) { $this->_description = $description; }
 	/**
 	 * 
 	 * @return string
 	 */
-    public function getPreface() { return $this->_preface; }
+    public function getDescription() { return $this->_description; }
+	
+    //private $_preface;
+	/**
+	 * 
+	 * @param string $preface
+	 */
+    //public function setPreface( $preface ) { $this->_preface = $preface; }
+	/**
+	 * 
+	 * @return string
+	 */
+    //public function getPreface() { return $this->_preface; }
 
     private $_template;
 	/**
@@ -144,17 +156,17 @@ class Page
 	 */
     public function getTemplate() { return $this->_template; }
 
-	private $_file2;
+	private $_buildFile;
 	/**
 	 * 
-	 * @param string $file
+	 * @param string $buildFile
 	 */
-    public function setFile2( $file ) { $this->_file2 = $file; }
+    public function setBuildFile( $buildFile ) { $this->_buildFile = $buildFile; }
 	/**
 	 * 
 	 * @return string
 	 */
-    public function getFile2() { return $this->_file2; }
+    public function getBuildFile() { return $this->_buildFile; }
 	
     private $_categories;
 	/**
@@ -281,6 +293,7 @@ class Page
         // DEFAULT
         $this->_linkTitle = $id;
         $this->_title = $id;
+		$this->_description = $id;
         //$this->_template = 'default';
 		$this->_file2 = '';
 		$this->_cachable = TRUE;
