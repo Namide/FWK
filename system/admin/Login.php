@@ -19,7 +19,6 @@ class Login
 			if( !$this->tryConnect() )
 			{
 				$this->disconnect( FALSE );
-				echo 'If you can\'t connect, add your IP: '.$_SERVER['REMOTE_ADDR'].'<br>';
 				echo self::getLoginForm();
 				exit();
 			}
@@ -90,7 +89,17 @@ class Login
 				}
 			}
 			
+			if ( !in_array( $inputIp, $_ADMIN_IP, TRUE ) )
+			{
+				echo '<span style="color:red;">IP unrecognized, the administrator must to add your IP: '.$_SERVER['REMOTE_ADDR'].'</span><br>';
+			}
+			else
+			{
+				echo '<span style="color:red;">Login/password unrecognized.</span><br>';
+			}
 		}
+		
+		
 		
 		return FALSE;
 	}
