@@ -1,5 +1,6 @@
 <?php
 
+global $_CACHE_DIRECTORY;
 global $_CONTENT_DIRECTORY;
 global $_SYSTEM_DIRECTORY;
 global $_ROOT_URL;
@@ -9,11 +10,11 @@ include_once $_SYSTEM_DIRECTORY.'admin/pages/includes/helpers.php';
 
 $zipName = 'html.zip';
 
-cleanDirRecurs( 'html' );
-if( zipper_repertoire_recursif( $zipName, 'html' ) )
+cleanDirRecurs( $_CACHE_DIRECTORY.'standalone-html' );
+if( zipper_repertoire_recursif( $zipName, 'standalone-html', '' ) )
 {
-	delTree( 'html' );
-	header( 'Location: '.$_ROOT_URL.$zipName );
+	delTree( $_CACHE_DIRECTORY.'standalone-html' );
+	header( 'Location: '.$zipName );
 }
 else
 {

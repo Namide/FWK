@@ -7,7 +7,6 @@ if ( $_CACHE )
 	include_once $_SYSTEM_DIRECTORY.'init/Cache.php';
 	$cache = new Cache();
 	
-	
 	if( $cache->isCached() )
 	{
 		$cache->echoCache();

@@ -1,11 +1,17 @@
 <?php
 
-function generateHtml( &$pagesListDebug, $dirParent = 'html' )
+function generateHtml( &$pagesListDebug, $dirParent = '' )
 {
+	global $_CACHE_DIRECTORY;
 	global $_SYSTEM_DIRECTORY;
 	global $_ROOT_URL;
 	global $_CONTENT_DIRECTORY;
 	global $_TEMPLATE_DIRECTORY;
+	
+	if ( $dirParent == '' )
+	{
+		$dirParent = $_CACHE_DIRECTORY.'standalone-html';
+	}
 	
 	foreach( $pagesListDebug as $pageDebugPage )
 	{
@@ -30,8 +36,8 @@ function generateHtml( &$pagesListDebug, $dirParent = 'html' )
 
 
 
-		$cache = new Cache();
-		if( $cache->isCachable() && $pageDebugPage->getType() != Page::$TYPE_ERROR_404 )
+		$cache = new Cache($dirParent);
+		if( /*$cache->isCachable() &&*/ $pageDebugPage->getType() != Page::$TYPE_ERROR_404 )
 		{
 			Url::getInstance()->reset();
 			$templateUtils = TemplateUtils::getInstance();
@@ -56,7 +62,7 @@ function generateHtml( &$pagesListDebug, $dirParent = 'html' )
 			$cacheContent = $cache->getSavedCache();
 			$cacheContent = str_replace( $_ROOT_URL.Url::$BASE_PAGE_URL, $newRootRelativeUrl, $cacheContent );
 			$cacheContent = str_replace( $_ROOT_URL, $newRootRelativeUrl, $cacheContent );
-			$cache->writesCache( $cacheContent, $dirParent );
+			$cache->writesCache( $cacheContent, '' );
 		}
 	}
 
@@ -69,7 +75,7 @@ function generateHtml( &$pagesListDebug, $dirParent = 'html' )
 		$indexPage .= '"></head><body></body></html>';
 		$indexPage = str_replace( $_ROOT_URL.Url::$BASE_PAGE_URL, $newRootRelativeUrl, $indexPage );
 		$indexPage = str_replace( $_ROOT_URL, $newRootRelativeUrl, $indexPage );
-		$cache->writesCacheFile( $indexPage, $dirParent, $dirParent.'/index.html' );
+		$cache->writesCacheFile( $indexPage, $dirParent.'/index.html' );
 	}
 	
 	

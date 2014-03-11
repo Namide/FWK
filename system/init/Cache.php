@@ -4,22 +4,36 @@
 class Cache
 {
 	
+	private $rootDir;
 	private $pageFile;
 	private $pageContent;
 	
-	function __construct()
+	function __construct( $rootDir = '' )
 	{
+		if ( $rootDir == '' )
+		{
+			global $_CACHE_DIRECTORY;
+			$rootDir = $_CACHE_DIRECTORY.'pages/';
+		}
+		
+		if ( substr( $rootDir, -1, 1 ) != '/' )
+		{
+			$rootDir .= '/';
+		}
+		$this->rootDir = $rootDir;
+		
+		
 		global $_SYSTEM_DIRECTORY;
         include_once $_SYSTEM_DIRECTORY.'helpers/Url.php';
 		
-		global $_CACHE_DIRECTORY;		
-		$this->pageFile = $_CACHE_DIRECTORY.Url::getURICacheID();
+		
+		//global $_CACHE_DIRECTORY;		
+		$this->pageFile = /*$_CACHE_DIRECTORY.*/Url::getURICacheID();
 		$path = explode( "/", $this->pageFile );
 		if ( count( explode( ".", array_pop($path) ) ) < 2 )
 		{
 			$this->pageFile .= '/index.html';
 		}
-		
     }
 	
 	/**
@@ -28,7 +42,8 @@ class Cache
 	 */
 	public function isCached()
 	{
-		return file_exists( $this->pageFile );
+		//global $_CACHE_DIRECTORY;		
+		return file_exists( $this->rootDir.$this->pageFile );
 	}
 	
 	public function echoCache()
@@ -43,7 +58,8 @@ class Cache
 			default: $ctype="application/force-download";
 		}
 		
-		readfile( $this->pageFile );
+		//global $_CACHE_DIRECTORY;		
+		readfile( $this->rootDir.$this->pageFile );
 	}
 	
 	/**
@@ -55,8 +71,8 @@ class Cache
 	public function isCachable()
 	{
 		global $_MAX_PAGE_CACHE;
-		global $_CACHE_DIRECTORY;
-        return self::getNumPages( $_CACHE_DIRECTORY ) < $_MAX_PAGE_CACHE;
+		//global $_CACHE_DIRECTORY;
+        return self::getNumPages( $this->rootDir ) < $_MAX_PAGE_CACHE;
 	}
 	
 	public function startSaveCache()
@@ -105,10 +121,11 @@ allow from all
 	 * 
 	 * @global string $_SYSTEM_DIRECTORY
 	 * @param string $newContent
-	 * @param string $dir
+	 * @param string $file
 	 */
-	public function writesCache( &$newContent = '', $dir = '' )
+	public function writesCache( &$newContent = '', $file = '' )
 	{
+		
 		if ( $newContent == '' )
 		{
 			$pageContent = $this->pageContent;
@@ -118,35 +135,34 @@ allow from all
 			$pageContent = $newContent;
 		}
 		
+		if ( $file == '' )
+		{
+			//global $_CACHE_DIRECTORY;
+			$file = $this->rootDir.$this->pageFile;//$_CACHE_DIRECTORY;
+		}
+		
 		global $_SYSTEM_DIRECTORY;
 		include_once $_SYSTEM_DIRECTORY.'helpers/TemplateUtils.php';
 		$page = TemplateUtils::getInstance()->getCurrentPage();
 		if ( $page->getCachable() )
 		{
-			$this->writesCacheFile( $pageContent, $dir );
+			$this->writesCacheFile( $pageContent, $file );
 		}
 	}
 	
 	/**
 	 * 
 	 * @param string $pageContent
-	 * @param string $baseDir
 	 * @param string $fileName
 	 */
-	public function writesCacheFile( &$pageContent, $baseDir = '', $fileName = '' )
+	public function writesCacheFile( &$pageContent, $fileName = '' )
 	{
-		if( $fileName == '' ) { $fileName = $this->pageFile; }
+		if( $fileName == '' )
+		{
+			$fileName = $this->rootDir.$this->pageFile;
+		}
 		
 		$path = explode( '/', $fileName );
-		if ( $baseDir != '' )
-		{
-			$path[0] = $baseDir;
-			$file = implode( '/', $path );
-		}
-		else
-		{
-			$file = $fileName;
-		}
 		
 		$dir = '';
 		while ( count($path) > 1 )
@@ -160,7 +176,7 @@ allow from all
 		}
 
 		$file = $path[0];
-		if ( count(explode( ".", $file )) > 1 )
+		if ( count( explode( ".", $file ) ) > 1 )
 		{
 			$file = $dir.$file;
 		}

@@ -19,6 +19,7 @@ class Login
 			if( !$this->tryConnect() )
 			{
 				$this->disconnect( FALSE );
+				echo 'If you can\'t connect, add your IP: '.$_SERVER['REMOTE_ADDR'].'<br>';
 				echo self::getLoginForm();
 				exit();
 			}

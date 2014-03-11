@@ -21,8 +21,8 @@
 		Retourne :
 			True si ça a marché, false le cas échéant
 */
-function zipper_repertoire_recursif($nom_archive, $adr_dossier, $dossier_destination = '', $zip=null, $dossier_base = '') {
-	if($zip===null) {
+function zipper_repertoire_recursif($nom_archive, $adr_dossier, $dossier_destination = '', $zip=NULL, $dossier_base = '') {
+	if($zip===NULL) {
 		// Si l'archive n'existe toujours pas (1er passage dans la fonction, on la crée)
 		$zip = new ZipArchive();
 		if($zip->open($nom_archive, ZipArchive::CREATE) !== TRUE) {
