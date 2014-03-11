@@ -11,7 +11,7 @@ include_once $_SYSTEM_DIRECTORY.'admin/pages/includes/helpers.php';
 $zipName = 'html.zip';
 
 cleanDirRecurs( $_CACHE_DIRECTORY.'standalone-html' );
-if( zipper_repertoire_recursif( $zipName, 'standalone-html', '' ) )
+if( zipper_repertoire_recursif( $zipName, $_CACHE_DIRECTORY.'standalone-html', '' ) )
 {
 	delTree( $_CACHE_DIRECTORY.'standalone-html' );
 	header( 'Location: '.$zipName );
