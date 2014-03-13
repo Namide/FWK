@@ -5,7 +5,7 @@ if ( $_DEBUG ) { error_reporting(E_ALL); }
 if ( $_CACHE )
 {
 	include_once $_SYSTEM_DIRECTORY.'init/Cache.php';
-	$cache = new Cache();
+	$cache = new Cache( $_CACHE_DIRECTORY.'pages/' );
 	
 	if( $cache->isCached() )
 	{

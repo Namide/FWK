@@ -13,7 +13,7 @@ class Cache
 		if ( $rootDir == '' )
 		{
 			global $_CACHE_DIRECTORY;
-			$rootDir = $_CACHE_DIRECTORY.'pages/';
+			$rootDir = $_CACHE_DIRECTORY;
 		}
 		
 		if ( substr( $rootDir, -1, 1 ) != '/' )
