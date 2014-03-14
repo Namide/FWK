@@ -4,7 +4,8 @@ class PageList
 {
     
     private static $_instances = array();
-        
+	
+	
     protected $_pagesByUrl;
 	/**
 	 * 
@@ -15,6 +16,18 @@ class PageList
 		return $this->_pagesByUrl;
 	}
 
+	
+	protected $_requestsByUrl;
+	/**
+	 * 
+	 * @return array
+	 */
+	public function getRequestsByUrl()
+	{
+		return $this->_requestsByUrl;
+	}
+	
+	
 	protected $_defaultPageId;
     protected $_error404PageId;
 	
@@ -29,9 +42,10 @@ class PageList
 	
 	public function reset()
 	{
-		$this->pages = array();
+		//$this->pages = array();
 		$this->_initialised = FALSE;
 		$this->_pagesByUrl = array();
+		$this->_requestsByUrl = array();
 	}
 
 	/**
@@ -92,15 +106,39 @@ class PageList
 				$buildFile = $_ROOT_DIRECTORY.$_CONTENT_DIRECTORY.$folderName.'/'.$lang.'-build.php';
 				if( file_exists ( $buildFile ) ) { $page->setBuildFile($buildFile); }
 				
-                $pageUrl = $page->getUrl();
-                $this->_pagesByUrl[$pageUrl] = $page;
-                //array_push( $pages, $page );
+				
+				// ADD THE PAGE'S URL
+				
+					$pageUrl = $page->getUrl();
+					if ( $this->hasUrl( $pageUrl ) || $this->hasUrlRequest( $pageUrl ) )
+					{
+						trigger_error( 'The URL '.$pageUrl.' of the page [id:'.$this->id.', lang:'.$this->language.'] already exist', E_USER_ERROR );
+					}
+					$this->_pagesByUrl[$pageUrl] = $page;
+				
+					
+				// ADD THE REQUESTS'S URL
+					
+					$requests = $page->getRequests();
+					foreach ( $requests as $requestUrl => $requestContent )
+					{
+						if ( $this->hasUrl( $requestUrl ) || $this->hasUrlRequest( $requestUrl ) )
+						{
+							trigger_error( 'The URL '.$pageUrl.' of the request [id:'.$this->id.', lang:'.$this->language.'] already exist', E_USER_ERROR );
+						}
+						$this->_requestsByUrl[$requestUrl] = $page;
+					}
+				
+				// ------
+				
+				
+				//array_push( $pages, $page );
             }
-            
         }
         
 		//return $pages;
     }
+	
 	
 	public function go()
 	{
@@ -140,6 +178,21 @@ class PageList
 			}
 		}
 		
+		if ( isset($requestsInit) )
+		{
+			foreach( $requestsInit as $url )
+			{
+				$page->initRequest( $url );
+			}
+		}
+		if ( isset($requestsBuild) )
+		{
+			foreach( $requestsBuild as $url => $content )
+			{
+				$page->buildRequest( $url, PageUtils::mustache( $content, $page ) );
+			}
+		}
+		
 		return $page;
 	}
 
@@ -170,6 +223,21 @@ class PageList
 			}
 		}
         
+		if ( isset($requestsInit) )
+		{
+			foreach( $requestsInit as $url )
+			{
+				$page->initRequest( $url );
+			}
+		}
+		if ( isset($requestsBuild) )
+		{
+			foreach( $requestsBuild as $url => $content )
+			{
+				$page->buildRequest( $url, PageUtils::mustache( $content, $page ) );
+			}
+		}
+		
 		$pageUrl = $page->getUrl();
         if (isset($this->_pagesByUrl[$pageUrl]) )
         {
@@ -250,7 +318,16 @@ class PageList
 		}
 		
 		// EXIST
-		if( $this->hasUrl( $url ) ) { return $this->_pagesByUrl[$url]; }
+		if( $this->hasUrl( $url ) )
+		{
+			$this->_pagesByUrl[$url]->setCall( Page::$CALL_PAGE );
+			return $this->_pagesByUrl[$url];
+		}
+		if( $this->hasUrlRequest( $url ) )
+		{
+			$this->_requestsByUrl[$url]->setCall( Page::$CALL_REQUEST );
+			return $this->_requestsByUrl[$url];
+		}
 		
 		// EXIST WITHOUT "/" AT THE END
 		foreach ( $this->_pagesByUrl as $page )
@@ -264,6 +341,7 @@ class PageList
         //$pathUrl = explode ('/', $url);
         if( $url === '' || $url === '/' )
         {
+			$this->getDefaultPage()->setCall( Page::$CALL_PAGE );
 			return $this->getDefaultPage();
         }
         
@@ -279,6 +357,7 @@ class PageList
 				if ( $idTemp === $this->error404PageId && $langTemp === $lang )
 				{
 					header('HTTP/1.0 404 Not Found');
+					$page->setCall( Page::$CALL_PAGE );
 					return $page;
 				}
 			}
@@ -293,6 +372,7 @@ class PageList
 					<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' );
 			$page->setBody( '<h1>Error 404 - Not found</h1>' );
 			$this->makeError404Page($page);
+			$page->setCall( Page::$CALL_PAGE );
 			return $page;
         //}
     }
@@ -402,7 +482,17 @@ class PageList
 	 */
 	public function hasUrl( $url )
     {
-		return !empty( $this->_pagesByUrl[$url] );
+		return array_key_exists( $url, $this->_pagesByUrl );
+    }
+	
+	/**
+	 * 
+	 * @param string $url
+	 * @return boolean
+	 */
+	public function hasUrlRequest( $url )
+    {
+		return array_key_exists( $url, $this->_requestsByUrl );
     }
 	
 	/**
@@ -416,7 +506,7 @@ class PageList
 		
 		if ( isset( $this->_pagesByUrl[$url] ) )
         {
-            $page = $this->pagesByUrl[$url];
+            $page = $this->_pagesByUrl[$url];
             return $page->getLanguage();
         }
         

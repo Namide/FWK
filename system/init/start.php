@@ -29,7 +29,10 @@ if ( $_CACHE )
 		echo $cache->getSavedCache();
 	
 		
-		if ( $_DEBUG ) echo '<!-- execute PHP and write cache time: ', number_format( microtime(true) - $timestart , 3), 's -->';
+		if ( $_DEBUG && $page->getCall() == Page::$CALL_PAGE )
+		{
+			echo '<!-- execute PHP and write cache time: ', number_format( microtime(true) - $timestart , 3), 's -->';
+		}
 		
 		exit();
 	}
@@ -40,7 +43,7 @@ include_once $_SYSTEM_DIRECTORY.'init/loadPages.php';
 include_once $_SYSTEM_DIRECTORY.'init/buildPage.php';
 echoPage( $page );
 
-if ( $_DEBUG )
+if ( $_DEBUG && $page->getCall() == Page::$CALL_PAGE )
 {
 	echo '<!-- execute PHP time: ', number_format( microtime(true) - $timestart , 3),'s -->';
 }
@@ -52,22 +55,34 @@ if ( $_DEBUG )
  */
 function echoPage( &$page )
 {
-	global $_TEMPLATE_DIRECTORY;
 	
-	if ( $page->getPhpHeader() != '' )
+	if ( $page->getCall() == Page::$CALL_PAGE )
 	{
-		header( $page->getPhpHeader() );
+		global $_TEMPLATE_DIRECTORY;
+	
+		if ( $page->getPhpHeader() != '' )
+		{
+			header( $page->getPhpHeader() );
+		}
+
+		if ( $page->getTemplate() != '' )
+		{
+			include $_TEMPLATE_DIRECTORY.$page->getTemplate().'.php';
+		}
+		else
+		{
+			echo '<!doctype html>';
+			echo '<html><head>' , $page->getHeader();
+			echo '</head><body>' , $page->getBody();
+			echo '</body></html>';
+		}
+	}
+	elseif ( $page->getCall() == Page::$CALL_REQUEST )
+	{
+		
+		$url = Url::getInstance()->getUrl();
+		$content = $page->getRequest( $url );
+		echo $content;
 	}
 	
-	if ( $page->getTemplate() != '' )
-	{
-		include $_TEMPLATE_DIRECTORY.$page->getTemplate().'.php';
-	}
-	else
-	{
-		echo '<!doctype html>';
-		echo '<html><head>' , $page->getHeader();
-		echo '</head><body>' , $page->getBody();
-		echo '</body></html>';
-	}
 }

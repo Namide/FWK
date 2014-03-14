@@ -3,7 +3,10 @@
 class Page
 {
     
-	public static $TYPE_ERROR_404 = 'error404';
+	public static $TYPE_ERROR_404 = 'type-error404';
+	
+	public static $CALL_PAGE = 'call-page';
+	public static $CALL_REQUEST = 'call-request';
 	
     private $_id;
 	/**
@@ -95,6 +98,18 @@ class Page
 	 * @return string
 	 */
     public function getType() { return $this->_type; }
+	
+	private $_call;
+	/**
+	 * 
+	 * @param string $call
+	 */
+    public function setCall( $call ) { $this->_call = $call; }
+	/**
+	 * 
+	 * @return string
+	 */
+    public function getCall() { return $this->_call; }
 	
     private $_body;
 	/**
@@ -209,6 +224,103 @@ class Page
         return $this->_categories;
     }
 	
+	
+	private $_requests;
+	/**
+	 * 
+	 * @param string $url
+	 */
+	public function initRequest( $url )
+	{
+		if ( $this->RequestIsInitialised( $url ) )
+		{
+			trigger_error( 'This request already exist: '.$url.' ('.$this->_id.', '.$this->_language.')', E_USER_ERROR );
+		}
+		$this->_requests[$url] = '';
+	}
+	
+	/**
+	 * 
+	 * @param string $url
+	 * @param string $content
+	 */
+	public function buildRequest( $url, $content )
+	{
+		if ( !$this->RequestIsInitialised( $url ) )
+		{
+			trigger_error( 'The request '.$url.' ('.$this->_id.', '.$this->_language.') must be initialized in first', E_USER_ERROR );
+		}
+		$this->_requests[$url] = $content;
+	}
+	
+	/**
+	 * 
+	 * @param array $arrayOfUrl
+	 */
+    public function initRequests( $arrayOfUrl )
+    {
+        foreach ( $arrayOfUrl as $url )
+        {
+            $this->initRequest( $url );
+        }
+    }
+	
+	/**
+	 * 
+	 * @param array $arrayOfRequestByUrl
+	 */
+    public function buildRequests( $arrayOfRequestByUrl )
+    {
+		foreach ( $arrayOfRequestByUrl as $url => $content )
+        {
+            $this->buildRequest( $url, $content );
+        }
+    }
+	
+	/**
+	 * 
+	 * @param string $url
+	 * @return boolean
+	 */
+    public function hasRequest( $url )
+    {
+        return array_key_exists( $url, $this->_requests );
+    }
+	
+	/**
+	 * 
+	 * @param string $url
+	 * @return boolean
+	 */
+    public function RequestIsInitialised( $url )
+    {
+		if ( $this->hasRequest( $url ) )
+		{
+			return TRUE;
+		}
+        return FALSE;
+    }
+	
+	/**
+	 * 
+	 * @param string $url
+	 * @return string
+	 */
+	public function getRequest( $url )
+    {
+        return $this->_requests[$url];
+    }
+	
+	/**
+	 * 
+	 * @return string
+	 */
+	public function getRequests()
+    {
+        return $this->_requests;
+    }
+	
+	
 	private $_contents;
     /**
 	 * 
@@ -243,11 +355,7 @@ class Page
 	 */
     public function hasContent( $label )
     {
-        foreach ( $this->_contents as $labelTemp => $contentTemp )
-        {
-            if ( $labelTemp == $label ) { return TRUE; }
-        }
-        return FALSE;
+		return array_key_exists( $label, $this->_contents );
     }
 	
 	/**
@@ -288,6 +396,7 @@ class Page
         $this->_id = $id;
         $this->_categories = array();
 		$this->_contents = array();
+		$this->_requests = array();
         $this->_visible = TRUE;
         
         // DEFAULT

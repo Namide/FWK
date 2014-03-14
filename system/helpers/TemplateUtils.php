@@ -11,7 +11,7 @@ class TemplateUtils
 	 */
     public function getLanguage() { return $this->_language; }
     
-    private $_page;
+	private $_page;
 	/**
 	 * @return Page
 	 */

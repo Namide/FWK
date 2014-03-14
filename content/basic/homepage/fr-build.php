@@ -8,3 +8,5 @@ $body = <<<EOF
 </article>
 		
 EOF;
+
+$requestsBuild = array('request/test01'=>'First AJAX content');

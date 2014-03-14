@@ -41,14 +41,15 @@ Configure page
 ```php
 $url
 $template
-$visible:Bool
-$cachable:Bool
+$visible:boolean
+$cachable:boolean
 $title
-$categories:Array
+$categories:array
 $phpHeader
 
 $header
 $preface
+$requestsInit:array
 ```
 
 ##### content
@@ -56,6 +57,7 @@ $preface
 
 ```php
 $body
+$requestsBuild:array
 ```
 
 
