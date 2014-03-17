@@ -16,7 +16,7 @@ class PageListDebug extends PageList
 		global $_SYSTEM_DIRECTORY;
 		
 		$pageList = PageList::getInstance();
-		$pages = $pageList->pagesByUrl;
+		$pages = $pageList->pagesByUrl();
 		
 		
 		$results = '<h1>Debug page</h1>';
@@ -134,19 +134,6 @@ class PageListDebug extends PageList
 		
 		$results .= '<script>
 			
-				// This sneaky bit tries to disable the Same Origin Policy
-				/*if (navigator.userAgent.indexOf("Firefox") != -1)
-				{
-					try
-					{
-						netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
-					} 
-					catch (e)
-					{
-						alert("Permission UniversalBrowserRead denied -- not running Mozilla?");
-					}
-				}*/
-
 				var errorsNum = 0;
 				
 				var processor = new LinkChecker.LinkProcessor( document.querySelectorAll("a.checkURL") );
