@@ -5,7 +5,6 @@ class Login
 	
 	function __construct()
 	{		
-		//session_start();
 		session_start();
 		
 		
@@ -63,8 +62,6 @@ class Login
 	
 	private function tryConnect()
 	{
-		//session_start();
-		//session_destroy();
 		global $_ADMIN_USERS;
 		global $_ADMIN_IP;
 		
@@ -149,7 +146,6 @@ class Login
 			
 			unset($_SESSION['userId']);
 			unset($_SESSION['userName']);
-			
 		}
 		
 		if ( $destroy ) session_destroy();
