@@ -1,6 +1,7 @@
 <?php
 
 global $_SYSTEM_DIRECTORY;
+global $_ROOT_URL;
 
 if( !empty($_GET["p"]) )
 {
@@ -26,56 +27,28 @@ if( !empty($_GET["p"]) )
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Admin</title>
+<title>Admin - <?php echo $_ROOT_URL; ?></title>
 
-<style type="text/css">
-	
-	body
-	{
-		font-family: Arial, sans-serif;
-		font-size: 12px;
-		color: #444;
-	}
-	body>header
-	{
-		position:absolute;
-		width:224px;
-		padding:16px;
-	}
-	body>section
-	{
-		margin-left:256px;
-		padding:16px;
-	}
-	
-	p { text-align: left; }
-	
-	h1 { font-size: 30px; color:#000; margin: 0; }
-	h2 { font-size: 20px; color:#000; margin: 30px 0 0 0; }
-	h3 { font-size: 18px; color:#000; margin: 18px 0 0 0; }
-	h4 { font-size: 16px; color:#000; margin: 15px 0 0 0; }
-	h5 { font-size: 14px; color:#000; margin: 12px 0 0 0; }
-	h6 { font-size: 12px; color:#000; margin: 10px 0 0 0; }
-	
-	table tr:nth-child(odd) { background-color:#EEE; 	}
-	table td { padding:8px; }
-	table th { padding:16px 8px; }
-	table { border-spacing: 0; float:left; margin: 0 32px 32px 0; }
-	
-</style>
+<style type="text/css"><?php include $_SYSTEM_DIRECTORY.'admin/template/includes/admin.css'; ?></style>
 
 </head>
 
 <body>
 
 	<header>
-		<h1>Admin</h1>
+		<h1>Admin</h1><p><?php echo $_ROOT_URL; ?></p>
 		<nav>
 			<ul>
 				<li><a href="admin.php?p=page-debug">Debug</a></li>
 				<li><a href="admin.php?p=page-list">Pages list</a></li>
 				<li><a href="admin.php?p=page-edit">Edition</a></li>
-				<li><a href="admin.php?p=page-save">Export content</a></li>
+				<li>
+					<form action="admin.php?p=page-save" method="get">
+						<input type="hidden" name="p" value="page-save">
+						<input type="submit" value="Export content">
+					</form>
+				</li>
+				<!--<li><a href="admin.php?p=page-save">Export content</a></li>-->
 				<li><?php echo Login::getLogoutForm(); ?></li>
 			</ul>
 		</nav>
