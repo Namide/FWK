@@ -1,5 +1,7 @@
 <?php
 
+	include_once $_SYSTEM_DIRECTORY.'admin/pages/includes/helpers.php';
+
 	$ACTUAL_PAGE_URL = 'admin.php?p=page-list';
 	$PAGE_EDIT_URL = 'admin.php?p=page-edit';
 
@@ -65,13 +67,24 @@
 		
 		<tr>
 			<td><strong>Directory</strong></td>
-			<td><input type=text name="pageId" /></td>
+			<td>
+				<input list="directories" type=text name="pageId" required />
+				<datalist id="directories">
+					<?php
+						$listDir = getListDir( $_CONTENT_DIRECTORY );
+						foreach ($listDir as $value)
+						{
+							echo '<option value="'.substr( $value, strlen( $_CONTENT_DIRECTORY.'/' ) ).'">';
+						}
+					?>
+				</datalist>
+			</td>
 			<td>basic/homepage</td>
 		</tr>
 				
 		<tr>
 			<td><strong>URL</strong></td>
-			<td><input type=text name="url" /></td>
+			<td><input type=text name="url" required /></td>
 			<td>en/homepage</td>
 		</tr>
 		
@@ -131,36 +144,3 @@
 
 
 
-
-
-
-
-
-<?php
-
-function dirSize($directory)
-{
-	$size = 0;
-	foreach(new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory)) as $file)
-	{
-		$size += $file->getSize();
-	}
-	return $size;
-} 
-
-function getFormatedSize( $path , $color = TRUE )
-{
-	$size = dirSize($path);
-	$round = 2;
-
-	$sizes = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
-	for ($i=0; $size > 1024 && $i < count($sizes) - 1; $i++) $size /= 1024;
-
-	$sizeChar = round($size,$round).' '.$sizes[$i];
-
-	if ( !$color ) return $sizeChar;
-
-	if ( $i < 2 && $size < 150 ) 		return '<span style="color:green">'.$sizeChar.'</span>';
-	else if ( $i > 1 || ($i == 1 && $size > 700) ) return '<strong style="color:red">'.$sizeChar.'</strong>';
-	return $sizeChar;
-}

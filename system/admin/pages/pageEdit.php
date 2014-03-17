@@ -58,13 +58,8 @@
 
 function formDir( $parent = '', $directory = '/' )
 {
-	
-	
-	//$parent .= '/';
 	global $_CONTENT_DIRECTORY;
 	global $ACTUAL_PAGE_URL;
-	
-   
 	
 	
 	$childNum = 0;
@@ -89,37 +84,42 @@ function formDir( $parent = '', $directory = '/' )
 	closedir($rep);
 	
 	
-	echo '<div><strong style="margin:12px 0 4px -2px; display:block;" '.( ($childNum>0)?'onclick="javascript:seeHide(this);"':'').'>'.( ($childNum>0)?'+ ':'').''.$directory.'</strong>';
-    echo '<ul style="border-left:1px solid #CCC; display:'.( ($directory == '/' ) ? 'block' : 'none' ).';" >';
 	
+	if ( numPhpFile( $_CONTENT_DIRECTORY.$parent ) > 0 )
+	{
+		echo '<div><strong style="margin:12px 0 4px -2px; display:inline-block;" >'.( ($childNum>0)?'':'').''.$directory.'</strong> ';
 	
-	$rep = opendir($_CONTENT_DIRECTORY.$parent) or die('the directory '.$_CONTENT_DIRECTORY.$parent.' don\'t exist');
-	while($file = @readdir($rep))
-    {
+		$rep = opendir($_CONTENT_DIRECTORY.$parent) or die('the directory '.$_CONTENT_DIRECTORY.$parent.' don\'t exist');
+		while($file = @readdir($rep))
+		{
 
-        if ( $file === "." || $file === ".." || substr( $file, 0, 1 ) === '.' ) continue;
+			if ( $file === "." || $file === ".." || substr( $file, 0, 1 ) === '.' ) continue;
 
 
-        if( !is_dir($_CONTENT_DIRECTORY.$parent.$file) )
-        {
-			
-			$file_extension = strtolower(substr(strrchr( str_replace ( '.cache', '', $file ) ,"."),1));
-			if( $file_extension == 'php' )
+			if( !is_dir($_CONTENT_DIRECTORY.$parent.$file) )
 			{
-				echo '<li>',$file;
-				echo '<form action="',$ACTUAL_PAGE_URL,'#edit-page" method="POST" style="display:inline;">
-				<input type="hidden" name="type" value="edit" />
-				<input type="hidden" name="file" value="',$parent.$file,'" />
-				<input type="submit" value="Edit" style="color:red;" /> 
-			</form>';
-				echo '</li>';
+
+				$file_extension = strtolower(substr(strrchr( str_replace ( '.cache', '', $file ) ,"."),1));
+				if( $file_extension == 'php' )
+				{
+					echo '<form action="',$ACTUAL_PAGE_URL,'#edit-page" method="POST" style="display:inline-block;">
+						<input type="hidden" name="type" value="edit" />
+						<input type="hidden" name="file" value="',$parent.$file,'" />
+						<input type="submit" value="'.$file.'" style="color:red;" /> 
+					</form>';
+				}
 			}
-        }
 
 
 
-    }
-	closedir($rep);
+		}
+		closedir($rep);
+
+		echo '<ul style="border-left:1px solid #CCC; display:'.( ($directory == '/' ) ? 'block' : 'block' ).';" >';
+	
+	}
+	
+	
 	
 	$rep = opendir($_CONTENT_DIRECTORY.$parent) or die('rectory '.$_CONTENT_DIRECTORY.$parent.' don\'t exist');
 	while($file = @readdir($rep))
@@ -144,12 +144,40 @@ function formDir( $parent = '', $directory = '/' )
     
 }
 
+
+function numPhpFile( $dir )
+{
+	if ( !file_exists($dir) ) { return 0; }
+	if ( is_file($dir) )
+	{
+		$file_extension = strtolower( substr( strrchr( $dir ,"." ), 1 ) );
+		if( in_array( $file_extension, array('php', 'php5') ) )
+		{
+		   return 1;
+		}
+		return 0;
+		
+	}
+	
+	$num = 0;
+	
+	
+	$files = array_diff( scandir( $dir ), array( '.', '..', '.DS_Store', 'Thumbs.db' ) );
+	foreach ( $files as $file )
+	{
+		$num += numPhpFile( "$dir/$file" );
+	}
+	
+	return $num;
+}
+
+
 ?>
 
 
 <script language="javascript">
 	
-	function seeHide(target)
+	/*function seeHide(target)
 	{
 		var ul = target.parentNode.children[1];
 		//alert(target.childNodes[1]);
@@ -163,7 +191,7 @@ function formDir( $parent = '', $directory = '/' )
 			ul.style.display="none";
 		}
 		
-	}
+	}*/
 	
 </script>
 
