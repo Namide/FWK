@@ -84,10 +84,10 @@ function formDir( $parent = '', $directory = '/' )
 	closedir($rep);
 	
 	
-	
+	$lastName = 'new';
 	if ( numPhpFile( $_CONTENT_DIRECTORY.$parent ) > 0 )
 	{
-		echo '<div><strong style="margin:12px 0 4px -2px; display:inline-block;" >'.( ($childNum>0)?'':'').''.$directory.'</strong> ';
+		echo '<div><strong style="margin:12px 0 4px -2px; display:block;" >'.( ($childNum>0)?'':'').''.$directory.'</strong> ';
 	
 		$rep = opendir($_CONTENT_DIRECTORY.$parent) or die('the directory '.$_CONTENT_DIRECTORY.$parent.' don\'t exist');
 		while($file = @readdir($rep))
@@ -102,11 +102,20 @@ function formDir( $parent = '', $directory = '/' )
 				$file_extension = strtolower(substr(strrchr( str_replace ( '.cache', '', $file ) ,"."),1));
 				if( $file_extension == 'php' )
 				{
+					if ( $lastName != 'new' && $lastName != substr( $file, 0, 3 ) )
+					{
+						echo '<br>';
+					}
+					$lastName = substr( $file, 0, 3 );
+					
 					echo '<form action="',$ACTUAL_PAGE_URL,'#edit-page" method="POST" style="display:inline-block;">
 						<input type="hidden" name="type" value="edit" />
 						<input type="hidden" name="file" value="',$parent.$file,'" />
 						<input type="submit" value="'.$file.'" style="color:red;" /> 
 					</form>';
+					
+					
+					
 				}
 			}
 
@@ -117,31 +126,29 @@ function formDir( $parent = '', $directory = '/' )
 
 		echo '<ul style="border-left:1px solid #CCC; display:'.( ($directory == '/' ) ? 'block' : 'block' ).';" >';
 	
+		$rep = opendir($_CONTENT_DIRECTORY.$parent) or die('rectory '.$_CONTENT_DIRECTORY.$parent.' don\'t exist');
+		while($file = @readdir($rep))
+		{
+
+			if ( $file === "." || $file === ".." || substr( $file, 0, 1 ) === '.' ) continue;
+
+			if( is_dir($_CONTENT_DIRECTORY.$parent.$file) )
+			{
+				formDir( $parent.$file.'/' , $file );
+			}
+
+		}
+		closedir($rep);
+
+
+
+
+
+		echo '</ul></div>';
+		
 	}
 	
 	
-	
-	$rep = opendir($_CONTENT_DIRECTORY.$parent) or die('rectory '.$_CONTENT_DIRECTORY.$parent.' don\'t exist');
-	while($file = @readdir($rep))
-    {
-
-        if ( $file === "." || $file === ".." || substr( $file, 0, 1 ) === '.' ) continue;
-
-        if( is_dir($_CONTENT_DIRECTORY.$parent.$file) )
-        {
-			formDir( $parent.$file.'/' , $file );
-        }
-
-    }
-	closedir($rep);
-	
-	
-	
-	
-	
-	echo '</ul></div>';
-
-    
 }
 
 
