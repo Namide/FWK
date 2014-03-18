@@ -231,13 +231,27 @@ class Page
 	 * @param string $url
 	 * @param string $content
 	 */
-	public function initRequest( $url )
+	/*public function initRequest( $url )
 	{
 		if ( $this->RequestIsInitialised( $url ) )
 		{
 			trigger_error( 'This request already exist: '.$url.' ('.$this->_id.', '.$this->_language.')', E_USER_ERROR );
 		}
 		$this->_requests[$url] = new RequestPage( $url );
+	}*/
+	
+	/**
+	 * 
+	 * @param RequestPage $requestPage
+	 * @param string $content
+	 */
+	public function addRequest( &$requestPage )
+	{
+		if ( $this->hasRequest( $requestPage->getUrl() ) )
+		{
+			trigger_error( 'This request already exist: '.$requestPage->getUrl().' ('.$this->_id.', '.$this->_language.')', E_USER_ERROR );
+		}
+		$this->_requests[$requestPage->getUrl()] = $requestPage;
 	}
 	
 	/**
@@ -245,38 +259,38 @@ class Page
 	 * @param string $url
 	 * @param string $content
 	 */
-	public function buildRequest( $url, $content )
+	/*public function buildRequest( $url, $content )
 	{
 		if ( !$this->RequestIsInitialised( $url ) )
 		{
 			trigger_error( 'The request '.$url.' ('.$this->_id.', '.$this->_language.') must be initialized in first', E_USER_ERROR );
 		}
 		$this->_requests[$url]->setContent( $content );
-	}
+	}*/
 	
 	/**
 	 * 
 	 * @param array $arrayOfUrl
 	 */
-    public function initRequests( $arrayOfUrl )
+    /*public function initRequests( $arrayOfUrl )
     {
         foreach ( $arrayOfUrl as $url )
         {
             $this->initRequest( $url );
         }
-    }
+    }*/
 	
 	/**
 	 * 
 	 * @param array $arrayOfContentByUrl
 	 */
-    public function buildRequests( $arrayOfContentByUrl )
+    /*public function buildRequests( $arrayOfContentByUrl )
     {
 		foreach ( $arrayOfContentByUrl as $url => $content )
         {
             $this->buildRequest( $url, $content );
         }
-    }
+    }*/
 	
 	/**
 	 * 
@@ -293,14 +307,14 @@ class Page
 	 * @param string $url
 	 * @return boolean
 	 */
-    public function RequestIsInitialised( $url )
+    /*public function RequestIsInitialised( $url )
     {
 		if ( $this->hasRequest( $url ) )
 		{
 			return TRUE;
 		}
         return FALSE;
-    }
+    }*/
 	
 	/**
 	 * 
@@ -309,6 +323,10 @@ class Page
 	 */
 	public function getRequest( $url )
     {
+		if ( !$this->hasRequest($url) )
+		{
+			trigger_error( 'This request don\'t exist: '.$url.' ('.$this->_id.', '.$this->_language.')', E_USER_ERROR );
+		}
         return $this->_requests[$url];
     }
 	

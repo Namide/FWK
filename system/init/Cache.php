@@ -42,7 +42,6 @@ class Cache
 	 */
 	public function isCached()
 	{
-		//global $_CACHE_DIRECTORY;		
 		return file_exists( $this->rootDir.$this->pageFile );
 	}
 	
@@ -58,21 +57,38 @@ class Cache
 			default: $ctype="application/force-download";
 		}
 		
-		//global $_CACHE_DIRECTORY;		
 		readfile( $this->rootDir.$this->pageFile );
 	}
 	
 	/**
 	 * 
 	 * @global int $_MAX_PAGE_CACHE
-	 * @global string $_CACHE_DIRECTORY
+	 * @param type $page
 	 * @return boolean
 	 */
-	public function isCachable()
+	public function isCachable( &$page = NULL )
 	{
 		global $_MAX_PAGE_CACHE;
-		//global $_CACHE_DIRECTORY;
-        return self::getNumPages( $this->rootDir ) < $_MAX_PAGE_CACHE;
+		
+		if ( self::getNumPages( $this->rootDir ) < $_MAX_PAGE_CACHE )
+		{
+			
+			if ( $page == NULL )
+			{
+				return TRUE;
+			}
+			elseif ( $page->getCall() == Page::$CALL_PAGE )
+			{
+				return $page->getCachable();
+			}
+			elseif ( $page->getCall() == Page::$CALL_REQUEST )
+			{
+				$url = Url::getInstance()->getUrl();
+				$request = $page->getRequest($url);
+				return $request->getCachable();
+			}
+		}
+		return FALSE;
 	}
 	
 	public function startSaveCache()

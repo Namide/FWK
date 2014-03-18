@@ -22,17 +22,27 @@ if ( $_CACHE )
 		include_once $_SYSTEM_DIRECTORY.'init/loadPages.php';
 		include_once $_SYSTEM_DIRECTORY.'init/buildPage.php';
 		
-		$cache->startSaveCache();
-			echoPage( $page );
-		$cache->stopSaveCache();
-		$cache->writesCache();
-		echo $cache->getSavedCache();
-	
 		
-		if ( $_DEBUG && $page->getCall() == Page::$CALL_PAGE )
+		$cache->isCachable( $page );
+		if ( $cache->isCachable( $page ) )
 		{
-			echo '<!-- execute PHP and write cache time: ', number_format( microtime(true) - $timestart , 3), 's -->';
+			$cache->startSaveCache();
+				echoPage( $page );
+			$cache->stopSaveCache();
+			$cache->writesCache();
+			echo $cache->getSavedCache();
+
+
+			if ( $_DEBUG && $page->getCall() == Page::$CALL_PAGE )
+			{
+				echo '<!-- execute PHP and write cache time: ', number_format( microtime(true) - $timestart , 3), 's -->';
+			}
 		}
+		else
+		{
+			echoPage( $page );
+		}
+		
 		
 		exit();
 	}
@@ -88,7 +98,7 @@ function echoPage( &$page )
 			header( $request->getPhpHeader() );
 		}
 		
-		$content = $request->getContent();//$page->getRequest( $url );
+		$content = $request->getContent();
 		echo $content;
 	}
 	

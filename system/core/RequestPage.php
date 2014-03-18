@@ -66,13 +66,13 @@ class RequestPage
 
 	
 	
-	public function __construct( $url )
+	public function __construct( $url, $cachable = FALSE )
     {
         $this->_url = $url;
         
         // DEFAULT
         $this->_content = '';
-		$this->_cachable = TRUE;
+		$this->_cachable = $cachable;
 		$this->_phpHeader = '';
     }
     

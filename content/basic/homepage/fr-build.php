@@ -9,4 +9,4 @@ $body = <<<EOF
 		
 EOF;
 
-$requestsBuild = array( 'request/test01' => 'First AJAX content' );
+$requestsContent = array( 'request/test01' => 'First AJAX content' );

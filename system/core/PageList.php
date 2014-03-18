@@ -178,18 +178,19 @@ class PageList
 			}
 		}
 		
-		if ( isset($requestsInit) )
+		if ( isset($requests) )
 		{
-			foreach( $requestsInit as $url )
+			foreach( $requests as $url )
 			{
-				$page->initRequest( $url );
+				$page->addRequest( $url );
 			}
 		}
-		if ( isset($requestsBuild) )
+		if ( isset($requestsContent) )
 		{
-			foreach( $requestsBuild as $url => $content )
+			foreach( $requestsContent as $url => $content )
 			{
-				$page->buildRequest( $url, PageUtils::mustache( $content, $page ) );
+				$page->getRequest( $url )->setContent( PageUtils::mustache( $content, $page ) );
+				//$page->buildRequest( $url, PageUtils::mustache( $content, $page ) );
 			}
 		}
 		
@@ -223,18 +224,19 @@ class PageList
 			}
 		}
         
-		if ( isset($requestsInit) )
+		if ( isset($requests) )
 		{
-			foreach( $requestsInit as $url )
+			foreach( $requests as $url )
 			{
-				$page->initRequest( $url );
+				$page->addRequest( $url );
 			}
 		}
-		if ( isset($requestsBuild) )
+		if ( isset($requestsContent) )
 		{
-			foreach( $requestsBuild as $url => $content )
+			foreach( $requestsContent as $url => $content )
 			{
-				$page->buildRequest( $url, PageUtils::mustache( $content, $page ) );
+				$page->getRequest( $url )->setContent( PageUtils::mustache( $content, $page ) );
+				//$page->buildRequest( $url, PageUtils::mustache( $content, $page ) );
 			}
 		}
 		
