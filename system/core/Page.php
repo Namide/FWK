@@ -229,6 +229,7 @@ class Page
 	/**
 	 * 
 	 * @param string $url
+	 * @param string $content
 	 */
 	public function initRequest( $url )
 	{
@@ -236,7 +237,7 @@ class Page
 		{
 			trigger_error( 'This request already exist: '.$url.' ('.$this->_id.', '.$this->_language.')', E_USER_ERROR );
 		}
-		$this->_requests[$url] = '';
+		$this->_requests[$url] = new RequestPage( $url );
 	}
 	
 	/**
@@ -250,7 +251,7 @@ class Page
 		{
 			trigger_error( 'The request '.$url.' ('.$this->_id.', '.$this->_language.') must be initialized in first', E_USER_ERROR );
 		}
-		$this->_requests[$url] = $content;
+		$this->_requests[$url]->setContent( $content );
 	}
 	
 	/**
@@ -267,11 +268,11 @@ class Page
 	
 	/**
 	 * 
-	 * @param array $arrayOfRequestByUrl
+	 * @param array $arrayOfContentByUrl
 	 */
-    public function buildRequests( $arrayOfRequestByUrl )
+    public function buildRequests( $arrayOfContentByUrl )
     {
-		foreach ( $arrayOfRequestByUrl as $url => $content )
+		foreach ( $arrayOfContentByUrl as $url => $content )
         {
             $this->buildRequest( $url, $content );
         }
@@ -304,7 +305,7 @@ class Page
 	/**
 	 * 
 	 * @param string $url
-	 * @return string
+	 * @return RequestPage
 	 */
 	public function getRequest( $url )
     {
@@ -313,7 +314,7 @@ class Page
 	
 	/**
 	 * 
-	 * @return string
+	 * @return array
 	 */
 	public function getRequests()
     {
@@ -365,7 +366,7 @@ class Page
 	 */
 	public function getContent( $label )
     {
-        return $this->_contents[$label];
+        return $this->_contents[ $label ];
     }
 	
 	/**

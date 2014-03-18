@@ -81,7 +81,14 @@ function echoPage( &$page )
 	{
 		
 		$url = Url::getInstance()->getUrl();
-		$content = $page->getRequest( $url );
+		$request = $page->getRequest($url);
+		
+		if ( $request->getPhpHeader() != '' )
+		{
+			header( $request->getPhpHeader() );
+		}
+		
+		$content = $request->getContent();//$page->getRequest( $url );
 		echo $content;
 	}
 	
