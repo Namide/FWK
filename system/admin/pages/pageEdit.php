@@ -354,7 +354,7 @@ $visible = TRUE;
 $cachable = TRUE;
 
 // Add tags to the page
-//$categories = array( \'home\', \'info\' );
+//$tags = array( \'home\', \'info\' );
 
 // Arguments to the php function header() of the page (for other type than HTML, like XML)
 //$phpHeader = \'Content-Type: application/xml; charset=utf-8\';

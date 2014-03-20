@@ -43,7 +43,7 @@ $template
 $visible:boolean
 $cachable:boolean
 $title
-$categories:array
+$tags:array
 $phpHeader
 
 $header

@@ -163,7 +163,7 @@ class PageList
 		if ( isset($visible) )		$page->setVisible($visible);
 		if ( isset($title) )		$page->setTitle($title);
 		if ( isset($description) )	$page->setDescription($description);
-		if ( isset($categories) )	$page->addCategories($categories);
+		if ( isset($tags) )			$page->addTags($tags);
 		if ( isset($cachable) )		$page->setCachable($cachable);
 		if ( isset($phpHeader) )	$page->setPhpHeader($phpHeader);
 		
@@ -209,7 +209,7 @@ class PageList
         if ( isset($visible) )		$page->setVisible($visible);
 		if ( isset($title) )		$page->setTitle($title);
         if ( isset($description) )	$page->setDescription($description);
-		if ( isset($categories) )	$page->addCategories($categories);
+		if ( isset($tags) )			$page->addTags($tags);
         if ( isset($cachable) )		$page->setCachable($cachable);
         if ( isset($phpHeader) )	$page->setPhpHeader($phpHeader);
 
@@ -262,19 +262,19 @@ class PageList
     
 	/**
 	 * 
-	 * @param string $category
+	 * @param string $tag
 	 * @param string $lang
 	 * @return array
 	 */
-	public function getPagesByCategory( $category, $lang )
+	public function getPagesByTag( $tag, $lang )
     {
-		if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getPagesByCategory() method', E_USER_ERROR );
+		if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getPagesByTag() method', E_USER_ERROR );
 		
 		$pages = array();
         
 		foreach ( $this->_pagesByUrl as $page )
         {
-			if( $page->getLanguage() === $lang && $page->hasCategory($category) )
+			if( $page->getLanguage() === $lang && $page->hasTag($tag) )
 			{
 				array_push( $pages, $page );
 			}
@@ -284,20 +284,20 @@ class PageList
 	
 	/**
 	 * 
-	 * @param array $categories
+	 * @param array $tags
 	 * @param string $lang
 	 * @return array
 	 */
-    public function getPagesByCategories( $categories, $lang )
+    public function getPagesByTags( $tags, $lang )
     {
-		if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getPagesByCategories() method', E_USER_ERROR );
+		if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getPagesByTags() method', E_USER_ERROR );
 		
 		$pages = array();
         foreach ( $this->_pagesByUrl as $page )
         {
-            foreach ( $categories as $category )
+            foreach ( $tags as $tag )
             {
-                if( $page->getLanguage() === $lang && $page->hasCategory($category) )
+                if( $page->getLanguage() === $lang && $page->hasTag($tag) )
                 {
                     array_push( $pages, $page );
                     break 1;

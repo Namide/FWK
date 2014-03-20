@@ -49,6 +49,16 @@ class LanguageList
     
 	/**
 	 * 
+	 * @param string $lang
+	 * @return boolean
+	 */
+	public function hasLanguage( $lang )
+	{
+		return array_key_exists( $this->_languages, $lang );
+	}
+	
+	/**
+	 * 
 	 * @return string
 	 */
     public function getLangByNavigator()

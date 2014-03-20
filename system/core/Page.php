@@ -183,45 +183,45 @@ class Page
 	 */
     public function getBuildFile() { return $this->_buildFile; }
 	
-    private $_categories;
+    private $_tags;
 	/**
 	 * 
-	 * @param string $category
+	 * @param string $tag
 	 */
-    public function addCategory( $category )
+    public function addTag( $tag )
 	{
-		array_push($this->_categories, $category);
+		array_push($this->_tags, $tag);
 	}
 	
 	/**
 	 * 
-	 * @param array $categories
+	 * @param array $tags
 	 */
-    public function addCategories( $categories )
+    public function addCategories( $tags )
     {
-        foreach ( $categories as $category )
+        foreach ( $tags as $tag )
         {
-            $this->addCategory( $category );
+            $this->addTag( $tag );
         }
     }
 	
 	/**
 	 * 
-	 * @param string $category
+	 * @param string $tag
 	 * @return boolean
 	 */
-    public function hasCategory( $category )
+    public function hasTag( $tag )
     {
-        return in_array($category, $this->_categories );
+        return in_array( $tag, $this->_tags );
     }
 	
 	/**
 	 * 
 	 * @return array
 	 */
-	public function getCategories()
+	public function getTags()
     {
-        return $this->_categories;
+        return $this->_tags;
     }
 	
 	
@@ -413,7 +413,7 @@ class Page
 	public function __construct( $id )
     {
         $this->_id = $id;
-        $this->_categories = array();
+        $this->_tags = array();
 		$this->_contents = array();
 		$this->_requests = array();
         $this->_visible = TRUE;
