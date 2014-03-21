@@ -6,6 +6,7 @@
 
 	$pageList = PageList::getInstance();
 	$pagesDebugPage = $pageList->getPagesByUrl();
+	//$pagesDebugPage = array_merge( $pagesDebugPage, $pageList->getRequestsByUrl() );
 	
 	if( !empty($_POST['standaloneHtml']) && $_POST['standaloneHtml'] === 'ALL' )
 	{
@@ -88,7 +89,7 @@
 	
 	<tr>
 		<th style="color:red;">Standalone HTML version<br/>
-			!Don't work with $_GET,<br>dynamics pages and requests</th>
+			unstable! Don't work with<br>environment variables</th>
 		<td><form action="<?php echo $ACTUAL_PAGE_URL; ?>" method="POST" style="display:inline;">
 				<input type="hidden" name="standaloneHtml" value="ALL" />
 				<input type="submit" value="Generate" /> 

@@ -27,17 +27,14 @@ function generateHtml( &$pagesListDebug, $dirParent = '' )
 		$_GET[Url::getPageGetArg()] = $pageDebugPage->getUrl();
 		$urlPath = explode( '/', $pageDebugPage->getUrl() );
 		$newRootRelativeUrl = '../';
-		//$_ROOT_URL = '';
 		while ( count( $urlPath ) > 1 ) 
 		{
 			$newRootRelativeUrl .= '../';
 			array_pop( $urlPath );
 		}
 
-
-
 		$cache = new Cache($dirParent);
-		if( /*$cache->isCachable() &&*/ $pageDebugPage->getType() != Page::$TYPE_ERROR_404 )
+		if( $pageDebugPage->getType() != Page::$TYPE_ERROR_404 )
 		{
 			Url::getInstance()->reset();
 			$templateUtils = TemplateUtils::getInstance();
@@ -46,18 +43,7 @@ function generateHtml( &$pagesListDebug, $dirParent = '' )
 			PageList::getInstance()->updatePage( $page );
 			
 			$cache->startSaveCache();
-				global $_TEMPLATE_DIRECTORY;
-				if ( $pageDebugPage->getTemplate() != '' )
-				{
-					include $_TEMPLATE_DIRECTORY.$pageDebugPage->getTemplate().'.php';
-				}
-				else
-				{
-					echo '<!doctype html>';
-					echo '<html><head>' , $pageDebugPage->getHeader();
-					echo '</head><body>' , $pageDebugPage->getBody();
-					echo '</body></html>';
-				}
+				getHtmlPage( $page );
 			$cache->stopSaveCache();
 			$cacheContent = $cache->getSavedCache();
 			$cacheContent = str_replace( $_ROOT_URL.Url::$BASE_PAGE_URL, $newRootRelativeUrl, $cacheContent );
@@ -66,6 +52,49 @@ function generateHtml( &$pagesListDebug, $dirParent = '' )
 		}
 	}
 
+	
+	foreach( $pagesListDebug as $pageDebugPage )
+	{
+		
+		foreach( $page->getRequests() as $request )
+		{
+			include_once $_SYSTEM_DIRECTORY.'init/Cache.php';
+
+			$_URL_REWRITING = TRUE;
+
+			foreach ( $_GET as $key => $value )
+			{
+				unset($_GET[$key]);
+			}
+			$_GET[Url::getPageGetArg()] = $request->getUrl();
+			$urlPath = explode( '/', $request->getUrl() );
+			$newRootRelativeUrl = '../';
+			while ( count( $urlPath ) > 1 ) 
+			{
+				$newRootRelativeUrl .= '../';
+				array_pop( $urlPath );
+			}
+
+			$cache = new Cache($dirParent);
+			if( $pageDebugPage->getType() != Page::$TYPE_ERROR_404 )
+			{
+				Url::getInstance()->reset();
+				$templateUtils = TemplateUtils::getInstance();
+				$templateUtils->reset();
+				$page = TemplateUtils::getInstance()->getCurrentPage();
+				PageList::getInstance()->updatePage( $page );
+
+				$cache->startSaveCache();
+					getHtmlPage( $page );
+				$cache->stopSaveCache();
+				$cacheContent = $cache->getSavedCache();
+				$cacheContent = str_replace( $_ROOT_URL.Url::$BASE_PAGE_URL, $newRootRelativeUrl, $cacheContent );
+				$cacheContent = str_replace( $_ROOT_URL, $newRootRelativeUrl, $cacheContent );
+				$cache->writesCache( $cacheContent, '' );
+			}
+		}
+	}
+	
 	
 	if ( !file_exists($dirParent.'/index.html') )
 	{
@@ -81,4 +110,45 @@ function generateHtml( &$pagesListDebug, $dirParent = '' )
 	
 	copyDir( $_CONTENT_DIRECTORY, $dirParent.'/'.$_CONTENT_DIRECTORY );
 	copyDir( $_TEMPLATE_DIRECTORY, $dirParent.'/'.$_TEMPLATE_DIRECTORY );
+}
+
+function getHtmlPage( &$page )
+{
+	$output = '';
+	if ( $page->getCall() == Page::$CALL_PAGE )
+	{
+		global $_TEMPLATE_DIRECTORY;
+	
+		/*if ( $page->getPhpHeader() != '' )
+		{
+			header( $page->getPhpHeader() );
+		}*/
+
+		if ( $page->getTemplate() != '' )
+		{
+			include $_TEMPLATE_DIRECTORY.$page->getTemplate().'.php';
+		}
+		else
+		{
+			echo '<!doctype html>';
+			echo '<html><head>' , $page->getHeader();
+			echo '</head><body>' , $page->getBody();
+			echo '</body></html>';
+		}
+	}
+	elseif ( $page->getCall() == Page::$CALL_REQUEST )
+	{
+		
+		$url = Url::getInstance()->getUrl();
+		$request = $page->getRequest($url);
+		
+		if ( $request->getPhpHeader() != '' )
+		{
+			header( $request->getPhpHeader() );
+		}
+		
+		$content = $request->getContent();
+		echo $content;
+	}
+	
 }
