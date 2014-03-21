@@ -50,8 +50,8 @@ SeoTest.prototype =
 		var valid = (headTitle.length>0 && headTitle.length<65);
 		var resume = seoTest.getSpanText( "title: " + headTitle.length + " chars", valid, " ( < 65 )" );
 
-		valid = (contentBrut.split(" ").length>300 && contentBrut.split(" ").length<500);	
-		resume += seoTest.getSpanText( "content: " + contentBrut.length + " words", valid, " ( 300 < words < 500 )" );
+		valid = (contentBrut.split(" ").length>300 && contentBrut.split(" ").length<500);
+		resume += seoTest.getSpanText( "content: " + contentBrut.split(" ").length + " words", valid, " ( 300 < words < 500 )" );
 
 		valid = (metaDescription.length>0 && metaDescription.length<150);	
 		resume += seoTest.getSpanText( "meta-description: " + metaDescription.length + " chars", valid, " ( chars < 150 )" );
@@ -110,20 +110,6 @@ SeoTest.prototype =
 		return '<span style="color:'+((valid)?"green":"red")+'">' + text + ((valid)?"":error) + '<br />';
 	},
 
-	/*getElement:function( text, tag, attributeName = "", attributeValue = "" )
-	{
-		var parser = new DOMParser();
-		var xml = parser.parseFromString( text, 'text/xml' );
-		var racine = xml.documentElement;
-		var tagnom = racine.getElementsByTagName( tag )
-		for(var i = 0; i< tagnom.length; i++){
-			var element = racine.childNodes[i];
-
-		}
-		alert(tagnom.length);
-		return "";
-	},*/
-
 	getTagContent:function( text, tag1, tag2 )
 	{
 		var a = text.split(tag1);
@@ -181,7 +167,16 @@ SeoTest.prototype =
 			if( b.length == 2 && b[1] != "" ) a[i] = b[1];
 			else a[i] = "";
 		}
-		t = a.join("");
+		t = a.join(" ");
+
+		t = t.split("\t").join(" ");
+		t = t.split("\n").join(" ");
+		while ( t.charAt(0) == " " ) { t = t.substring(1); }
+		while ( t.charAt(t.length-1) == " " ) { t = t.substring(0, t.length-1 ); }
+		while ( t.split("  ").length > 1 )
+		{
+			t = t.split("  ").join(" ");
+		}
 
 		return String(t);
 	}
