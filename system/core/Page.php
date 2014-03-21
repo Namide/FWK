@@ -182,6 +182,8 @@ class Page
 	 * @return string
 	 */
     public function getBuildFile() { return $this->_buildFile; }
+	public function startBuild() { $this->_buildFile = ''; }
+	
 	
     private $_tags;
 	/**

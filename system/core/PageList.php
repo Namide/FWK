@@ -101,8 +101,11 @@ class PageList
             if( file_exists ( $filename ) )
             {
 				
-                $page = $this->initPage( $folderName, $lang, $filename );
-                
+				$page = new Page( $folderName );
+				$page->setLanguage( $lang );
+				//Gateway::getInstance()->clearPageVo();
+                $page = $this->initPage( $page, $filename );
+				
 				$buildFile = $_ROOT_DIRECTORY.$_CONTENT_DIRECTORY.$folderName.'/'.$lang.'-build.php';
 				if( file_exists ( $buildFile ) ) { $page->setBuildFile($buildFile); }
 				
@@ -112,7 +115,7 @@ class PageList
 					$pageUrl = $page->getUrl();
 					if ( $this->hasUrl( $pageUrl ) || $this->hasUrlRequest( $pageUrl ) )
 					{
-						trigger_error( 'The URL '.$pageUrl.' of the page [id:'.$this->id.', lang:'.$this->language.'] already exist', E_USER_ERROR );
+						trigger_error( 'The URL '.$pageUrl.' of the page [id:'.$page->getId().', lang:'.$page->getLanguage().', url:'.$page->getUrl().'] already exist', E_USER_ERROR );
 					}
 					$this->_pagesByUrl[$pageUrl] = $page;
 				
@@ -124,7 +127,7 @@ class PageList
 					{
 						if ( $this->hasUrl( $requestUrl ) || $this->hasUrlRequest( $requestUrl ) )
 						{
-							trigger_error( 'The URL '.$pageUrl.' of the request [id:'.$this->id.', lang:'.$this->language.'] already exist', E_USER_ERROR );
+							trigger_error( 'The URL '.$pageUrl.' of the request [id:'.$page->getId().', lang:'.$page->getLanguage().', url:'.$page->getUrl().'] already exist', E_USER_ERROR );
 						}
 						$this->_requestsByUrl[$requestUrl] = $page;
 					}
@@ -139,6 +142,60 @@ class PageList
 		//return $pages;
     }
 	
+	/**
+	 * 
+	 * @param string $id
+	 */
+    public function addDynamicPage( $folderName, $listUrl, $listLang, $listVo )
+    {
+        //$pages = array();
+        
+        global $_ROOT_DIRECTORY;
+        global $_CONTENT_DIRECTORY;
+        $language = LanguageList::getInstance();
+        $langs = $language->getList();
+        
+        foreach ( $langs as $lang )
+        {
+			$filename = $_ROOT_DIRECTORY.$_CONTENT_DIRECTORY.$folderName.'/'.$lang.'-init.php';
+            if ( in_array( $lang, $listLang ) && file_exists ( $filename ) )
+            {
+				$idList = array_search( $lang, $listLang );
+				/*if ( !array_key_exists($lang, $urlByLang) )
+				{
+					break 1;
+				}
+				
+				if ( !array_key_exists($lang, $voByLang) )
+				{
+					break 1;
+				}*/
+				
+				$page = new DynamicPage( $folderName, $listUrl[$idList], $listVo[$idList] );
+				$page->setLanguage( $lang );
+				
+				//Gateway::getInstance()->setPageVo( $listVo[$idList] );
+				$page = $this->initPage( $page, $filename );
+				
+				$buildFile = $_ROOT_DIRECTORY.$_CONTENT_DIRECTORY.$folderName.'/'.$lang.'-build.php';
+				if( file_exists ( $buildFile ) ) { $page->setBuildFile($buildFile); }
+				
+				
+				// ADD THE PAGE'S URL
+				
+					$pageUrl = $page->getUrl();
+					if ( $this->hasUrl( $pageUrl ) || $this->hasUrlRequest( $pageUrl ) )
+					{
+						trigger_error( 'The URL '.$pageUrl.' of the page [id:'.$page->getId().', lang:'.$page->getLanguage().', url:'.$page->getUrl().'] already exist', E_USER_ERROR );
+					}
+					$this->_pagesByUrl[$pageUrl] = $page;
+				
+					
+				// ------
+            }
+        }
+        
+    }
 	
 	public function go()
 	{
@@ -155,55 +212,24 @@ class PageList
 		if( $page->getBuildFile() == '' ) return $page;
 		
 		$buildFile = $page->getBuildFile();
-		$page->setBuildFile('');
-		include $buildFile;
+		$page->startBuild();
 		
-		if ( isset($url) )			$page->setUrl ($url);
-		if ( isset($template) )		$page->setTemplate ($template);
-		if ( isset($visible) )		$page->setVisible($visible);
-		if ( isset($title) )		$page->setTitle($title);
-		if ( isset($description) )	$page->setDescription($description);
-		if ( isset($tags) )			$page->addTags($tags);
-		if ( isset($cachable) )		$page->setCachable($cachable);
-		if ( isset($phpHeader) )	$page->setPhpHeader($phpHeader);
 		
-		if ( isset($body) )			$page->setBody ( PageUtils::mustache($body, $page) );
-		if ( isset($header) )		$page->setHeader ( PageUtils::mustache($header, $page) );
-		//if ( isset($preface) )		$page->setPreface ( PageUtils::mustache($preface, $page) );
-		if ( isset($contents) )
-		{
-			foreach( $contents as $label => $value )
-			{
-				$page->addContent( $label, PageUtils::mustache($value, $page) );
-			}
-		}
-		
-		if ( isset($requests) )
-		{
-			foreach( $requests as $url )
-			{
-				$page->addRequest( $url );
-			}
-		}
-		if ( isset($requestsContent) )
-		{
-			foreach( $requestsContent as $url => $content )
-			{
-				$page->getRequest( $url )->setContent( PageUtils::mustache( $content, $page ) );
-				//$page->buildRequest( $url, PageUtils::mustache( $content, $page ) );
-			}
-		}
+		$page = $this->initPage( $page, $buildFile );
 		
 		return $page;
 	}
 
 	
-	private function initPage( $folderName, $lang, $filename )
+	private function initPage( &$page, $filename )
     {
-		$page = new Page( $folderName );
-        $page->setLanguage( $lang );
-
-        include $filename;
+		if ( $page instanceof DynamicPage )
+		{
+			$vo = $page->getVo();
+		}
+		
+		include $filename;
+		
         if ( isset($url) )			$page->setUrl ($url);
         if ( isset($template) )		$page->setTemplate ($template);
         if ( isset($visible) )		$page->setVisible($visible);
@@ -215,7 +241,6 @@ class PageList
 
         if ( isset($body) )			$page->setBody ( PageUtils::mustache($body, $page) );
         if ( isset($header) )		$page->setHeader ( PageUtils::mustache($header, $page) );
-		//if ( isset($preface) )		$page->setPreface ( PageUtils::mustache($preface, $page) );
         if ( isset($contents) )
 		{
 			foreach( $contents as $label => $value )
@@ -236,16 +261,9 @@ class PageList
 			foreach( $requestsContent as $url => $content )
 			{
 				$page->getRequest( $url )->setContent( PageUtils::mustache( $content, $page ) );
-				//$page->buildRequest( $url, PageUtils::mustache( $content, $page ) );
 			}
 		}
 		
-		$pageUrl = $page->getUrl();
-        if (isset($this->_pagesByUrl[$pageUrl]) )
-        {
-            trigger_error( 'This page already exist: '.$pageUrl.' ('.$folderName.', '.$lang.')', E_USER_ERROR);
-        }
-        
         return $page;
     }
 	

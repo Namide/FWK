@@ -88,7 +88,7 @@
 	
 	<tr>
 		<th style="color:red;">Standalone HTML version<br/>
-			!Don't work with GET and dynamics pages</th>
+			!Don't work with $_GET,<br>dynamics pages and requests</th>
 		<td><form action="<?php echo $ACTUAL_PAGE_URL; ?>" method="POST" style="display:inline;">
 				<input type="hidden" name="standaloneHtml" value="ALL" />
 				<input type="submit" value="Generate" /> 

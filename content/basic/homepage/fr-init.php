@@ -1,7 +1,7 @@
 <?php
 
 $url = 'fr';       
-$title = 'Accueil';
+$title = ( isset($vo) ? $vo : 'Accueil' );
 $description = 'Un framework qui déchire!';
 $template = 'default';
 $header = ' <meta name="robots" content="all" />';
