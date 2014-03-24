@@ -1,6 +1,13 @@
 <?php
 
-if ( $_DEBUG ) { error_reporting(E_ALL); }
+if ( $_DEBUG )
+{
+	if (!ini_get('display_errors'))
+	{
+		ini_set('display_errors', '1');
+	}
+	error_reporting(E_ALL);
+}
 
 if ( $_CACHE )
 {
