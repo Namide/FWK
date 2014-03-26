@@ -2,24 +2,19 @@
 
 function generateHtml( &$pagesListDebug, $dirParent = '' )
 {
-	global $_CACHE_DIRECTORY;
-	global $_SYSTEM_DIRECTORY;
-	global $_ROOT_URL;
-	global $_CONTENT_DIRECTORY;
-	global $_TEMPLATE_DIRECTORY;
-	
 	if ( $dirParent == '' )
 	{
-		$dirParent = $_CACHE_DIRECTORY.'standalone-html';
+		$dirParent = _CACHE_DIRECTORY.'standalone-html';
 	}
 	
 	foreach( $pagesListDebug as $pageDebugPage )
 	{
 
-		include_once $_SYSTEM_DIRECTORY.'init/Cache.php';
+		include_once _SYSTEM_DIRECTORY.'init/Cache.php';
 
-		$_URL_REWRITING = TRUE;
-
+		//_URL_REWRITING = TRUE;
+		$GLOBALS["_URL_REWRITING"] = TRUE;
+		
 		foreach ( $_GET as $key => $value )
 		{
 			unset($_GET[$key]);
@@ -46,8 +41,8 @@ function generateHtml( &$pagesListDebug, $dirParent = '' )
 				getHtmlPage( $page );
 			$cache->stopSaveCache();
 			$cacheContent = $cache->getSavedCache();
-			$cacheContent = str_replace( $_ROOT_URL.Url::$BASE_PAGE_URL, $newRootRelativeUrl, $cacheContent );
-			$cacheContent = str_replace( $_ROOT_URL, $newRootRelativeUrl, $cacheContent );
+			$cacheContent = str_replace( _ROOT_URL.Url::$BASE_PAGE_URL, $newRootRelativeUrl, $cacheContent );
+			$cacheContent = str_replace( _ROOT_URL, $newRootRelativeUrl, $cacheContent );
 			$cache->writesCache( $cacheContent, '' );
 		}
 	}
@@ -58,10 +53,10 @@ function generateHtml( &$pagesListDebug, $dirParent = '' )
 		
 		foreach( $page->getRequests() as $request )
 		{
-			include_once $_SYSTEM_DIRECTORY.'init/Cache.php';
+			include_once _SYSTEM_DIRECTORY.'init/Cache.php';
 
-			$_URL_REWRITING = TRUE;
-
+			$GLOBALS["_URL_REWRITING"] = TRUE;
+		
 			foreach ( $_GET as $key => $value )
 			{
 				unset($_GET[$key]);
@@ -88,8 +83,8 @@ function generateHtml( &$pagesListDebug, $dirParent = '' )
 					getHtmlPage( $page );
 				$cache->stopSaveCache();
 				$cacheContent = $cache->getSavedCache();
-				$cacheContent = str_replace( $_ROOT_URL.Url::$BASE_PAGE_URL, $newRootRelativeUrl, $cacheContent );
-				$cacheContent = str_replace( $_ROOT_URL, $newRootRelativeUrl, $cacheContent );
+				$cacheContent = str_replace( _ROOT_URL.Url::$BASE_PAGE_URL, $newRootRelativeUrl, $cacheContent );
+				$cacheContent = str_replace( _ROOT_URL, $newRootRelativeUrl, $cacheContent );
 				$cache->writesCache( $cacheContent, '' );
 			}
 		}
@@ -102,14 +97,14 @@ function generateHtml( &$pagesListDebug, $dirParent = '' )
 		$indexPage = '<!doctype html><html><head><meta http-equiv="Refresh" content="0;url=';
 		$indexPage .= PageUtils::getAbsoluteUrl( PageList::getInstance()->getDefaultPage()->getId(), LanguageList::getInstance()->getDefaultLanguage() );
 		$indexPage .= '"></head><body></body></html>';
-		$indexPage = str_replace( $_ROOT_URL.Url::$BASE_PAGE_URL, $newRootRelativeUrl, $indexPage );
-		$indexPage = str_replace( $_ROOT_URL, $newRootRelativeUrl, $indexPage );
+		$indexPage = str_replace( _ROOT_URL.Url::$BASE_PAGE_URL, $newRootRelativeUrl, $indexPage );
+		$indexPage = str_replace( _ROOT_URL, $newRootRelativeUrl, $indexPage );
 		$cache->writesCacheFile( $indexPage, $dirParent.'/index.html' );
 	}
 	
 	
-	copyDir( $_CONTENT_DIRECTORY, $dirParent.'/'.$_CONTENT_DIRECTORY );
-	copyDir( $_TEMPLATE_DIRECTORY, $dirParent.'/'.$_TEMPLATE_DIRECTORY );
+	copyDir( _CONTENT_DIRECTORY, $dirParent.'/'._CONTENT_DIRECTORY );
+	copyDir( _TEMPLATE_DIRECTORY, $dirParent.'/'._TEMPLATE_DIRECTORY );
 }
 
 function getHtmlPage( &$page )
@@ -117,16 +112,9 @@ function getHtmlPage( &$page )
 	$output = '';
 	if ( $page->getCall() == Page::$CALL_PAGE )
 	{
-		global $_TEMPLATE_DIRECTORY;
-	
-		/*if ( $page->getPhpHeader() != '' )
-		{
-			header( $page->getPhpHeader() );
-		}*/
-
 		if ( $page->getTemplate() != '' )
 		{
-			include $_TEMPLATE_DIRECTORY.$page->getTemplate().'.php';
+			include _TEMPLATE_DIRECTORY.$page->getTemplate().'.php';
 		}
 		else
 		{

@@ -12,8 +12,7 @@ class Cache
 	{
 		if ( $rootDir == '' )
 		{
-			global $_CACHE_DIRECTORY;
-			$rootDir = $_CACHE_DIRECTORY;
+			$rootDir = _CACHE_DIRECTORY;
 		}
 		
 		if ( substr( $rootDir, -1, 1 ) != '/' )
@@ -23,11 +22,9 @@ class Cache
 		$this->rootDir = $rootDir;
 		
 		
-		global $_SYSTEM_DIRECTORY;
-        include_once $_SYSTEM_DIRECTORY.'helpers/Url.php';
+		include_once _SYSTEM_DIRECTORY.'helpers/Url.php';
 		
 		
-		//global $_CACHE_DIRECTORY;		
 		$this->pageFile = /*$_CACHE_DIRECTORY.*/Url::getURICacheID();
 		$path = explode( "/", $this->pageFile );
 		if ( count( explode( ".", array_pop($path) ) ) < 2 )
@@ -62,15 +59,12 @@ class Cache
 	
 	/**
 	 * 
-	 * @global int $_MAX_PAGE_CACHE
 	 * @param type $page
 	 * @return boolean
 	 */
 	public function isCachable( &$page = NULL )
 	{
-		global $_MAX_PAGE_CACHE;
-		
-		if ( self::getNumPages( $this->rootDir ) < $_MAX_PAGE_CACHE )
+		if ( self::getNumPages( $this->rootDir ) < _MAX_PAGE_CACHE )
 		{
 			
 			if ( $page == NULL )
@@ -93,16 +87,14 @@ class Cache
 	
 	public function startSaveCache()
 	{
-		global $_CACHE_DIRECTORY;
-		
-        if( !file_exists($_CACHE_DIRECTORY) )
+		if( !file_exists(_CACHE_DIRECTORY) )
 		{
-			mkdir( $_CACHE_DIRECTORY, 0777 );
+			mkdir( _CACHE_DIRECTORY, 0777 );
 		}
 		
-		if( !file_exists($_CACHE_DIRECTORY.'.htaccess') )
+		if( !file_exists(_CACHE_DIRECTORY.'.htaccess') )
 		{
-			$htaccess = fopen( $_CACHE_DIRECTORY.'.htaccess' , "w" );
+			$htaccess = fopen( _CACHE_DIRECTORY.'.htaccess' , "w" );
 			$htaccessContent = 'deny from all
 <Files ../index.php>
 allow from all
@@ -135,7 +127,6 @@ allow from all
 	
 	/**
 	 * 
-	 * @global string $_SYSTEM_DIRECTORY
 	 * @param string $newContent
 	 * @param string $file
 	 */
@@ -153,12 +144,10 @@ allow from all
 		
 		if ( $file == '' )
 		{
-			//global $_CACHE_DIRECTORY;
 			$file = $this->rootDir.$this->pageFile;//$_CACHE_DIRECTORY;
 		}
 		
-		global $_SYSTEM_DIRECTORY;
-		include_once $_SYSTEM_DIRECTORY.'helpers/TemplateUtils.php';
+		include_once _SYSTEM_DIRECTORY.'helpers/TemplateUtils.php';
 		$page = TemplateUtils::getInstance()->getCurrentPage();
 		if ( $page->getCachable() )
 		{

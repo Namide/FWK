@@ -24,8 +24,10 @@ class TemplateUtils
 	
 	public function reset()
 	{
-		global $pagesInitialised;
-        if ( !isset($pagesInitialised) ) trigger_error( 'All pages must be initialised after use TemplateUtils class', E_USER_ERROR );
+		if ( defined(pagesInitialised) )
+		{
+			trigger_error( 'All pages must be initialised after use TemplateUtils class', E_USER_ERROR );
+		}
 		
         $urlClass = Url::getInstance();
         $urlString = $urlClass->getUrl();

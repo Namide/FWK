@@ -400,16 +400,12 @@ class Page
 	
 	/**
 	 * 
-	 * @global string $_ROOT_URL
-	 * @global string $_CONTENT_DIRECTORY
 	 * @param string $file
 	 * @return string
 	 */
 	public function getAbsoluteUrl( $file )
     {
-        global $_ROOT_URL;
-        global $_CONTENT_DIRECTORY;
-        return $_ROOT_URL.$_CONTENT_DIRECTORY.$this->getId().'/'.$file;
+        return _ROOT_URL._CONTENT_DIRECTORY.$this->getId().'/'.$file;
     }
     
 	public function __construct( $id )

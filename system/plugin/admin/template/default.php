@@ -1,20 +1,17 @@
 <?php
 
-global $_SYSTEM_DIRECTORY;
-global $_ROOT_URL;
-
 if( !empty($_GET["p"]) )
 {
 	switch ( $_GET["p"] )
 	{
 		case 'page-save':
 
-			include $_SYSTEM_DIRECTORY.'plugin/admin/pages/zipAndDownloadContent.php';
+			include _SYSTEM_DIRECTORY.'plugin/admin/pages/zipAndDownloadContent.php';
 			break;
 
 		case 'page-html-save':
 
-			include $_SYSTEM_DIRECTORY.'plugin/admin/pages/zipAndDownloadHtml.php';
+			include _SYSTEM_DIRECTORY.'plugin/admin/pages/zipAndDownloadHtml.php';
 			break;
 
 		default:
@@ -27,16 +24,16 @@ if( !empty($_GET["p"]) )
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Admin - <?php echo $_ROOT_URL; ?></title>
+<title>Admin - <?php echo _ROOT_URL; ?></title>
 
-<style type="text/css"><?php include $_SYSTEM_DIRECTORY.'plugin/admin/template/includes/admin.css'; ?></style>
+<style type="text/css"><?php include _SYSTEM_DIRECTORY.'plugin/admin/template/includes/admin.css'; ?></style>
 
 </head>
 
 <body>
 
 	<header>
-		<h1>Admin</h1><p><?php echo $_ROOT_URL; ?></p>
+		<h1>Admin</h1><p><?php echo _ROOT_URL; ?></p>
 		<nav>
 			<ul>
 				<li><a href="admin.php?p=page-debug">Debug</a></li>
@@ -63,17 +60,17 @@ if( !empty($_GET["p"]) )
 				{
 					case 'page-debug':
 
-						include $_SYSTEM_DIRECTORY.'plugin/admin/pages/pageDebug.php';
+						include _SYSTEM_DIRECTORY.'plugin/admin/pages/pageDebug.php';
 						break;
 
 					case 'page-list':
 
-						include $_SYSTEM_DIRECTORY.'plugin/admin/pages/pageList.php';
+						include _SYSTEM_DIRECTORY.'plugin/admin/pages/pageList.php';
 						break;
 
 					case 'page-edit':
 
-						include $_SYSTEM_DIRECTORY.'plugin/admin/pages/pageEdit.php';
+						include _SYSTEM_DIRECTORY.'plugin/admin/pages/pageEdit.php';
 						break;
 
 					default:

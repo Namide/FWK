@@ -1,6 +1,6 @@
 <?php
 
-	include_once $_SYSTEM_DIRECTORY.'plugin/admin/pages/includes/helpers.php';
+	include_once _SYSTEM_DIRECTORY.'plugin/admin/pages/includes/helpers.php';
 
 	$ACTUAL_PAGE_URL = 'admin.php?p=page-debug';
 
@@ -10,14 +10,14 @@
 	
 	if( !empty($_POST['standaloneHtml']) && $_POST['standaloneHtml'] === 'ALL' )
 	{
-		include_once $_SYSTEM_DIRECTORY.'plugin/admin/pages/includes/htmlGenerator.php';
+		include_once _SYSTEM_DIRECTORY.'plugin/admin/pages/includes/htmlGenerator.php';
 		generateHtml( $pagesDebugPage );
 		echo '<script>window.location.href = "admin.php?p=page-html-save";</script>';
 	}
 	
 	if( !empty($_POST['clear']) && $_POST['clear'] === 'ALL' )
 	{
-		if ( is_dir($_CACHE_DIRECTORY) ) { delTree( $_CACHE_DIRECTORY ); }
+		if ( is_dir(_CACHE_DIRECTORY) ) { delTree( _CACHE_DIRECTORY ); }
 		echo '<script>window.location.href = "'.$ACTUAL_PAGE_URL.'";</script>';
 	}
 
@@ -30,17 +30,17 @@
 	<caption><h2>Parameters</h2></caption>
 	<tr>
 		<th>URL rewriting</th>
-		<td><?php echo (($_URL_REWRITING)?'<span style="color:green;">activated</span>':'<strong style="color:red;">disabled</strong>') ?></td>
+		<td><?php echo ((_URL_REWRITING)?'<span style="color:green;">activated</span>':'<strong style="color:red;">disabled</strong>') ?></td>
 	</tr>
 	<tr>
 		<th>Cache</th>
 		<td>
-			<?php echo (($_CACHE)?'<span style="color:green;">activated</span>':'<strong style="color:red;">disabled</strong>') ?>
+			<?php echo ((_CACHE)?'<span style="color:green;">activated</span>':'<strong style="color:red;">disabled</strong>') ?>
 		</td>
 	</tr>
 	<tr>
 		<th>Debug mode</th>
-		<td><?php echo (($_DEBUG)?'<strong style="color:red;">activated</strong>':'<span style="color:green;">disabled</span>') ?></td>
+		<td><?php echo ((_DEBUG)?'<strong style="color:red;">activated</strong>':'<span style="color:green;">disabled</span>') ?></td>
 	</tr>
 </table>
 
@@ -59,9 +59,9 @@
 		<th>Total weight cache</th>
 		<td>
 			<?php
-				if ( file_exists ( $_CACHE_DIRECTORY ) )
+				if ( file_exists ( _CACHE_DIRECTORY ) )
 				{
-					echo getFormatedSize( $_CACHE_DIRECTORY, FALSE );
+					echo getFormatedSize( _CACHE_DIRECTORY, FALSE );
 				}
 				else
 				{
@@ -78,12 +78,12 @@
 	</tr>
 	
 	<?php		
-		if ( file_exists ( $_CACHE_DIRECTORY ) )
+		if ( file_exists ( _CACHE_DIRECTORY ) )
 		{
-			include_once $_SYSTEM_DIRECTORY.'init/Cache.php';
+			include_once _SYSTEM_DIRECTORY.'init/Cache.php';
 
-			$color = ( ( $_MAX_PAGE_CACHE - Cache::getNumPages($_CACHE_DIRECTORY) ) < 1 ) ? 'style="color:red;"' : 'style="color:green;"';
-			echo '<tr><th>Pages cached</th><td><span '.$color.'>'.Cache::getNumPages($_CACHE_DIRECTORY).'/'.$_MAX_PAGE_CACHE.'&nbsp;&nbsp;&nbsp;<button onclick="location.reload();">refresh</button></span></td></tr>';
+			$color = ( ( _MAX_PAGE_CACHE - Cache::getNumPages(_CACHE_DIRECTORY) ) < 1 ) ? 'style="color:red;"' : 'style="color:green;"';
+			echo '<tr><th>Pages cached</th><td><span '.$color.'>'.Cache::getNumPages(_CACHE_DIRECTORY).'/'._MAX_PAGE_CACHE.'&nbsp;&nbsp;&nbsp;<button onclick="location.reload();">refresh</button></span></td></tr>';
 		}
 	?>
 	
@@ -205,11 +205,11 @@
 </table>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-<script type="text/javascript"><?php include $_SYSTEM_DIRECTORY.'plugin/admin/pages/includes/linkChecker.js'; ?></script>
+<script type="text/javascript"><?php include _SYSTEM_DIRECTORY.'plugin/admin/pages/includes/linkChecker.js'; ?></script>
 
 
 <script type="text/javascript" >
-	<?php include $_SYSTEM_DIRECTORY.'plugin/admin/pages/includes/seoTest.js'; ?>
+	<?php include _SYSTEM_DIRECTORY.'plugin/admin/pages/includes/seoTest.js'; ?>
 	var seoTest = new SeoTest( <?php echo $seoList; ?> );
 </script>
 

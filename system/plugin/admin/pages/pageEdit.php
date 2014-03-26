@@ -15,7 +15,7 @@
 	
 	if ( !empty( $_POST['update'] ) && !empty( $_POST['file'] ) )
 	{
-		$fileName = $_CONTENT_DIRECTORY.$_POST['file'];
+		$fileName = _CONTENT_DIRECTORY.$_POST['file'];
 
 		try
 		{
@@ -58,21 +58,19 @@
 
 function formDir( $parent = '', $directory = '/' )
 {
-	global $_CONTENT_DIRECTORY;
 	global $ACTUAL_PAGE_URL;
 	
-	
 	$childNum = 0;
-	$rep = opendir($_CONTENT_DIRECTORY.$parent) or die('the directory '.$_CONTENT_DIRECTORY.$parent.' don\'t exist');
+	$rep = opendir(_CONTENT_DIRECTORY.$parent) or die('the directory '._CONTENT_DIRECTORY.$parent.' don\'t exist');
 	while($file = @readdir($rep))
     {
         if ( $file === "." || $file === ".." || substr( $file, 0, 1 ) === '.' ) continue;
 		
-		if( is_dir($_CONTENT_DIRECTORY.$parent.$file) )
+		if( is_dir(_CONTENT_DIRECTORY.$parent.$file) )
 		{
 			$childNum++;
 		}
-		else if( !is_dir($_CONTENT_DIRECTORY.$parent.$file) )
+		else if( !is_dir(_CONTENT_DIRECTORY.$parent.$file) )
 		{
 			$file_extension = strtolower(substr(strrchr($file, "."), 1));
 			if( $file_extension == 'php' )
@@ -85,18 +83,18 @@ function formDir( $parent = '', $directory = '/' )
 	
 	
 	$lastName = 'new';
-	if ( numPhpFile( $_CONTENT_DIRECTORY.$parent ) > 0 )
+	if ( numPhpFile( _CONTENT_DIRECTORY.$parent ) > 0 )
 	{
 		echo '<div><strong style="margin:12px 0 4px -2px; display:block;" >'.( ($childNum>0)?'':'').''.$directory.'</strong> ';
 	
-		$rep = opendir($_CONTENT_DIRECTORY.$parent) or die('the directory '.$_CONTENT_DIRECTORY.$parent.' don\'t exist');
+		$rep = opendir(_CONTENT_DIRECTORY.$parent) or die('the directory '._CONTENT_DIRECTORY.$parent.' don\'t exist');
 		while($file = @readdir($rep))
 		{
 
 			if ( $file === "." || $file === ".." || substr( $file, 0, 1 ) === '.' ) continue;
 
 
-			if( !is_dir($_CONTENT_DIRECTORY.$parent.$file) )
+			if( !is_dir(_CONTENT_DIRECTORY.$parent.$file) )
 			{
 
 				$file_extension = strtolower(substr(strrchr( str_replace ( '.cache', '', $file ) ,"."),1));
@@ -126,13 +124,13 @@ function formDir( $parent = '', $directory = '/' )
 
 		echo '<ul style="border-left:1px solid #CCC; display:'.( ($directory == '/' ) ? 'block' : 'block' ).';" >';
 	
-		$rep = opendir($_CONTENT_DIRECTORY.$parent) or die('rectory '.$_CONTENT_DIRECTORY.$parent.' don\'t exist');
+		$rep = opendir(_CONTENT_DIRECTORY.$parent) or die('rectory '._CONTENT_DIRECTORY.$parent.' don\'t exist');
 		while($file = @readdir($rep))
 		{
 
 			if ( $file === "." || $file === ".." || substr( $file, 0, 1 ) === '.' ) continue;
 
-			if( is_dir($_CONTENT_DIRECTORY.$parent.$file) )
+			if( is_dir(_CONTENT_DIRECTORY.$parent.$file) )
 			{
 				formDir( $parent.$file.'/' , $file );
 			}
@@ -235,7 +233,7 @@ echo '</ul>';
 		{
 			echoError( 'no variable file' );
 		}
-		if ( !file_exists($_CONTENT_DIRECTORY.$_POST['file']) )
+		if ( !file_exists(_CONTENT_DIRECTORY.$_POST['file']) )
 		{
 			echoError( 'the file '.$_POST['file'].'don\'t exist' );
 		}
@@ -247,7 +245,7 @@ echo '</ul>';
 		<form  action="<?php echo $ACTUAL_PAGE_URL; ?>#edit-page" method="POST" id="edit-page">
 			
 			<div style="padding: 16px; border: 1px solid #CCC;">
-				<textarea name="update" rows="50" cols="100" style="width:100%; border:none; font-family: 'Courier New', Courier, monospace; font-size: 13px;"><?php readfile( $_CONTENT_DIRECTORY.$_POST['file'] ); ?></textarea>
+				<textarea name="update" rows="50" cols="100" style="width:100%; border:none; font-family: 'Courier New', Courier, monospace; font-size: 13px;"><?php readfile( _CONTENT_DIRECTORY.$_POST['file'] ); ?></textarea>
 			</div>
 			
 			<input type="hidden" name="file" value="<?php echo $_POST['file']; ?>" />

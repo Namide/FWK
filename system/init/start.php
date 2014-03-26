@@ -1,6 +1,6 @@
 <?php
 
-if ( $_DEBUG )
+if ( _DEBUG )
 {
 	if (!ini_get('display_errors'))
 	{
@@ -9,25 +9,25 @@ if ( $_DEBUG )
 	error_reporting(E_ALL);
 }
 
-if ( $_CACHE )
+if ( _CACHE )
 {
-	include_once $_SYSTEM_DIRECTORY.'init/Cache.php';
-	$cache = new Cache( $_CACHE_DIRECTORY.'pages/' );
+	include_once _SYSTEM_DIRECTORY.'init/Cache.php';
+	$cache = new Cache( _CACHE_DIRECTORY.'pages/' );
 	
 	if( $cache->isCached() )
 	{
 		$cache->echoCache();
 		
-		if ( $_DEBUG ) echo '<!-- load cache time: ', number_format( microtime(true) - $timestart , 3) , 's -->';
+		if ( _DEBUG ) echo '<!-- load cache time: ', number_format( microtime(true) - $timestart , 3) , 's -->';
 		
 		exit();
 	}
 	elseif( $cache->isCachable() )
 	{
 		
-		include_once $_SYSTEM_DIRECTORY.'init/imports.php';
-		include_once $_SYSTEM_DIRECTORY.'init/loadPages.php';
-		include_once $_SYSTEM_DIRECTORY.'init/buildPage.php';
+		include_once _SYSTEM_DIRECTORY.'init/imports.php';
+		include_once _SYSTEM_DIRECTORY.'init/loadPages.php';
+		include_once _SYSTEM_DIRECTORY.'init/buildPage.php';
 		
 		
 		$cache->isCachable( $page );
@@ -40,7 +40,7 @@ if ( $_CACHE )
 			echo $cache->getSavedCache();
 
 
-			if ( $_DEBUG && $page->getCall() == Page::$CALL_PAGE )
+			if ( _DEBUG && $page->getCall() == Page::$CALL_PAGE )
 			{
 				echo '<!-- execute PHP and write cache time: ', number_format( microtime(true) - $timestart , 3), 's -->';
 			}
@@ -55,19 +55,18 @@ if ( $_CACHE )
 	}
 }
 
-include_once $_SYSTEM_DIRECTORY.'init/imports.php';
-include_once $_SYSTEM_DIRECTORY.'init/loadPages.php';
-include_once $_SYSTEM_DIRECTORY.'init/buildPage.php';
+include_once _SYSTEM_DIRECTORY.'init/imports.php';
+include_once _SYSTEM_DIRECTORY.'init/loadPages.php';
+include_once _SYSTEM_DIRECTORY.'init/buildPage.php';
 echoPage( $page );
 
-if ( $_DEBUG && $page->getCall() == Page::$CALL_PAGE )
+if ( _DEBUG && $page->getCall() == Page::$CALL_PAGE )
 {
 	echo '<!-- execute PHP time: ', number_format( microtime(true) - $timestart , 3),'s -->';
 }
 
 /**
  * 
- * @global string $_TEMPLATE_DIRECTORY
  * @param Page $page
  */
 function echoPage( &$page )
@@ -75,8 +74,6 @@ function echoPage( &$page )
 	
 	if ( $page->getCall() == Page::$CALL_PAGE )
 	{
-		global $_TEMPLATE_DIRECTORY;
-	
 		if ( $page->getPhpHeader() != '' )
 		{
 			header( $page->getPhpHeader() );
@@ -84,7 +81,7 @@ function echoPage( &$page )
 
 		if ( $page->getTemplate() != '' )
 		{
-			include $_TEMPLATE_DIRECTORY.$page->getTemplate().'.php';
+			include _TEMPLATE_DIRECTORY.$page->getTemplate().'.php';
 		}
 		else
 		{

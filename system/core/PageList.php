@@ -89,14 +89,12 @@ class PageList
     {
         //$pages = array();
         
-        global $_ROOT_DIRECTORY;
-        global $_CONTENT_DIRECTORY;
         $language = LanguageList::getInstance();
         $langs = $language->getList();
         
         foreach ( $langs as $lang )
         {
-            $filename = $_ROOT_DIRECTORY.$_CONTENT_DIRECTORY.$folderName.'/'.$lang.'-init.php';
+            $filename = _CONTENT_DIRECTORY.$folderName.'/'.$lang.'-init.php';
             
             if( file_exists ( $filename ) )
             {
@@ -106,7 +104,7 @@ class PageList
 				//Gateway::getInstance()->clearPageVo();
                 $page = $this->initPage( $page, $filename );
 				
-				$buildFile = $_ROOT_DIRECTORY.$_CONTENT_DIRECTORY.$folderName.'/'.$lang.'-build.php';
+				$buildFile = _CONTENT_DIRECTORY.$folderName.'/'.$lang.'-build.php';
 				if( file_exists ( $buildFile ) ) { $page->setBuildFile($buildFile); }
 				
 				
@@ -150,14 +148,12 @@ class PageList
     {
         //$pages = array();
         
-        global $_ROOT_DIRECTORY;
-        global $_CONTENT_DIRECTORY;
         $language = LanguageList::getInstance();
         $langs = $language->getList();
         
         foreach ( $langs as $lang )
         {
-			$filename = $_ROOT_DIRECTORY.$_CONTENT_DIRECTORY.$folderName.'/'.$lang.'-init.php';
+			$filename = _CONTENT_DIRECTORY.$folderName.'/'.$lang.'-init.php';
             if ( in_array( $lang, $listLang ) && file_exists ( $filename ) )
             {
 				$idList = array_search( $lang, $listLang );
@@ -177,7 +173,7 @@ class PageList
 				//Gateway::getInstance()->setPageVo( $listVo[$idList] );
 				$page = $this->initPage( $page, $filename );
 				
-				$buildFile = $_ROOT_DIRECTORY.$_CONTENT_DIRECTORY.$folderName.'/'.$lang.'-build.php';
+				$buildFile = _CONTENT_DIRECTORY.$folderName.'/'.$lang.'-build.php';
 				if( file_exists ( $buildFile ) ) { $page->setBuildFile($buildFile); }
 				
 				
@@ -366,7 +362,6 @@ class PageList
         }
         
         // IS ERROR 404
-		//global $_CACHE;
 		
 		if ( !empty( $this->error404PageId ) )
 		{

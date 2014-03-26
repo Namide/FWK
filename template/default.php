@@ -1,7 +1,7 @@
 <?php
 
-include_once $_TEMPLATE_DIRECTORY.'includes/menu.php';
-include_once $_TEMPLATE_DIRECTORY.'includes/footer.php';
+include_once _TEMPLATE_DIRECTORY.'includes/menu.php';
+include_once _TEMPLATE_DIRECTORY.'includes/footer.php';
 
 ?>
 

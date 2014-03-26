@@ -1,6 +1,6 @@
 <?php
 
-	include_once $_SYSTEM_DIRECTORY.'plugin/admin/pages/includes/helpers.php';
+	include_once _SYSTEM_DIRECTORY.'plugin/admin/pages/includes/helpers.php';
 
 	$ACTUAL_PAGE_URL = 'admin.php?p=page-list';
 	$PAGE_EDIT_URL = 'admin.php?p=page-edit';
@@ -71,10 +71,10 @@
 				<input list="directories" type=text name="pageId" required />
 				<datalist id="directories">
 					<?php
-						$listDir = getListDir( $_CONTENT_DIRECTORY );
+						$listDir = getListDir( _CONTENT_DIRECTORY );
 						foreach ($listDir as $value)
 						{
-							echo '<option value="'.substr( $value, strlen( $_CONTENT_DIRECTORY.'/' ) ).'">';
+							echo '<option value="'.substr( $value, strlen( _CONTENT_DIRECTORY.'/' ) ).'">';
 						}
 					?>
 				</datalist>

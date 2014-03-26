@@ -3,10 +3,10 @@
 $timestart = microtime(true);
 
 include_once( 'config.php' );
-include_once( $_SYSTEM_DIRECTORY.'init/start.php' );
+include_once( _SYSTEM_DIRECTORY.'init/start.php' );
 
 
-if ( $_DEBUG )
+if ( _DEBUG )
 {
 	echo '<!-- all page php time: ',number_format( microtime(true) - $timestart , 3),'s -->';
 }
