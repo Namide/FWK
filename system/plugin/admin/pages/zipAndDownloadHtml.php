@@ -5,8 +5,8 @@ global $_CONTENT_DIRECTORY;
 global $_SYSTEM_DIRECTORY;
 global $_ROOT_URL;
 
-include_once $_SYSTEM_DIRECTORY.'admin/pages/includes/zipRep.php';
-include_once $_SYSTEM_DIRECTORY.'admin/pages/includes/helpers.php';
+include_once $_SYSTEM_DIRECTORY.'plugin/admin/pages/includes/zipRep.php';
+include_once $_SYSTEM_DIRECTORY.'plugin/admin/pages/includes/helpers.php';
 
 $zipName = 'html.zip';
 

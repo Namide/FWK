@@ -9,12 +9,12 @@ if( !empty($_GET["p"]) )
 	{
 		case 'page-save':
 
-			include $_SYSTEM_DIRECTORY.'admin/pages/zipAndDownloadContent.php';
+			include $_SYSTEM_DIRECTORY.'plugin/admin/pages/zipAndDownloadContent.php';
 			break;
 
 		case 'page-html-save':
 
-			include $_SYSTEM_DIRECTORY.'admin/pages/zipAndDownloadHtml.php';
+			include $_SYSTEM_DIRECTORY.'plugin/admin/pages/zipAndDownloadHtml.php';
 			break;
 
 		default:
@@ -29,7 +29,7 @@ if( !empty($_GET["p"]) )
 <meta charset="UTF-8">
 <title>Admin - <?php echo $_ROOT_URL; ?></title>
 
-<style type="text/css"><?php include $_SYSTEM_DIRECTORY.'admin/template/includes/admin.css'; ?></style>
+<style type="text/css"><?php include $_SYSTEM_DIRECTORY.'plugin/admin/template/includes/admin.css'; ?></style>
 
 </head>
 
@@ -63,17 +63,17 @@ if( !empty($_GET["p"]) )
 				{
 					case 'page-debug':
 
-						include $_SYSTEM_DIRECTORY.'admin/pages/pageDebug.php';
+						include $_SYSTEM_DIRECTORY.'plugin/admin/pages/pageDebug.php';
 						break;
 
 					case 'page-list':
 
-						include $_SYSTEM_DIRECTORY.'admin/pages/pageList.php';
+						include $_SYSTEM_DIRECTORY.'plugin/admin/pages/pageList.php';
 						break;
 
 					case 'page-edit':
 
-						include $_SYSTEM_DIRECTORY.'admin/pages/pageEdit.php';
+						include $_SYSTEM_DIRECTORY.'plugin/admin/pages/pageEdit.php';
 						break;
 
 					default:

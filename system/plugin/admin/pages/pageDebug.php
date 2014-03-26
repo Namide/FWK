@@ -1,6 +1,6 @@
 <?php
 
-	include_once $_SYSTEM_DIRECTORY.'admin/pages/includes/helpers.php';
+	include_once $_SYSTEM_DIRECTORY.'plugin/admin/pages/includes/helpers.php';
 
 	$ACTUAL_PAGE_URL = 'admin.php?p=page-debug';
 
@@ -10,7 +10,7 @@
 	
 	if( !empty($_POST['standaloneHtml']) && $_POST['standaloneHtml'] === 'ALL' )
 	{
-		include_once $_SYSTEM_DIRECTORY.'admin/pages/includes/htmlGenerator.php';
+		include_once $_SYSTEM_DIRECTORY.'plugin/admin/pages/includes/htmlGenerator.php';
 		generateHtml( $pagesDebugPage );
 		echo '<script>window.location.href = "admin.php?p=page-html-save";</script>';
 	}
@@ -205,11 +205,11 @@
 </table>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-<script type="text/javascript"><?php include $_SYSTEM_DIRECTORY.'admin/pages/includes/linkChecker.js'; ?></script>
+<script type="text/javascript"><?php include $_SYSTEM_DIRECTORY.'plugin/admin/pages/includes/linkChecker.js'; ?></script>
 
 
 <script type="text/javascript" >
-	<?php include $_SYSTEM_DIRECTORY.'admin/pages/includes/seoTest.js'; ?>
+	<?php include $_SYSTEM_DIRECTORY.'plugin/admin/pages/includes/seoTest.js'; ?>
 	var seoTest = new SeoTest( <?php echo $seoList; ?> );
 </script>
 

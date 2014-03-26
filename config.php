@@ -34,7 +34,7 @@ $_URL_REWRITING = FALSE;
 $_DEBUG = TRUE;
 
 // Cache activated => TRUE, deactivated => FALSE
-$_CACHE = TRUE;
+$_CACHE = FALSE;
 
 // Maximum number of files in the cache directory
 // It is better to have 5 beyond the maximum number of cachable pages

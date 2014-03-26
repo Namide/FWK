@@ -1,6 +1,6 @@
 <?php
 
-	include_once $_SYSTEM_DIRECTORY.'admin/pages/includes/helpers.php';
+	include_once $_SYSTEM_DIRECTORY.'plugin/admin/pages/includes/helpers.php';
 
 	$ACTUAL_PAGE_URL = 'admin.php?p=page-list';
 	$PAGE_EDIT_URL = 'admin.php?p=page-edit';

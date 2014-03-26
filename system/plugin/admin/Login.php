@@ -118,7 +118,7 @@ class Login
 	private function getFileToken( $id, $name )
 	{
 		global $_SYSTEM_DIRECTORY;
-		return $_SYSTEM_DIRECTORY.'admin/logs/'.$id.'_'.$name.'.php';
+		return $_SYSTEM_DIRECTORY.'plugin/admin/logs/'.$id.'_'.$name.'.php';
 	}
 
 	public static function getLogoutForm()

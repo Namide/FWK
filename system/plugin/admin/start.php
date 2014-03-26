@@ -12,9 +12,9 @@ include_once $_SYSTEM_DIRECTORY.'init/loadPages.php';
 include_once $_SYSTEM_DIRECTORY.'init/buildPage.php';
 //include $_TEMPLATE_DIRECTORY.$page->getTemplate().'.php';
 
-include_once $_SYSTEM_DIRECTORY.'admin/Login.php';
+include_once $_SYSTEM_DIRECTORY.'plugin/admin/Login.php';
 $login = new Login();
 
-include_once $_SYSTEM_DIRECTORY.'admin/template/default.php';
+include_once $_SYSTEM_DIRECTORY.'plugin/admin/template/default.php';
 
 if ( $_DEBUG ) echo '<!-- execute PHP time: ',number_format( microtime(true) - $timestart , 3),'s -->';
