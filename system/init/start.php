@@ -1,5 +1,7 @@
 <?php
 
+$timestart = microtime(true);
+
 if ( _DEBUG )
 {
 	if (!ini_get('display_errors'))
@@ -107,3 +109,6 @@ function echoPage( &$page )
 	}
 	
 }
+
+
+
