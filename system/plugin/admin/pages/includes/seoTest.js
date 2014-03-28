@@ -80,7 +80,7 @@ SeoTest.prototype =
 		valid = 0;
 		for ( var i = 0; i<alt.length; i++ )
 		{
-			if ( alt[i].length > 60 ) { valid++; }
+			if ( alt[i].length > 0 && alt[i].length < 60 ) { valid++; }
 		}
 		resume += seoTest.getSpanText( (valid) + "/" + alt.length + " alt too longs", (valid<1), " ( chars < 60 )" );
 

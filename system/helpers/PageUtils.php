@@ -15,7 +15,7 @@ class PageUtils
 	 */
 	public static function getRootAbsoluteUrl( $file )
     {
-        return _ROOT_URL._ROOT_DIRECTORY.$file;
+        return _ROOT_URL.$file;
     }
 	
 	/**

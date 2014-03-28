@@ -54,7 +54,7 @@ class Element
 	 */
     public function addTag( $tag )
 	{
-		array_push($this->_tags, $tag);
+		$this->_tags[] = $tag;
 	}
 	
 	/**
@@ -155,6 +155,7 @@ class Element
 		}
 		
 		$this->_language = $lang;
+		$this->_contents = array();
     }
     
 }

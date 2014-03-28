@@ -18,7 +18,7 @@ class ElementList
 	
 	final private function __construct()
     {
-        
+        $this->reset();
 	}
 	
 	public function reset()
@@ -172,7 +172,7 @@ class ElementList
  
 	/**
 	 * 
-	 * @return PageList
+	 * @return ElementList
 	 */
     final public static function getInstance()
     {
