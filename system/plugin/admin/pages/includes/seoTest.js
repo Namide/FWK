@@ -77,12 +77,22 @@ SeoTest.prototype =
 		}
 		resume += seoTest.getSpanText( (valid) + "/" + p.length + " paragraph (p) too longs", (valid<1), " ( words < 85 )" );
 
+
+
 		valid = 0;
 		for ( var i = 0; i<alt.length; i++ )
 		{
-			if ( alt[i].length > 0 && alt[i].length < 60 ) { valid++; }
+			if ( alt[i].length > 60 ) { valid++; }
 		}
-		resume += seoTest.getSpanText( (valid) + "/" + alt.length + " alt too longs", (valid<1), " ( chars < 60 )" );
+		resume += seoTest.getSpanTextInline( (valid) + "/" + alt.length + " alt too longs", (valid<1), " ( chars < 60 )" );
+		valid = 0;
+		for ( var i = 0; i<alt.length; i++ )
+		{
+			if ( alt[i].length < 1 ) { valid++; }
+		}
+		resume += seoTest.getSpanText( (valid) + "/" + alt.length + " empty", (valid<1), " ( chars > 0 )" );
+
+
 
 		return resume;
 	},
@@ -108,6 +118,11 @@ SeoTest.prototype =
 	getSpanText:function( text, valid, error )
 	{
 		return '<span style="color:'+((valid)?"green":"red")+'">' + text + ((valid)?"":error) + '<br />';
+	},
+
+	getSpanTextInline:function( text, valid, error )
+	{
+		return '<span style="color:'+((valid)?"green":"red")+'">' + text + ((valid)?"":error) + " ";
 	},
 
 	getTagContent:function( text, tag1, tag2 )
