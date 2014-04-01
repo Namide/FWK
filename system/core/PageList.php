@@ -142,55 +142,56 @@ class PageList
 	
 	/**
 	 * 
-	 * @param string $id
+	 * @param string $folderName
+	 * @param string $url
+	 * @param string $lang
+	 * @param * $vo
 	 */
-    public function addDynamicPage( $folderName, $listUrl, $listLang, $listVo )
+	public function addDynamicPage( $folderName, $url, $lang, $vo )
     {
-        //$pages = array();
         
-        $language = LanguageList::getInstance();
-        $langs = $language->getList();
-        
-        foreach ( $langs as $lang )
-        {
-			$filename = _CONTENT_DIRECTORY.$folderName.'/'.$lang.'-init.php';
-            if ( in_array( $lang, $listLang ) && file_exists ( $filename ) )
-            {
-				$idList = array_search( $lang, $listLang );
-				/*if ( !array_key_exists($lang, $urlByLang) )
+		$filename = _CONTENT_DIRECTORY.$folderName.'/'.$lang.'-init.php';
+		if ( file_exists ( $filename ) )
+		{
+			$page = new DynamicPage( $folderName, $url, $vo );
+			$page->setLanguage( $lang );
+
+			$page = $this->initPage( $page, $filename );
+
+			$buildFile = _CONTENT_DIRECTORY.$folderName.'/'.$lang.'-build.php';
+			if( file_exists ( $buildFile ) )
+			{
+				$page->setBuildFile( $buildFile );
+			}
+
+
+			// ADD THE PAGE'S URL
+
+				$pageUrl = $page->getUrl();
+				if ( $this->hasUrl( $pageUrl ) || $this->hasUrlRequest( $pageUrl ) )
 				{
-					break 1;
+					trigger_error( 'The URL '.$pageUrl.' of the page [id:'.$page->getId().', lang:'.$page->getLanguage().', url:'.$page->getUrl().'] already exist', E_USER_ERROR );
 				}
-				
-				if ( !array_key_exists($lang, $voByLang) )
-				{
-					break 1;
-				}*/
-				
-				$page = new DynamicPage( $folderName, $listUrl[$idList], $listVo[$idList] );
-				$page->setLanguage( $lang );
-				
-				//Gateway::getInstance()->setPageVo( $listVo[$idList] );
-				$page = $this->initPage( $page, $filename );
-				
-				$buildFile = _CONTENT_DIRECTORY.$folderName.'/'.$lang.'-build.php';
-				if( file_exists ( $buildFile ) ) { $page->setBuildFile($buildFile); }
-				
-				
-				// ADD THE PAGE'S URL
-				
-					$pageUrl = $page->getUrl();
-					if ( $this->hasUrl( $pageUrl ) || $this->hasUrlRequest( $pageUrl ) )
-					{
-						trigger_error( 'The URL '.$pageUrl.' of the page [id:'.$page->getId().', lang:'.$page->getLanguage().', url:'.$page->getUrl().'] already exist', E_USER_ERROR );
-					}
-					$this->_pagesByUrl[$pageUrl] = $page;
-				
-					
-				// ------
-            }
-        }
+				$this->_pagesByUrl[$pageUrl] = $page;
+
+			// ------
+		}
         
+    }
+	
+	/**
+	 * 
+	 * @param string $folderName
+	 * @param array $listUrl
+	 * @param array $listLang
+	 * @param array $listVo
+	 */
+	public function addDynamicPages( $folderName, $listUrl, $listLang, $listVo )
+    {
+		foreach ( $listLang as $id => $value )
+		{
+			$this->addDynamicPage( $folderName, $listUrl[$id], $listLang[$id], $listVo[$id] );
+		}
     }
 	
 	public function go()
