@@ -54,7 +54,7 @@ class PageList
 	 */
 	public function addDefaultPage( $id )
     {
-        $this->defaultPageId = $id;
+		$this->defaultPageId = $id;
         $this->addPage($id);
     }
 
@@ -422,6 +422,36 @@ class PageList
             {
                 return $page;
             }
+        }
+		
+		/* IF THE LANGUAGE OF THE DEFAULT PAGE DON'T EXIST */
+		foreach ( $this->_pagesByUrl as $page )
+        {
+            $idTemp = $page->getId();
+            $langTemp = $page->getLanguage();
+			
+            if ( $idTemp == $id )
+            {
+                return $page;
+            }
+        }
+		
+		/* IF THE DEFAULT PAGE DON'T EXIST */
+		foreach ( $this->_pagesByUrl as $page )
+        {
+            $langTemp = $page->getLanguage();
+			
+            if ( $langTemp == $lang )
+            {
+                return $page;
+            }
+        }
+		
+		/* ELSE */
+		foreach ( $this->_pagesByUrl as $page )
+        {
+            $langTemp = $page->getLanguage();
+			return $page;
         }
     }
     

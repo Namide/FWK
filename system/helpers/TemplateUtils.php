@@ -19,7 +19,7 @@ class TemplateUtils
     
     final private function __construct()
     {
-		  $this->reset();  
+		  $this->reset();
     }
 	
 	public function reset()
