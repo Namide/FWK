@@ -147,7 +147,7 @@ class PageList
 	 * @param string $lang
 	 * @param * $vo
 	 */
-	public function addDynamicPage( $folderName, $url, $lang, $vo )
+	public function addDynamicPage( $folderName, $url, $lang, $vo, $name = '' )
     {
         
 		$filename = _CONTENT_DIRECTORY.$folderName.'/'.$lang.'-init.php';
@@ -155,6 +155,7 @@ class PageList
 		{
 			$page = new DynamicPage( $folderName, $url, $vo );
 			$page->setLanguage( $lang );
+			$page->setName( $name );
 
 			$page = $this->initPage( $page, $filename );
 
@@ -177,6 +178,31 @@ class PageList
 			// ------
 		}
         
+    }
+	
+	/**
+	 * 
+	 * @param string $folderName
+	 * @param string $lang
+	 * @param string $name
+	 * @return \DynamicPage
+	 */
+	public function getDynamicPage( $folderName, $lang, $name )
+    {
+		foreach ( $this->_pagesByUrl as $page )
+		{
+			if (	$page instanceof DynamicPage &&
+					$page->getId() === $folderName &&
+					$page->getLanguage() === $lang &&
+					$page->getName() === $name )
+			{
+				return $page;
+			}
+		}
+		
+		//return $this->getDefaultPage($lang);
+		trigger_error( 'The dynamic page [dir:'.$folderName.' lang:'.$lang.' name:'.$name.'] dont\'t exist', E_USER_ERROR );
+		
     }
 	
 	/**

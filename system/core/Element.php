@@ -22,7 +22,18 @@ class Element
 	 */
     public function getLanguage() { return $this->_language; }
 
-    
+    private $_id;
+	/**
+	 * 
+	 * @param string $id
+	 */
+    public function setId( $id ) { $this->_id = $id; }
+	/**
+	 * 
+	 * @return string
+	 */
+    public function getId() { return $this->_id; }
+	
 	private $_type;
 	/**
 	 * 
@@ -77,6 +88,23 @@ class Element
     public function hasTag( $tag )
     {
         return in_array( $tag, $this->_tags );
+    }
+	
+	/**
+	 * 
+	 * @param array $tag
+	 * @return boolean
+	 */
+    public function hasTags( $tags )
+    {
+		foreach ($tags as $tag)
+		{
+			if ( !$this->hasTag($tag) )
+			{
+				return false;
+			}
+		}
+		return true;
     }
 	
 	/**

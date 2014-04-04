@@ -30,6 +30,16 @@ class PageUtils
     
 	/**
 	 * 
+	 * @param string $file
+	 * @return string
+	 */
+    public static function getContentAbsoluteUrl( $file )
+    {
+       return _ROOT_URL._CONTENT_DIRECTORY.$file;
+    }
+	
+	/**
+	 * 
 	 * @param string $url
 	 * @return string
 	 */
@@ -76,6 +86,7 @@ class PageUtils
 		$replacePage = preg_replace('/\{\{pathCurrentPage:(.*?)\}\}/', $page->getAbsoluteUrl('$1'), $text);
         $replacePage = preg_replace('/\{\{urlPageToAbsoluteUrl:(.*?)\}\}/', PageUtils::urlPageToAbsoluteUrl('$1'), $replacePage);
         $replacePage = preg_replace('/\{\{pathTemplate:(.*?)\}\}/', PageUtils::getTemplateAbsoluteUrl('$1'), $replacePage);
+		$replacePage = preg_replace('/\{\{pathContent:(.*?)\}\}/', PageUtils::getContentAbsoluteUrl('$1'), $replacePage);
 
 		$pageList = PageList::getInstance();
 		if ( $pageList->getInitialised() )

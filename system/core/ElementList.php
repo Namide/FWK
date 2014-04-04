@@ -11,7 +11,7 @@ class ElementList
 	 * 
 	 * @return array
 	 */
-	public function getElementsById()
+	public function getElements()
 	{
 		return $this->_elements;
 	}
@@ -61,7 +61,26 @@ class ElementList
 		trigger_error( 'The Element ['.$name.'] don\'t exist in the language '.$lang, E_USER_ERROR );
 	}
 		
+	/**
+	 * 
+	 * @param string $id
+	 * @param string $lang
+	 * @param array $tags
+	 * @return type
+	 */
+	public function getElementById( $id, $lang, $tags = array() )
+	{
+		foreach ( $this->_elements as $element )
+        {
+			if( $element->getId() == $id && ($element->getLanguage() == $lang || $lang == 'all') )
+			{
+				if ( $element->hasTag( $tags ) ) return $element;
+			}
+        }
 		
+		trigger_error( 'The Element ['.$id.'] don\'t exist in the language '.$lang, E_USER_ERROR );
+	}
+	
 	/**
 	 * 
 	 * @param string $tag
@@ -88,15 +107,15 @@ class ElementList
 	 * @param string $lang
 	 * @return array
 	 */
-    public function getElementsByTags( $tags, $lang )
+	public function getElementsWithOneOfTags( $tags, $lang )
     {
-		
 		$elements = array();
         foreach ( $this->_elements as $element )
         {
             foreach ( $tags as $category )
             {
-                if( ($element->getLanguage() == $lang || $lang == 'all') && $element->hasTag($category) )
+                if( (	$element->getLanguage() == $lang || $lang == 'all')
+						&& $element->hasTag($category) )
                 {
                     array_push( $elements, $element );
                     break 1;
@@ -106,20 +125,40 @@ class ElementList
         return $elements;
     }
     
+	/**
+	 * 
+	 * @param array $tags
+	 * @param string $lang
+	 * @return array
+	 */
+	public function getElementsWithAllTags( $tags, $lang )
+    {
+		$elements = array();
+        foreach ( $this->_elements as $element )
+        {
+            if( (	$element->getLanguage() == $lang || $lang == 'all')
+					&& $element->hasTags($tags) )
+			{
+				array_push( $elements, $element );
+			}
+            
+        }
+        return $elements;
+    }
 	
 	/**
 	 * 
 	 * @param string $lang
 	 * @return array
 	 */
-    public function getAllElements( $lang )
+    public function getElementsByLanguage( $lang )
     {
         
 		$elements = array();
         foreach ( $this->_elements as $element )
         {
             $langTemp = $element->getLanguage();
-            if ( ( $langTemp == $lang || $lang == 'all' ) )
+            if ( ( $langTemp == $lang /*|| $lang == 'all'*/ ) )
             {
                 array_push( $elements, $element );
             }
@@ -149,10 +188,10 @@ class ElementList
 	
 	/**
 	 * 
-	 * @param string $url
+	 * @param string $name
 	 * @return boolean
 	 */
-	public function hasName( $url )
+	public function hasName( $name )
     {
 		foreach ( $this->_elements as $element )
         {

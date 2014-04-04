@@ -389,6 +389,7 @@ $cachable = TRUE;
 	{{urlPageToAbsoluteUrl:en/post/min-max}}
 	{{idPageToAbsoluteUrl:basic/homepage}}
 	{{pathTemplate:css/alternative-slideshow.css}}
+	{{pathContent:img/test.jpg}}
 	{{pathCurrentPage:img/test.jpg}}
 */
 

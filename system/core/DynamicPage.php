@@ -6,12 +6,12 @@ class DynamicPage extends Page
 	private $_vo;
 	/**
 	 * 
-	 * @param boolean $vo
+	 * @param type $vo
 	 */
     public function setVo( $vo ) { $this->_vo = $vo; }
 	/**
 	 * 
-	 * @return boolean
+	 * @return type
 	 */
     public function getVo() { return $this->_vo; }
 	/**
@@ -22,6 +22,19 @@ class DynamicPage extends Page
 	{
 		// disables the url
 	}
+	
+	private $_name;
+	/**
+	 * 
+	 * @param string $name
+	 */
+    public function setName( $name ) { $this->_name = $name; }
+	/**
+	 * 
+	 * @return string
+	 */
+    public function getName() { return $this->_name; }
+	
 	
 	public function __construct( $id, $url, $vo )
     {
