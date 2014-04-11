@@ -355,7 +355,7 @@ class PageList
 	 */
     public function getPageByUrl( $url )
     {
-        if ( !$this->_initialised ) 
+		 if ( !$this->_initialised ) 
 		{
 			trigger_error( 'All pages must be initialised after use getPageByUrl() method', E_USER_ERROR );
 		}
@@ -376,12 +376,24 @@ class PageList
 		foreach ( $this->_pagesByUrl as $page )
         {
             $urlTemp = $page->getUrl();
-            if ( $url == $urlTemp || $url == $urlTemp.'/' ) { return $page; }
+            if ( $url === $urlTemp || $url === $urlTemp.'/' )
+			{
+				$page->setCall( Page::$CALL_PAGE );
+				return $page;
+			}
+        }
+		foreach ( $this->_requestsByUrl as $page )
+        {
+            $urlTemp = $page->getUrl();
+            if ( $url === $urlTemp || $url === $urlTemp.'/' )
+			{
+				$page->setCall( Page::$CALL_REQUEST );
+				return $page;
+			}
         }
         
         // IS DEFAULT PAGE
 		$lang = $this->getLanguageByUrl( $url );
-        //$pathUrl = explode ('/', $url);
         if( $url === '' || $url === '/' )
         {
 			$this->getDefaultPage()->setCall( Page::$CALL_PAGE );

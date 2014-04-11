@@ -46,7 +46,7 @@ SeoTest.prototype =
 		var p = seoTest.getTagsContent( page, "<p", "</p>", false );
 		var alt = seoTest.getTagsContent( page, "alt=\"", "\"", true );
 
-		//var numErrors;
+		var numErrors;
 		var valid = (headTitle.length>0 && headTitle.length<65);
 		var resume = seoTest.getSpanText( "title: " + headTitle.length + " chars", valid, " ( < 65 )" );
 
@@ -79,18 +79,18 @@ SeoTest.prototype =
 
 
 
-		valid = 0;
+		numErrors = 0;
 		for ( var i = 0; i<alt.length; i++ )
 		{
-			if ( alt[i].length > 60 ) { valid++; }
+			if ( alt[i].length > 60 ) { numErrors++; }
 		}
-		resume += seoTest.getSpanTextInline( (valid) + "/" + alt.length + " alt too longs", (valid<1), " ( chars < 60 )" );
-		valid = 0;
+		resume += seoTest.getSpanTextInline( (numErrors) + "/" + alt.length + " alt too longs", (numErrors<1), " ( chars < 60 )" );
+		numErrors = 0;
 		for ( var i = 0; i<alt.length; i++ )
 		{
-			if ( alt[i].length < 1 ) { valid++; }
+			if ( alt[i].length < 1 ) { numErrors++; }
 		}
-		resume += seoTest.getSpanText( (valid) + "/" + alt.length + " empty", (valid<1), " ( chars > 0 )" );
+		resume += seoTest.getSpanText( (numErrors) + "/" + alt.length + " empty", (numErrors<1), " ( chars > 0 )" );
 
 
 
