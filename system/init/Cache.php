@@ -1,6 +1,9 @@
 <?php
 
-
+/**
+ * Cache handler.
+ * Can be used for cache's pages and other save of files.
+ */
 class Cache
 {
 	
@@ -34,6 +37,7 @@ class Cache
     }
 	
 	/**
+	 * Test if the actual page is already cached
 	 * 
 	 * @return boolean
 	 */
@@ -42,6 +46,9 @@ class Cache
 		return file_exists( $this->rootDir.$this->pageFile );
 	}
 	
+	/**
+	 * Write the actual page (with the function readfile)
+	 */
 	public function echoCache()
 	{
 		$file_extension = strtolower(substr(strrchr( $this->pageFile ,"."),1));
@@ -58,6 +65,11 @@ class Cache
 	}
 	
 	/**
+	 * Test if the page is cachable.
+	 * A page is cachable if :
+	 * - the maximum of cached page not reached
+	 * - the propertie "cachable" of the page is TRUE
+	 * - the "call type" of the page is Page::$CALL_PAGE or Page::$CALL_REQUEST
 	 * 
 	 * @param type $page
 	 * @return boolean

@@ -1,5 +1,7 @@
 <?php
 
+// initialize the pages
+
 $pageList = PageList::getInstance();
 
 $pageList->addDefaultPage( 'basic/homepage' );
