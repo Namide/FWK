@@ -65,7 +65,10 @@ class PageList
     public function addError404Page( $id )
     {
         $this->error404PageId = $id;
-        $this->addPage($id);
+		foreach ( $this->addPage($id) as $page)
+		{
+			$this->makeError404Page( $page );
+		}
     }
 	
 	/**
@@ -87,7 +90,7 @@ class PageList
 	 */
     public function addPage( $folderName )
     {
-        //$pages = array();
+        $pages = array();
         
         $language = LanguageList::getInstance();
         $langs = $language->getList();
@@ -133,11 +136,11 @@ class PageList
 				// ------
 				
 				
-				//array_push( $pages, $page );
+				array_push( $pages, $page );
             }
         }
         
-		//return $pages;
+		return $pages;
     }
 	
 	/**
@@ -537,6 +540,22 @@ class PageList
         return $this->getDefaultPage();
     }
     
+	public function getPages( $id )
+    {
+		if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getPages() method', E_USER_ERROR );
+		
+		$pages = array();
+		foreach ( $this->_pagesByUrl as $page )
+        {
+            $idTemp = $page->getId();
+            if ( $idTemp === $id )
+            {
+                array_push($pages, $page);
+            }
+        }
+        return $pages;
+    }
+	
 	/**
 	 * 
 	 * @param string $id
