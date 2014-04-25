@@ -1,15 +1,13 @@
 <?php
 
-$dynamicData = (isset($vo)?$vo:'FWK');
+	$dynamicData = (isset($vo)?$vo:'FWK');
+	$requestsContent = array( 'request/test01' => 'First AJAX content' );
 
-$body = <<<EOF
+?>
 
-
-<article><h1>Bienvenue sur $dynamicData</h1>
-<p>Voici votre page d'accueil.</p>
-<img width="" height="" src="{{pathCurrentPage:img/example.png}}" alt="image example">
+<article>
+	<h1>Bienvenue sur <?=$dynamicData?></h1>
+	<p>Voici votre page d'accueil.</p>
+	<img width="" height="" src="{{pathCurrentPage:img/example.png}}" alt="image example">
 </article>
 		
-EOF;
-
-$requestsContent = array( 'request/test01' => 'First AJAX content' );

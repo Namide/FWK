@@ -241,7 +241,39 @@ class PageList
 		$page->startBuild();
 		
 		
-		$page = $this->initPage( $page, $buildFile );
+		
+		
+		//----------------------
+		// get the output buffer
+		//----------------------
+			ob_start();
+			//extract( $this->var );
+			$page = $this->initPage( $page, $buildFile ); // dd
+			$body = ob_get_clean();
+		//----------------------
+
+
+		// save the output in the cache
+		/*if( $this->cache )
+			file_put_contents( $this->tpl['cache_filename'], "<?php if(!class_exists('raintpl')){exit;}?>" . $echo );*/
+
+		// free memory
+		//unset( $this->tpl );
+
+		// return or print the template
+		//if( $return_string ) return $echo; else echo $echo;
+		
+		//if ( isset($body) )			$page->setBody ( PageUtils::mustache($body, $page) );
+		
+		$page->setBody( PageUtils::mustache($body, $page) );
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		return $page;
 	}

@@ -1,18 +1,19 @@
+<article>
+<h1>Sitemap</h1>
+
+
+<ul>
+	
 <?php
+	$lang = 'en';
+	$pageList = PageList::getInstance();
+	foreach( $pageList->getAllPages($lang) as $pageTemp )
+	{
+		echo '<li><a href="',PageUtils::urlPageToAbsoluteUrl( $pageTemp->getUrl() ),'">';
+		echo $pageTemp->getTitle(),'</a></li>';
+	}
+?>
 
+</ul>
 
-$body = '<article>';
-$body.= "<h1>Sitemap</h1>";
-$lang = 'en';
-$pageList = PageList::getInstance();
-
-
-$body .= '<ul>';
-foreach( $pageList->getAllPages($lang) as $pageTemp )
-{
-    $body .= '<li><a href="'.PageUtils::urlPageToAbsoluteUrl( $pageTemp->getUrl() ).'">';
-    $body .= $pageTemp->getTitle().'</a></li>';
-}
-$body .= '</ul>';
-
-$body .= '</article>';
+</article>

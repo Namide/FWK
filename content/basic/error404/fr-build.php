@@ -1,8 +1,4 @@
-<?php
 
-
-
-$body = <<<EOF
 <article class="post">
 	
 	<header>
@@ -13,4 +9,4 @@ $body = <<<EOF
 	<p>Cette page n'existe pas.</p>
 		
 </article>
-EOF;
+
