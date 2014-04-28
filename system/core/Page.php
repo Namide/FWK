@@ -197,6 +197,15 @@ class Page
 	
 	/**
 	 * 
+	 * @param array $tag
+	 */
+    public function addTags( $tags )
+	{
+		$this->_tags = array_merge((array)$this->_tags, (array)$tags);
+	}
+	
+	/**
+	 * 
 	 * @param array $tags
 	 */
     public function addCategories( $tags )
