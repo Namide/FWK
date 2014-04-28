@@ -25,10 +25,9 @@ class Cache
 		$this->rootDir = $rootDir;
 		
 		
-		include_once _SYSTEM_DIRECTORY.'helpers/Url.php';
+		include_once _SYSTEM_DIRECTORY.'helpers/UrlUtil.php';
 		
-		
-		$this->pageFile = /*$_CACHE_DIRECTORY.*/Url::getURICacheID();
+		$this->pageFile = UrlUtil::getURICacheID();
 		$path = explode( "/", $this->pageFile );
 		if ( count( explode( ".", array_pop($path) ) ) < 2 )
 		{
@@ -156,11 +155,10 @@ allow from all
 		
 		if ( $file == '' )
 		{
-			$file = $this->rootDir.$this->pageFile;//$_CACHE_DIRECTORY;
+			$file = $this->rootDir.$this->pageFile;
 		}
 		
-		include_once _SYSTEM_DIRECTORY.'helpers/TemplateUtils.php';
-		$page = TemplateUtils::getInstance()->getCurrentPage();
+		$page = BuildUtil::getInstance()->getCurrentPage();
 		if ( $page->getCachable() )
 		{
 			$this->writesCacheFile( $pageContent, $file );
