@@ -155,7 +155,7 @@
 
 		<!-- url -->
 		<td>
-			<a href="<?php echo PageUtils::urlPageToAbsoluteUrl( $page->getUrl()); ?>"><?php echo $page->getUrl(); ?></a><br />
+			<a href="<?php echo BuildUtil::getInstance()->urlPageToAbsUrl( $page->getUrl()); ?>"><?php echo $page->getUrl(); ?></a><br />
 			<?php echo 'content'.'/'.$page->getID().'/'; ?>
 		</td>
 
@@ -190,7 +190,7 @@
 
 		<td id="seo<?php echo $i; ?>">
 			<?php 
-				$seoList .= '{ url:"'.PageUtils::urlPageToAbsoluteUrl( $page->getUrl()).'", id:"seo'.$i.'" }';
+				$seoList .= '{ url:"'.BuildUtil::getInstance()->urlPageToAbsUrl( $page->getUrl()).'", id:"seo'.$i.'" }';
 			?>
 		</td>
 		

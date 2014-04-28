@@ -43,7 +43,7 @@
 
 		<!-- url -->
 		<td>
-			<a href="<?php echo PageUtils::urlPageToAbsoluteUrl( $page->getUrl()) ?>" class="checkURL"><?php echo $page->getUrl() ?></a><br />
+			<a href="<?php echo BuildUtil::getInstance()->urlPageToAbsUrl( $page->getUrl()) ?>" class="checkURL"><?php echo $page->getUrl() ?></a><br />
 		</td>
 
 	</tr>

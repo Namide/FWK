@@ -89,7 +89,7 @@ class InitUtil
 	public function mustache( $text, &$page )
     {
 		$replacePage = preg_replace('/\{\{pathCurrentPage:(.*?)\}\}/', $page->getAbsoluteUrl('$1'), $text);
-		$replacePage = preg_replace('/\{\{urlPageToAbsUrl:(.*?)\}\}/', $this->urlPageToAbsUrl('$1'), $replacePage);
+		$replacePage = preg_replace('/\{\{urlPageToAbsoluteUrl:(.*?)\}\}/', $this->urlPageToAbsUrl('$1'), $replacePage);
         $replacePage = preg_replace('/\{\{pathTemplate:(.*?)\}\}/', $this->getTemplateAbsUrl('$1'), $replacePage);
 		$replacePage = preg_replace('/\{\{pathContent:(.*?)\}\}/', $this->getContentAbsUrl('$1'), $replacePage);
 

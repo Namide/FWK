@@ -2,8 +2,8 @@
 
 if ( _DEBUG ) error_reporting(E_ALL);
 
-include_once _SYSTEM_DIRECTORY.'helpers/Url.php';
-if ( isset( $_GET[Url::getPageGetArg()] ) ) $_GET[Url::getPageGetArg()] = 'admin';
+include_once _SYSTEM_DIRECTORY.'helpers/UrlUtil.php';
+if ( isset( $_GET[UrlUtil::getPageGetArg()] ) ) $_GET[Url::getPageGetArg()] = 'admin';
 
 
 
