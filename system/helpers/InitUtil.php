@@ -63,8 +63,7 @@ class InitUtil
     public function getAbsUrlByIdLang( $idPage, $lang )
     {
 		$pagesClass = PageList::getInstance();
-		//if ( $lang === NULL ) $lang = TemplateUtils::getInstance()->getLanguage();
-        $page = $pagesClass->getPage( $idPage, $lang );
+		$page = $pagesClass->getPage( $idPage, $lang );
 		
          return _ROOT_URL.( (!_URL_REWRITING) ? (UrlUtil::$BASE_PAGE_URL) : '' ).$page->getUrl();
     }
@@ -90,24 +89,22 @@ class InitUtil
 	public function mustache( $text, &$page )
     {
 		$replacePage = preg_replace('/\{\{pathCurrentPage:(.*?)\}\}/', $page->getAbsoluteUrl('$1'), $text);
-		$replacePage = preg_replace('/\{\{urlPageToAbsUrl:(.*?)\}\}/', InitUtil::getInstance()->urlPageToAbsUrl('$1'), $replacePage);
-        $replacePage = preg_replace('/\{\{pathTemplate:(.*?)\}\}/', InitUtil::getInstance()->getTemplateAbsUrl('$1'), $replacePage);
-		$replacePage = preg_replace('/\{\{pathContent:(.*?)\}\}/', InitUtil::getInstance()->getContentAbsUrl('$1'), $replacePage);
+		$replacePage = preg_replace('/\{\{urlPageToAbsUrl:(.*?)\}\}/', $this->urlPageToAbsUrl('$1'), $replacePage);
+        $replacePage = preg_replace('/\{\{pathTemplate:(.*?)\}\}/', $this->getTemplateAbsUrl('$1'), $replacePage);
+		$replacePage = preg_replace('/\{\{pathContent:(.*?)\}\}/', $this->getContentAbsUrl('$1'), $replacePage);
 
 		$pageList = PageList::getInstance();
 		if ( $pageList->getInitialised() )
 		{
-			$replacePage = preg_replace_callback( '/\{\{idPageToAbsoluteUrl:(.*?)\}\}/', function ($matches)
+			$replacePage = preg_replace_callback( '/\{\{idPageToAbsoluteUrl:(.*?)\}\}/', function ($matches) use($page)
 			{
-				$lang = TemplateUtils::getInstance()->getLanguage();
-				//return PageUtils::getAbsoluteUrl( $matches[1], $lang );
-				return InitUtil::getInstance()->getAbsoluteUrl( $matches[1], $lang );
+				$lang = $page->getLanguage();//$this->_language;//BuildUtil::getInstance()->getLang();
+				return InitUtil::getInstance()->getAbsUrlByIdLang( $matches[1], $lang );
 			}, $replacePage );
 		}
 
         return $replacePage;
     }
-	
 	
 	final public function __clone()
     {

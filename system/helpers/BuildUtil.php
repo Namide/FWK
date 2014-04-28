@@ -60,11 +60,11 @@ class BuildUtil extends InitUtil
 	 */
 	public function getLink( $idPage, $tagBefore = '', $tagAfter = '' )
 	{
-		$lang = $this->getLanguage();
+		$lang = $this->_language;
 		$pageList = PageList::getInstance();
 		$page = $pageList->getPage( $idPage, $lang );
 		//return '<a href="'.PageUtils::urlPageToAbsoluteUrl( $page->getUrl() ).'">'.$tagBefore.$page->getTitle().$tagAfter.'</a>';
-		return '<a href="'.$this->urlPageToAbsoluteUrl( $page->getUrl() ).'">'.$tagBefore.$page->getTitle().$tagAfter.'</a>';
+		return '<a href="'.$this->urlPageToAbsUrl( $page->getUrl() ).'">'.$tagBefore.$page->getTitle().$tagAfter.'</a>';
 	}
     
     /*final public function __clone()

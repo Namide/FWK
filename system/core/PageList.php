@@ -297,8 +297,14 @@ class PageList
         if ( isset($cachable) )		$page->setCachable($cachable);
         if ( isset($phpHeader) )	$page->setPhpHeader($phpHeader);
 
-        if ( isset($body) )			$page->setBody ( InitUtil::getInstance()->mustache($body, $page) );
-        if ( isset($header) )		$page->setHeader ( InitUtil::getInstance()->mustache($header, $page) );
+        if ( isset($body) )
+		{
+			$page->setBody ( InitUtil::getInstance()->mustache($body, $page) );
+		}
+		if ( isset($header) )
+		{
+			$page->setHeader ( InitUtil::getInstance()->mustache($header, $page) );
+		}
         if ( isset($contents) )
 		{
 			foreach( $contents as $label => $value )

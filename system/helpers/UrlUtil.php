@@ -45,7 +45,7 @@ class UrlUtil
 				$page = $pages->getDefaultPage();
 				$this->url = $page->getUrl();
 
-				header( 'Location:'.PageUtils::urlPageToAbsoluteUrl( $page->getUrl() ) );
+				header( 'Location:'.InitUtil::getInstance()->urlPageToAbsUrl( $page->getUrl() ) );
 				exit();
 			}
         }
