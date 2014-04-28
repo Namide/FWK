@@ -263,9 +263,9 @@ class PageList
 		// return or print the template
 		//if( $return_string ) return $echo; else echo $echo;
 		
-		//if ( isset($body) )			$page->setBody ( PageUtils::mustache($body, $page) );
+		//if ( isset($body) )			$page->setBody ( InitUtil::getInstance()->mustache($body, $page) );
 		
-		$page->setBody( PageUtils::mustache($body, $page) );
+		$page->setBody( InitUtil::getInstance()->mustache($body, $page) );
 		
 		
 		
@@ -297,13 +297,13 @@ class PageList
         if ( isset($cachable) )		$page->setCachable($cachable);
         if ( isset($phpHeader) )	$page->setPhpHeader($phpHeader);
 
-        if ( isset($body) )			$page->setBody ( PageUtils::mustache($body, $page) );
-        if ( isset($header) )		$page->setHeader ( PageUtils::mustache($header, $page) );
+        if ( isset($body) )			$page->setBody ( InitUtil::getInstance()->mustache($body, $page) );
+        if ( isset($header) )		$page->setHeader ( InitUtil::getInstance()->mustache($header, $page) );
         if ( isset($contents) )
 		{
 			foreach( $contents as $label => $value )
 			{
-				$page->addContent( $label, PageUtils::mustache($value, $page) );
+				$page->addContent( $label, InitUtil::getInstance()->mustache($value, $page) );
 			}
 		}
         
@@ -318,7 +318,7 @@ class PageList
 		{
 			foreach( $requestsContent as $url => $content )
 			{
-				$page->getRequest( $url )->setContent( PageUtils::mustache( $content, $page ) );
+				$page->getRequest( $url )->setContent( InitUtil::getInstance()->mustache( $content, $page ) );
 			}
 		}
 		
@@ -330,9 +330,9 @@ class PageList
     /*private function mustache( $text, $page )
     {
         $replacePage = preg_replace('/\{\{pathCurrentPage:(.*?)\}\}/', $page->getAbsoluteUrl('$1'), $text);
-        //$replacePage = preg_replace('/\{\{urlPageToAbsoluteUrl:(.*?)\}\}/', PageUtils::urlPageToAbsoluteUrl('$1'), $replacePage);
-        $replacePage = preg_replace('/\{\{urlPageToAbsoluteUrl:(.*?)\}\}/', PageUtils::urlPageToAbsoluteUrl('$1'), $replacePage);
-        $replacePage = preg_replace('/\{\{pathTemplate:(.*?)\}\}/', PageUtils::getTemplateAbsoluteUrl('$1'), $replacePage);
+        //$replacePage = preg_replace('/\{\{urlPageToAbsoluteUrl:(.*?)\}\}/', InitUtil::getInstance()->urlPageToAbsoluteUrl('$1'), $replacePage);
+        $replacePage = preg_replace('/\{\{urlPageToAbsoluteUrl:(.*?)\}\}/', InitUtil::getInstance()->urlPageToAbsoluteUrl('$1'), $replacePage);
+        $replacePage = preg_replace('/\{\{pathTemplate:(.*?)\}\}/', InitUtil::getInstance()->getTemplateAbsoluteUrl('$1'), $replacePage);
         return $replacePage;
     }*/
     

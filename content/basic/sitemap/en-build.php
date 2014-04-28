@@ -9,7 +9,7 @@
 	$pageList = PageList::getInstance();
 	foreach( $pageList->getAllPages($lang) as $pageTemp )
 	{
-		echo '<li><a href="',PageUtils::urlPageToAbsoluteUrl( $pageTemp->getUrl() ),'">';
+		echo '<li><a href="',BuildUtil::getInstance()->urlPageToAbsUrl( $pageTemp->getUrl() ),'">';
 		echo $pageTemp->getTitle(),'</a></li>';
 	}
 ?>

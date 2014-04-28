@@ -1,4 +1,4 @@
 <?php
 
-$page = $templateUtils->getCurrentPage();
+$page = BuildUtil::getInstance()->getCurrentPage();
 $pageList->updatePage( $page );
