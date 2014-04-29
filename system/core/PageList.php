@@ -655,6 +655,33 @@ class PageList
         return $languages->getLangByNavigator();
     }
 
+	/**
+	 * 
+	 * @return string
+	 */
+	public function getSave()
+	{
+		$obj = get_object_vars($this);
+		$output = 'PageList::update(';
+		$output .= SaveUtil::arrayToStrConstructor($obj);
+		$output .= ')';
+		
+		return $output;
+	}
+	
+	/**
+	 * 
+	 * @param array $save
+	 */
+	public static function update( $save )
+	{
+		$pageList = PageList::getInstance();
+		foreach ($save as $key => $value)
+		{
+			$pageList->$key = $value;
+		}
+	}
+	
     final public function __clone()
     {
         trigger_error( 'You can\'t clone.', E_USER_ERROR );

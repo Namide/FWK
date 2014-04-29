@@ -1,6 +1,7 @@
 <?php
 
 $timestart = microtime(true);
+$initTime = 0;
 
 if ( _DEBUG )
 {

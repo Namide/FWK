@@ -3,7 +3,7 @@
 class DynamicPage extends Page
 {
 	
-	private $_vo;
+	protected $_vo;
 	/**
 	 * 
 	 * @param type $vo
@@ -23,7 +23,7 @@ class DynamicPage extends Page
 		// disables the url
 	}
 	
-	private $_name;
+	protected $_name;
 	/**
 	 * 
 	 * @param string $name
@@ -34,6 +34,39 @@ class DynamicPage extends Page
 	 * @return string
 	 */
     public function getName() { return $this->_name; }
+	
+	
+	
+	
+	/**
+	 * 
+	 * @return string
+	 */
+	public function getSave()
+	{
+		$obj = get_object_vars($this);
+		$output = 'DynamicPage::update(new DynamicPage("'.$this->_id.'", "'.$this->_url.'", 0 ),';
+		$output .= SaveUtil::arrayToStrConstructor($obj);
+		$output .= ')';
+		
+		return $output;
+	}
+	
+	/**
+	 * 
+	 * @param DynamicPage $page
+	 * @param array $save
+	 * @return Page
+	 */
+	public static function update( &$page, $save )
+	{
+		foreach ($save as $key => $value)
+		{
+			$page->$key = $value;
+		}
+		return $page;
+	}
+	
 	
 	
 	public function __construct( $id, $url, $vo )

@@ -11,6 +11,8 @@ class Cache
 	private $pageFile;
 	private $pageContent;
 	
+	private $initFile;
+	
 	function __construct( $rootDir = '' )
 	{
 		if ( $rootDir == '' )
@@ -24,6 +26,7 @@ class Cache
 		}
 		$this->rootDir = $rootDir;
 		
+		$this->initFile = _CACHE_DIRECTORY.'init/start.php';
 		
 		include_once _SYSTEM_DIRECTORY.'helpers/UrlUtil.php';
 		
@@ -165,6 +168,27 @@ allow from all
 		}
 	}
 	
+	
+	public function cacheInit()
+	{
+		include_once _SYSTEM_DIRECTORY.'core/ElementList.php';
+		
+		$content = '<?php'."\r\n";
+		$content .= LanguageList::getInstance()->getSave().';'."\r\n";
+		$content .= 'include_once "'._SYSTEM_DIRECTORY.'core/ElementList.php";'."\r\n";
+		$content .= ElementList::getInstance()->getSave().';'."\r\n";
+		$content .= PageList::getInstance()->getSave().';'."\r\n";
+		
+		$this->writesCacheFile( $content, $this->initFile );
+	}
+
+	public function isInitCached()
+	{
+		if ( !file_exists($this->initFile) ) return false;
+		include_once $this->initFile;
+		return true;
+	}
+
 	/**
 	 * 
 	 * @param string $pageContent

@@ -204,6 +204,35 @@ class ElementList
 		return FALSE;
     }
 	
+	
+	/**
+	 * 
+	 * @return string
+	 */
+	public function getSave()
+	{
+		$obj = get_object_vars($this);
+		$output = 'ElementList::update(';
+		$output .= SaveUtil::arrayToStrConstructor($obj);
+		$output .= ')';
+		
+		return $output;
+	}
+	
+	/**
+	 * 
+	 * @param array $save
+	 */
+	public static function update( $save )
+	{
+		$elementList = ElementList::getInstance();
+		foreach ($save as $key => $value)
+		{
+			$elementList->$key = $value;
+		}
+	}
+	
+	
     final public function __clone()
     {
         trigger_error( 'You can\'t clone.', E_USER_ERROR );

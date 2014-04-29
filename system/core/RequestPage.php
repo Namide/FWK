@@ -65,6 +65,35 @@ class RequestPage
     public function getContent() { return $this->_content; }
 
 	
+	/**
+	 * 
+	 * @return string
+	 */
+	public function getSave()
+	{
+		$obj = get_object_vars($this);
+		$output = 'RequestPage::update(new RequestPage("'.$this->_url.'"),';
+		$output .= SaveUtil::arrayToStrConstructor($obj);
+		$output .= ')';
+		
+		return $output;
+	}
+	
+	
+	/**
+	 * 
+	 * @param RequestPage $requestPage
+	 * @param array $save
+	 * @return RequestPage
+	 */
+	public static function update( &$requestPage, $save )
+	{
+		foreach ($save as $key => $value)
+		{
+			$requestPage->$key = $value;
+		}
+		return $requestPage;
+	}
 	
 	public function __construct( $url, $cachable = FALSE )
     {

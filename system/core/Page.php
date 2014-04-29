@@ -8,14 +8,14 @@ class Page
 	public static $CALL_PAGE = 'call-page';
 	public static $CALL_REQUEST = 'call-request';
 	
-    private $_id;
+    protected $_id;
 	/**
 	 * 
 	 * @return string
 	 */
     public function getId() { return $this->_id; }
     
-	private $_phpHeader;
+	protected $_phpHeader;
 	/**
 	 * 
 	 * @param string $phpHeader
@@ -27,7 +27,7 @@ class Page
 	 */
     public function getPhpHeader() { return $this->_phpHeader; }
 	
-    private $_visible;
+    protected $_visible;
 	/**
 	 * 
 	 * @param boolean $visible
@@ -39,7 +39,7 @@ class Page
 	 */
     public function getVisible() { return $this->_visible; }
 
-    private $_cachable;
+    protected $_cachable;
 	/**
 	 * 
 	 * @param boolean $cachable
@@ -63,7 +63,7 @@ class Page
 	 */
     public function getUrl() { return $this->_url; }
 
-    private $_language;
+    protected $_language;
 	/**
 	 * 
 	 * @param string $language
@@ -75,7 +75,7 @@ class Page
 	 */
     public function getLanguage() { return $this->_language; }
 
-    private $_header;
+    protected $_header;
 	/**
 	 * 
 	 * @param string $header
@@ -87,7 +87,7 @@ class Page
 	 */
     public function getHeader() { return $this->_header; }
 
-	private $_type;
+	protected $_type;
 	/**
 	 * 
 	 * @param string $type
@@ -99,7 +99,7 @@ class Page
 	 */
     public function getType() { return $this->_type; }
 	
-	private $_call;
+	protected $_call;
 	/**
 	 * 
 	 * @param string $call
@@ -111,7 +111,7 @@ class Page
 	 */
     public function getCall() { return $this->_call; }
 	
-    private $_body;
+    protected $_body;
 	/**
 	 * 
 	 * @param string $body
@@ -123,7 +123,7 @@ class Page
 	 */
     public function getBody() { return $this->_body; }
 
-    private $_title;
+    protected $_title;
 	/**
 	 * 
 	 * @param string $title
@@ -135,7 +135,7 @@ class Page
 	 */
     public function getTitle() { return $this->_title; }
 
-	private $_description;
+	protected $_description;
 	/**
 	 * 
 	 * @param string $_description
@@ -147,7 +147,7 @@ class Page
 	 */
     public function getDescription() { return $this->_description; }
 	
-    //private $_preface;
+    //protected $_preface;
 	/**
 	 * 
 	 * @param string $preface
@@ -159,7 +159,7 @@ class Page
 	 */
     //public function getPreface() { return $this->_preface; }
 
-    private $_template;
+    protected $_template;
 	/**
 	 * 
 	 * @param string $template
@@ -171,7 +171,7 @@ class Page
 	 */
     public function getTemplate() { return $this->_template; }
 
-	private $_buildFile;
+	protected $_buildFile;
 	/**
 	 * 
 	 * @param string $buildFile
@@ -185,7 +185,7 @@ class Page
 	public function startBuild() { $this->_buildFile = ''; }
 	
 	
-    private $_tags;
+    protected $_tags;
 	/**
 	 * 
 	 * @param string $tag
@@ -236,7 +236,7 @@ class Page
     }
 	
 	
-	private $_requests;
+	protected $_requests;
 	/**
 	 * 
 	 * @param string $url
@@ -351,7 +351,7 @@ class Page
     }
 	
 	
-	private $_contents;
+	protected $_contents;
     /**
 	 * 
 	 * @param string $label
@@ -417,6 +417,38 @@ class Page
         return _ROOT_URL._CONTENT_DIRECTORY.$this->getId().'/'.$file;
     }
     
+	
+	/**
+	 * 
+	 * @return string
+	 */
+	public function getSave()
+	{
+		$obj = get_object_vars($this);
+		$output = 'Page::update(new Page("'.$this->_id.'"),';
+		$output .= SaveUtil::arrayToStrConstructor($obj);
+		$output .= ')';
+		
+		return $output;
+	}
+	
+	/**
+	 * 
+	 * @param Page $page
+	 * @param array $save
+	 * @return Page
+	 */
+	public static function update( &$page, $save )
+	{
+		foreach ($save as $key => $value)
+		{
+			$page->$key = $value;
+		}
+		return $page;
+	}
+	
+	
+	
 	public function __construct( $id )
     {
         $this->_id = $id;

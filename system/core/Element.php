@@ -173,6 +173,38 @@ class Element
         return $this->_contents;
     }
 	
+	
+	/**
+	 * 
+	 * @return string
+	 */
+	public function getSave()
+	{
+		$obj = get_object_vars($this);
+		$output = 'Element::update(new Page("'.$this->_name.'"),';
+		$output .= SaveUtil::arrayToStrConstructor($obj);
+		$output .= ')';
+		
+		return $output;
+	}
+	
+	/**
+	 * 
+	 * @param Element $element
+	 * @param array $save
+	 * @return Element
+	 */
+	public static function update( &$element, $save )
+	{
+		foreach ($save as $key => $value)
+		{
+			$element->$key = $value;
+		}
+		return $element;
+	}
+	
+	
+	
 	public function __construct( $name, $lang = NULL )
     {
         $this->_name = $name;
