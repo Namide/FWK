@@ -14,7 +14,7 @@ Initialize
 ------------------------
 
 ##### list of languages
-`fwk-content/languages.php`
+`content/languages.php`
 
 ```php
 $language->addDefaultLanguage('en');
@@ -22,7 +22,7 @@ $language->addLanguage('fr');
 ```
 
 ##### list of pages
-`fwk-content/pages.php`
+`content/pages.php`
 
 ```php
 $pageList->addDefaultPage( 'basic/homepage' );
@@ -35,7 +35,7 @@ Configure page
 ------------------------
 
 ##### initialisation
-`{language}-init.php`
+`content/your-page/{language}-init.php`
 
 ```php
 $url
@@ -52,16 +52,19 @@ $requestsInit:array
 ```
 
 ##### content
-`{language}-build.php`
+`content/your-page/{language}-build.php`
+
+Content of the page in `HTML`
 
 ```php
-$body
 $requestsBuild:array
 ```
 
 
 Internals URL
 ------------------------
+
+Used in the build page `content/your-page/{language}-build.php`
 
 ```php
 {{urlPageToAbsoluteUrl:en/post/min-max}}
