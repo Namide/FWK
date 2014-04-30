@@ -29,7 +29,9 @@ class PageList
 	
 	
 	protected $_defaultPageId;
-    protected $_error404PageId;
+	public function getDefaultPageId() { return $this->_defaultPageId; }
+	protected $_error404PageId;
+	public function getError404PageId() { return $this->_error404PageId; }
 	
 	protected $_initialised;
 	public function getInitialised() { return $this->_initialised; }
@@ -54,7 +56,7 @@ class PageList
 	 */
 	public function addDefaultPage( $id )
     {
-		$this->defaultPageId = $id;
+		$this->_defaultPageId = $id;
         $this->addPage($id);
     }
 
@@ -64,7 +66,7 @@ class PageList
 	 */
     public function addError404Page( $id )
     {
-        $this->error404PageId = $id;
+        $this->_error404PageId = $id;
 		foreach ( $this->addPage($id) as $page)
 		{
 			$this->makeError404Page( $page );
@@ -443,13 +445,13 @@ class PageList
         
         // IS ERROR 404
 		
-		if ( !empty( $this->error404PageId ) )
+		if ( !empty( $this->_error404PageId ) )
 		{
 			foreach ( $this->_pagesByUrl as $page )
 			{
 				$idTemp = $page->getId();
 				$langTemp = $page->getLanguage();
-				if ( $idTemp === $this->error404PageId && $langTemp === $lang )
+				if ( $idTemp === $this->_error404PageId && $langTemp === $lang )
 				{
 					header('HTTP/1.0 404 Not Found');
 					$page->setCall( Page::$CALL_PAGE );
@@ -484,7 +486,7 @@ class PageList
 			trigger_error( 'All pages must be initialised after use getDefaultPage() method', E_USER_ERROR );
 		}
 		
-		$id = $this->defaultPageId;
+		$id = $this->_defaultPageId;
         
         if ( $lang == '' )
 		{

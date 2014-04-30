@@ -9,6 +9,11 @@ if( !empty($_GET["p"]) )
 			include _SYSTEM_DIRECTORY.'plugin/admin/pages/zipAndDownloadContent.php';
 			break;
 
+		case 'csv-export':
+
+			include _SYSTEM_DIRECTORY.'plugin/admin/pages/downloadCsv.php';
+			break;
+
 		case 'page-html-save':
 
 			include _SYSTEM_DIRECTORY.'plugin/admin/pages/zipAndDownloadHtml.php';
@@ -39,6 +44,7 @@ if( !empty($_GET["p"]) )
 				<li><a href="admin.php?p=page-debug">Debug</a></li>
 				<li><a href="admin.php?p=page-list">Pages list</a></li>
 				<li><a href="admin.php?p=page-edit">Edition</a></li>
+				<li><a href="admin.php?p=page-csv">CSV</a></li>
 				<li>
 					<form action="admin.php?p=page-save" method="get">
 						<input type="hidden" name="p" value="page-save">
@@ -71,6 +77,11 @@ if( !empty($_GET["p"]) )
 					case 'page-edit':
 
 						include _SYSTEM_DIRECTORY.'plugin/admin/pages/pageEdit.php';
+						break;
+
+					case 'page-csv':
+
+						include _SYSTEM_DIRECTORY.'plugin/admin/pages/pageCsv.php';
 						break;
 
 					default:

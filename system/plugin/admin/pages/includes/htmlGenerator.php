@@ -95,9 +95,9 @@ function generateHtml( &$pagesListDebug, $dirParent = '' )
 	{
 		$newRootRelativeUrl = '';
 		$indexPage = '<!doctype html><html><head><meta http-equiv="Refresh" content="0;url=';
-		$indexPage .= PageUtils::getAbsoluteUrl( PageList::getInstance()->getDefaultPage()->getId(), LanguageList::getInstance()->getDefaultLanguage() );
+		$indexPage .= InitUtil::getInstance()->getAbsUrlByIdLang( PageList::getInstance()->getDefaultPage()->getId(), LanguageList::getInstance()->getDefaultLanguage() );
 		$indexPage .= '"></head><body></body></html>';
-		$indexPage = str_replace( _ROOT_URL.Url::$BASE_PAGE_URL, $newRootRelativeUrl, $indexPage );
+		$indexPage = str_replace( _ROOT_URL.UrlUtil::$BASE_PAGE_URL, $newRootRelativeUrl, $indexPage );
 		$indexPage = str_replace( _ROOT_URL, $newRootRelativeUrl, $indexPage );
 		$cache->writesCacheFile( $indexPage, $dirParent.'/index.html' );
 	}
