@@ -42,7 +42,7 @@ $pageList->addDynamicPage( 'homepage', 'home-alternative-2', 'en', 'test english
 Configure page
 ------------------------
 
-##### initialisation
+##### initialization
 `content/homepage/{language}-init.php`
 
 ```php
