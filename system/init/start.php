@@ -97,7 +97,7 @@ function echoPage( &$page )
 	elseif ( $page->getCall() == Page::$CALL_REQUEST )
 	{
 		
-		$url = Url::getInstance()->getUrl();
+		$url = UrlUtil::getInstance()->getUrl();
 		$request = $page->getRequest($url);
 		
 		if ( $request->getPhpHeader() != '' )

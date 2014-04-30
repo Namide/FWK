@@ -25,9 +25,17 @@ $language->addLanguage('fr');
 `content/pages.php`
 
 ```php
-$pageList->addDefaultPage( 'basic/homepage' );
-$pageList->addError404Page( 'basic/error404' );
-$pageList->addPage( 'basic/sitemap' );
+// Load the object for add your pages
+$pageList = PageList::getInstance();
+
+// Simple pages
+$pageList->addDefaultPage( 'homepage' );
+$pageList->addError404Page( 'error404' );
+$pageList->addPage( 'sitemap' );
+
+// Dynamic pages, they use a simple page
+$pageList->addDynamicPages( 'homepage', ['home-alternative-1'], ['fr'], ['test french'] );
+$pageList->addDynamicPage( 'homepage', 'home-alternative-2', 'en', 'test english' );
 ```
 
 
@@ -35,36 +43,67 @@ Configure page
 ------------------------
 
 ##### initialisation
-`content/your-page/{language}-init.php`
+`content/homepage/{language}-init.php`
 
 ```php
-$url
-$template
-$visible:boolean
-$cachable:boolean
-$title
-$tags:array
-$phpHeader
+// URL
+$url = 'en/homepage';
 
-$header
-$preface
-$requestsInit:array
+// title of the page
+$title = 'Homepage';
+
+// description of the page
+$description = 'FWK is a really fun framework!';
+
+// Name of the template
+$template = 'default';
+
+// Additional tags in the head (like CSS, JS, meta...)
+$header = '	<meta name="robots" content="all" />';
+
+// Is the page visible ? (in the sitemap...)
+$visible = TRUE;
+
+// Is the page cachable ? (dynamics page aren't cachable)
+$cachable = TRUE;
+
+// Add tags to the page
+//$tags = array( 'home', 'info' );
+
+// Arguments to the php function header() of the page (for other type than HTML, like XML)
+//$phpHeader = 'Content-Type: application/xml; charset=utf-8';
+
+// Additional contents accessible (from other pages or with the template)
+//$contents = array( 'resume'=>'The homepage is a [...]' );
+
+// Used for an additional URL of page loaded by XMLHttpRequest
+// new RequestPage( $url, $cachable = FALSE );
+//$requests = array( new RequestPage( 'request/test01', TRUE ) );
 ```
 
 ##### content
-`content/your-page/{language}-build.php`
-
-Content of the page in `HTML`
+`content/homepage/{language}-build.php`
 
 ```php
-$requestsBuild:array
+// If your page is dynamic you recover the velue object here
+// $dynamicData = (isset($vo)?$vo:'FWK');
+
+// Used for an additional content of page loaded by XMLHttpRequest
+//$requestsContent = array( 'request/test01' => 'First AJAX content' );
 ```
 
+```html
+<article>
+	<h1>Welcome on <?=$dynamicData?></h1>
+	<p>It's you home page.</p>
+	<img width="" height="" src="{{pathCurrentPage:img/example.png}}" alt="image example">
+</article>
+```
 
 Internals URL
 ------------------------
 
-Used in the build page `content/your-page/{language}-build.php`
+Used in the build page `content/homepage/{language}-build.php`
 
 ```php
 {{urlPageToAbsoluteUrl:en/post/min-max}}
