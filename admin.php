@@ -6,8 +6,8 @@
  */
 
 
-$_ADMIN_IP = [ '127.0.0.1', '::1', 'fe80::1' ];
-$_ADMIN_USERS = [ [ 'Damien', sha1('Damien') ] ];
+$_ADMIN_IP = array( '127.0.0.1', '::1', 'fe80::1' );
+$_ADMIN_USERS = array( array('Damien', sha1('Damien')) );
 
 
 

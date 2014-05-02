@@ -14,6 +14,11 @@ if( !empty($_GET["p"]) )
 			include _SYSTEM_DIRECTORY.'plugin/admin/pages/downloadCsv.php';
 			break;
 
+		case 'download-init':
+
+			include _SYSTEM_DIRECTORY.'plugin/admin/pages/zipAndDownloadInit.php';
+			break;
+
 		case 'page-html-save':
 
 			include _SYSTEM_DIRECTORY.'plugin/admin/pages/zipAndDownloadHtml.php';

@@ -113,6 +113,7 @@ class Login
 		$tokenFileContent = '<?php $token="'.$token.'";';
 		fwrite($tokenFile, $tokenFileContent);
 		fclose($tokenFile);
+		//chmod($tokenFile, 0777);
 	}
 	
 	private function getFileToken( $id, $name )

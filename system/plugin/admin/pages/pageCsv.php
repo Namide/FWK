@@ -25,7 +25,9 @@
 			}
 
 			createInit( $rootDir, $uploadfile );
-
+			
+			
+			echo '<script>window.location.href = "admin.php?p=download-init";</script>';
 		}
 		elseif ( $_POST['csv'] === 'update' )
 		{
@@ -113,9 +115,22 @@ function createInit( $rootDir, $file )
 			elseif ( hackCsvAccent($data[0]) == 'dynamic' )
 			{
 				$pagesPHP .= '$pageList->addDynamicPage( \''.hackCsvAccent($data[1]).'\', ';
-				$pagesPHP .= '\''.hackCsvAccent($data[3]).'\', ';
-				$pagesPHP .= '\''.hackCsvAccent($data[2]).'\', ';
-				$pagesPHP .= '\''.hackCsvAccent($data[14]).'\' ';
+				
+				if( count($data) > 3 )
+					$pagesPHP .= '\''.hackCsvAccent($data[3]).'\', ';
+				else
+					$pagesPHP .= '\'\', ';
+				
+				if( count($data) > 2 )
+					$pagesPHP .= '\''.hackCsvAccent($data[2]).'\', ';
+				else
+					$pagesPHP .= '\'\', ';
+				
+				if( count($data) > 14 )
+					$pagesPHP .= '\''.hackCsvAccent($data[14]).'\' ';
+				else
+					$pagesPHP .= '\'\', ';
+				
 				$pagesPHP .= ');'."\n";
 			}
 			
@@ -129,46 +144,76 @@ function createInit( $rootDir, $file )
 				// 14'!vo'
 				
 				$pageInitPHP = '<?php'."\n\n";
-				$pageInitPHP .= '$url = \''.hackCsvAccent($data[3]).'\';'."\n";
-				$pageInitPHP .= '$title = \''.hackCsvAccent($data[4]).'\';'."\n";
-				$pageInitPHP .= '$description = \''.hackCsvAccent($data[5]).'\';'."\n";
-				$pageInitPHP .= '$template = \''.hackCsvAccent($data[6]).'\';'."\n";
-				$pageInitPHP .= '$header = \''.hackCsvAccent($data[7]).'\';'."\n";
-				$pageInitPHP .= '$visible = '.hackCsvAccent("$data[8]").';'."\n";
-				$pageInitPHP .= '$cachable = '.hackCsvAccent("$data[9]").';'."\n\n";
 				
-				$pageInitPHP .= '$tags = \''.hackCsvAccent($data[10]).'\';'."\n";
-				$pageInitPHP .= '$phpHeader = \''.hackCsvAccent($data[11]).'\';'."\n";
-				$pageInitPHP .= '$contents = \''.hackCsvAccent($data[12]).'\';'."\n";
-				$pageInitPHP .= '$requests = \''.hackCsvAccent($data[13]).'\';'."\n";
+				if( count($data) > 3 )
+					$pageInitPHP .= '$url = \''.hackCsvAccent($data[3]).'\';'."\n";
+				if( count($data) > 4 )
+					$pageInitPHP .= '$title = \''.hackCsvAccent($data[4]).'\';'."\n";
+				if( count($data) > 5 )
+					$pageInitPHP .= '$description = \''.hackCsvAccent($data[5]).'\';'."\n";
+				if( count($data) > 6 )
+					$pageInitPHP .= '$template = \''.hackCsvAccent($data[6]).'\';'."\n";
+				if( count($data) > 7 )
+					$pageInitPHP .= '$header = \''.hackCsvAccent($data[7]).'\';'."\n";
+				if( count($data) > 8 )
+					$pageInitPHP .= '$visible = '.hackCsvAccent("$data[8]").';'."\n";
+				if( count($data) > 9 )
+					$pageInitPHP .= '$cachable = '.hackCsvAccent("$data[9]").';'."\n\n";
+				
+				if( count($data) > 10 && strlen($data[10]) > 0 )
+					$pageInitPHP .= '$tags = '.hackCsvAccent($data[10]).';'."\n";
+				else
+					$pageInitPHP .= '//$tags = array();'."\n";
+				
+				if( count($data) > 11 && strlen($data[11]) > 0 )
+					$pageInitPHP .= '$phpHeader = \''.hackCsvAccent($data[11]).'\';'."\n";
+				else
+					$pageInitPHP .= '//$phpHeader = \'\';'."\n";
+				
+				if( count($data) > 12 && strlen($data[12]) > 0 )
+					$pageInitPHP .= '$contents = '.hackCsvAccent($data[12]).';'."\n";
+				else
+					$pageInitPHP .= '//$contents = array();'."\n";
+				
+				if( count($data) > 13 && strlen($data[13]) > 0 )
+					$pageInitPHP .= '$requests = '.hackCsvAccent($data[13]).';'."\n";
+				else
+					$pageInitPHP .= '//$requests = array();'."\n";
 				
 				$id = hackCsvAccent($data[1]);
 				$lang = hackCsvAccent($data[2]);
 				
-				$cache->writesCacheFile( $pagesPHP, $rootDir.$id.'/'.$lang.'-init.php' );
+				$cache->writesCacheFile( $pageInitPHP, $rootDir.$id.'/'.$lang.'-init.php' );
 			}
 			
-			$row++;
+			/*$row++;
 			$num = count($data);
 			for ($c=0; $c < $num; $c++)
 			{
-				//echo hackCsvAccent($data[$c]) . "<br />\n";
-			}
+				echo hackCsvAccent($data[$c]) . "<br />\n";
+			}*/
 		}
 		fclose($handle);
 	}
-	
+	//if ( file_exists($file) ) unlink($file);
 	$cache->writesCacheFile( $pagesPHP, $rootDir.'pages.php' );
+	
+	
 }
 
 function hackCsvAccent($text)
 {
+	$encod = mb_detect_encoding($text);
+	$text = iconv( $encod, 'UTF-8//IGNORE', $text);
+	
+	//echo '->'.$encod;
+	//$text = iconv('UTF-16LE', 'UTF-8//IGNORE', $text);// or die( '->'.print_r($text).'<-' );
 	//echo mb_detect_encoding($text);
 	//$text = iconv('ASCII', 'UTF-8//TRANSLIT', $text);
 	//$text = iconv( mb_detect_encoding($text), 'UTF-8//TRANSLIT', $text );
-	$text = iconv('UTF-16LE', 'UTF-8//TRANSLIT', $text);
 	//$text = iconv('Windows-1252', 'UTF-8//TRANSLIT', $text);
-	//$text = mb_convert_encoding( $text, 'UTF-16LE', 'UTF-8');;
+	//$text = mb_convert_encoding( $text, 'UTF-16LE', 'UTF-8');
+	$text = str_replace('\'', '\\\'', $text );
 	return $text;//mb_convert_encoding( $text, 'UTF-16LE', 'UTF-8' );
 }
 

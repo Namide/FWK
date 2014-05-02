@@ -82,5 +82,3 @@ function zipper_repertoire_recursif($nom_archive, $adr_dossier, $dossier_destina
 		}
 	}
 }
-
-?>
