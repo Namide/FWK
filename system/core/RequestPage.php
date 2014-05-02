@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Datas for a request.
+ * For example, you can use it to download data with AJAX.
+ */
 class RequestPage
 {
     

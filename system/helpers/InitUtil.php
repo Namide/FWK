@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * All simple methods usable after pages building.
+ * You can use it during the initialization state.
+ */
 class InitUtil
 {
     private static $instances = array();

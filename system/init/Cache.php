@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Cache handler.
+ * Cache managment.
  * Can be used for cache's pages and other save of files.
  */
 class Cache

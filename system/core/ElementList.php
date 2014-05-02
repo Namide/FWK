@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Constains Element, easy to sort datas.
+ */
 class ElementList
 {
     

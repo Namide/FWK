@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Contains datas, easy to use with ElementList.
+ */
 class Element
 {
     

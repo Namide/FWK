@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * All the datas of a page.
+ */
 class Page
 {
     

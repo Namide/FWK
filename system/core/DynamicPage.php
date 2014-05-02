@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Add dynamics data to a static Page.
+ * To use dynamic page you must to pass a value Object ($vo) and an URL.
+ * 
+ */
 class DynamicPage extends Page
 {
 	

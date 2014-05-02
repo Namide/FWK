@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Stores all the pages of the Website.
+ */
 class PageList
 {
     

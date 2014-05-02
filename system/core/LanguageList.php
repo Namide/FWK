@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Languages store.
+ * You must to add a default language.
+ */
 class LanguageList
 {
    

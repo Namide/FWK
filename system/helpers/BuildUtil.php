@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * All simple methods usable in pages building, or templates.
+ */
 class BuildUtil extends InitUtil
 {
     private static $instances = array();

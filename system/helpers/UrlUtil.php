@@ -1,6 +1,8 @@
 <?php
 
-
+/**
+ * URL managment.
+ */
 class UrlUtil
 {
     private static $_instances = null;
