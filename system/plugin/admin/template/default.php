@@ -43,7 +43,7 @@ if( !empty($_GET["p"]) )
 <body>
 
 	<header>
-		<h1>Admin</h1><p><?php echo _ROOT_URL; ?></p>
+		<h1>Admin</h1><a href="<?=_ROOT_URL?>" target="_BLANK"><?=_ROOT_URL?></a>
 		<nav>
 			<ul>
 				<li><a href="admin.php?p=page-debug">Debug</a></li>

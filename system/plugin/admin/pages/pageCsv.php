@@ -43,7 +43,7 @@
 <table>
 	<caption><h2>Parameters</h2></caption>
 	<tr>
-		<th>Export CSV of the pages</th>
+		<th>Export CSV of the pages (UTF-8)</th>
 		<td>
 			<form action="<?php echo $ACTUAL_PAGE_URL; ?>" method="POST" style="display:inline;">
 				<input type="hidden" name="csv" value="export" />
@@ -52,7 +52,7 @@
 		</td>
 	</tr>
 	<tr>
-		<th>Generate files by CSV</th>
+		<th>Generate files by CSV (UTF-8)</th>
 		<td>
 			<form action="<?php echo $ACTUAL_PAGE_URL; ?>" method="POST" enctype="multipart/form-data" style="display:inline;">
 				<input type="hidden" name="csv" value="generate" />
@@ -61,7 +61,7 @@
 			</form>
 		</td>
 	</tr>
-	<tr>
+	<!-- <tr>
 		<th>Update pages by CSV</th>
 		<td>
 			<form action="<?php echo $ACTUAL_PAGE_URL; ?>" method="POST" enctype="multipart/form-data" style="display:inline;">
@@ -70,7 +70,7 @@
 				<input type="submit" value="Update" style="color:red;" /> 
 			</form>			
 		</td>
-	</tr>
+	</tr> -->
 </table>
 
 <?php 
