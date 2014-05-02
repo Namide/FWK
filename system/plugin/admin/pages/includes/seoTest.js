@@ -20,8 +20,7 @@ SeoTest.prototype =
 		seoTest.xmlhttp.open( "GET", seoTest.list[seoTest.id]["url"], true );
 		seoTest.xmlhttp.onreadystatechange = function()
 		{
-			//alert( seoTest.id + " " + (seoTest.id < seoList.length) );
-			if ( seoTest.xmlhttp.readyState==4 && seoTest.xmlhttp.status==200 )
+			if ( seoTest.xmlhttp.readyState==4 && (seoTest.xmlhttp.status==200 || seoTest.xmlhttp.status==404) )
 			{
 				var pageContent = seoTest.xmlhttp.responseText;
 				if ( pageContent == undefined ) pageContent = string(seoTest.xmlhttp.responseXML);
