@@ -19,7 +19,7 @@ function generateHtml( &$pagesListDebug, $dirParent = '' )
 		{
 			unset($_GET[$key]);
 		}
-		$_GET[Url::getPageGetArg()] = $pageDebugPage->getUrl();
+		$_GET[UrlUtil::getPageGetArg()] = $pageDebugPage->getUrl();
 		$urlPath = explode( '/', $pageDebugPage->getUrl() );
 		$newRootRelativeUrl = '../';
 		while ( count( $urlPath ) > 1 ) 
@@ -31,17 +31,17 @@ function generateHtml( &$pagesListDebug, $dirParent = '' )
 		$cache = new Cache($dirParent);
 		if( $pageDebugPage->getType() != Page::$TYPE_ERROR_404 )
 		{
-			Url::getInstance()->reset();
-			$templateUtils = TemplateUtils::getInstance();
+			UrlUtil::getInstance()->reset();
+			$templateUtils = BuildUtil::getInstance();
 			$templateUtils->reset();
-			$page = TemplateUtils::getInstance()->getCurrentPage();
+			$page = BuildUtil::getInstance()->getCurrentPage();
 			PageList::getInstance()->updatePage( $page );
 			
 			$cache->startSaveCache();
 				getHtmlPage( $page );
 			$cache->stopSaveCache();
 			$cacheContent = $cache->getSavedCache();
-			$cacheContent = str_replace( _ROOT_URL.Url::$BASE_PAGE_URL, $newRootRelativeUrl, $cacheContent );
+			$cacheContent = str_replace( _ROOT_URL.UrlUtil::$BASE_PAGE_URL, $newRootRelativeUrl, $cacheContent );
 			$cacheContent = str_replace( _ROOT_URL, $newRootRelativeUrl, $cacheContent );
 			$cache->writesCache( $cacheContent, '' );
 		}
@@ -61,7 +61,7 @@ function generateHtml( &$pagesListDebug, $dirParent = '' )
 			{
 				unset($_GET[$key]);
 			}
-			$_GET[Url::getPageGetArg()] = $request->getUrl();
+			$_GET[UrlUtil::getPageGetArg()] = $request->getUrl();
 			$urlPath = explode( '/', $request->getUrl() );
 			$newRootRelativeUrl = '../';
 			while ( count( $urlPath ) > 1 ) 
@@ -73,17 +73,17 @@ function generateHtml( &$pagesListDebug, $dirParent = '' )
 			$cache = new Cache($dirParent);
 			if( $pageDebugPage->getType() != Page::$TYPE_ERROR_404 )
 			{
-				Url::getInstance()->reset();
-				$templateUtils = TemplateUtils::getInstance();
+				UrlUtil::getInstance()->reset();
+				$templateUtils = BuildUtil::getInstance();
 				$templateUtils->reset();
-				$page = TemplateUtils::getInstance()->getCurrentPage();
+				$page = BuildUtil::getInstance()->getCurrentPage();
 				PageList::getInstance()->updatePage( $page );
 
 				$cache->startSaveCache();
 					getHtmlPage( $page );
 				$cache->stopSaveCache();
 				$cacheContent = $cache->getSavedCache();
-				$cacheContent = str_replace( _ROOT_URL.Url::$BASE_PAGE_URL, $newRootRelativeUrl, $cacheContent );
+				$cacheContent = str_replace( _ROOT_URL.UrlUtil::$BASE_PAGE_URL, $newRootRelativeUrl, $cacheContent );
 				$cacheContent = str_replace( _ROOT_URL, $newRootRelativeUrl, $cacheContent );
 				$cache->writesCache( $cacheContent, '' );
 			}
@@ -127,7 +127,7 @@ function getHtmlPage( &$page )
 	elseif ( $page->getCall() == Page::$CALL_REQUEST )
 	{
 		
-		$url = Url::getInstance()->getUrl();
+		$url = UrlUtil::getInstance()->getUrl();
 		$request = $page->getRequest($url);
 		
 		if ( $request->getPhpHeader() != '' )
