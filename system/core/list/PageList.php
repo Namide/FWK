@@ -47,8 +47,7 @@ class PageList
 	
 	public function reset()
 	{
-		//$this->pages = array();
-		$this->_initialised = FALSE;
+		$this->_initialised = false;
 		$this->_pagesByUrl = array();
 		$this->_requestsByUrl = array();
 	}
@@ -157,7 +156,6 @@ class PageList
 	 */
 	public function addDynamicPage( $folderName, $url, $lang, $vo, $name = '' )
     {
-        
 		$filename = _CONTENT_DIRECTORY.$folderName.'/'.$lang.'-init.php';
 		if ( file_exists ( $filename ) )
 		{
@@ -173,16 +171,13 @@ class PageList
 				$page->setBuildFile( $buildFile );
 			}
 
-
 			// ADD THE PAGE'S URL
-
 				$pageUrl = $page->getUrl();
 				if ( $this->hasUrl( $pageUrl ) || $this->hasUrlRequest( $pageUrl ) )
 				{
 					trigger_error( 'The URL '.$pageUrl.' of the page [id:'.$page->getId().', lang:'.$page->getLanguage().', url:'.$page->getUrl().'] already exist', E_USER_ERROR );
 				}
 				$this->_pagesByUrl[$pageUrl] = $page;
-
 			// ------
 		}
         
@@ -208,9 +203,7 @@ class PageList
 			}
 		}
 		
-		//return $this->getDefaultPage($lang);
 		trigger_error( 'The dynamic page [dir:'.$folderName.' lang:'.$lang.' name:'.$name.'] dont\'t exist', E_USER_ERROR );
-		
     }
 	
 	/**
@@ -222,9 +215,9 @@ class PageList
 	 */
 	public function addDynamicPages( $folderName, $listUrl, $listLang, $listVo )
     {
-		foreach ( $listLang as $id => $value )
+		foreach ( $listLang as $id => $lang )
 		{
-			$this->addDynamicPage( $folderName, $listUrl[$id], $listLang[$id], $listVo[$id] );
+			$this->addDynamicPage( $folderName, $listUrl[$id], $lang, $listVo[$id] );
 		}
     }
 	
@@ -240,45 +233,16 @@ class PageList
 	 */
 	public function updatePage( &$page )
 	{
-		if( $page->getBuildFile() == '' ) return $page;
+		if( $page->getBuildFile() == '' )
+		{
+			return $page;
+		}
 		
-		$buildFile = $page->getBuildFile();
+		ob_start();
+		$page = $this->initPage( $page, $page->getBuildFile() );
 		$page->startBuild();
-		
-		
-		
-		
-		//----------------------
-		// get the output buffer
-		//----------------------
-			ob_start();
-			//extract( $this->var );
-			$page = $this->initPage( $page, $buildFile ); // dd
-			$body = ob_get_clean();
-		//----------------------
-
-
-		// save the output in the cache
-		/*if( $this->cache )
-			file_put_contents( $this->tpl['cache_filename'], "<?php if(!class_exists('raintpl')){exit;}?>" . $echo );*/
-
-		// free memory
-		//unset( $this->tpl );
-
-		// return or print the template
-		//if( $return_string ) return $echo; else echo $echo;
-		
-		//if ( isset($body) )			$page->setBody ( InitUtil::getInstance()->mustache($body, $page) );
-		
+		$body = ob_get_clean();
 		$page->setBody( InitUtil::getInstance()->mustache($body, $page) );
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		return $page;
 	}
@@ -293,14 +257,14 @@ class PageList
 		
 		include $filename;
 		
-        if ( isset($url) )			$page->setUrl ($url);
-        if ( isset($template) )		$page->setTemplate ($template);
-        if ( isset($visible) )		$page->setVisible($visible);
-		if ( isset($title) )		$page->setTitle($title);
-        if ( isset($description) )	$page->setDescription($description);
-		if ( isset($tags) )			$page->addTags($tags);
-        if ( isset($cachable) )		$page->setCachable($cachable);
-        if ( isset($phpHeader) )	$page->setPhpHeader($phpHeader);
+        if ( isset($url) )			{ $page->setUrl ($url); }
+        if ( isset($template) )		{ $page->setTemplate ($template); }
+        if ( isset($visible) )		{ $page->setVisible($visible); }
+		if ( isset($title) )		{ $page->setTitle($title); }
+        if ( isset($description) )	{ $page->setDescription($description); }
+		if ( isset($tags) )			{ $page->addTags($tags); }
+        if ( isset($cachable) )		{ $page->setCachable($cachable); }
+		if ( isset($phpHeader) )	{ $page->setPhpHeader($phpHeader); }
 
         if ( isset($body) )
 		{
@@ -336,17 +300,6 @@ class PageList
         return $page;
     }
 	
-	
-
-    /*private function mustache( $text, $page )
-    {
-        $replacePage = preg_replace('/\{\{pathCurrentPage:(.*?)\}\}/', $page->getAbsoluteUrl('$1'), $text);
-        //$replacePage = preg_replace('/\{\{urlPageToAbsoluteUrl:(.*?)\}\}/', InitUtil::getInstance()->urlPageToAbsoluteUrl('$1'), $replacePage);
-        $replacePage = preg_replace('/\{\{urlPageToAbsoluteUrl:(.*?)\}\}/', InitUtil::getInstance()->urlPageToAbsoluteUrl('$1'), $replacePage);
-        $replacePage = preg_replace('/\{\{pathTemplate:(.*?)\}\}/', InitUtil::getInstance()->getTemplateAbsoluteUrl('$1'), $replacePage);
-        return $replacePage;
-    }*/
-    
 	/**
 	 * 
 	 * @param string $tag
@@ -355,11 +308,13 @@ class PageList
 	 */
 	public function getPagesByTag( $tag, $lang )
     {
-		if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getPagesByTag() method', E_USER_ERROR );
+		if ( !$this->_initialised )
+		{
+			trigger_error( 'All pages must be initialised after use getPagesByTag() method', E_USER_ERROR );
+		}
 		
 		$pages = array();
-        
-		foreach ( $this->_pagesByUrl as $page )
+        foreach ( $this->_pagesByUrl as $page )
         {
 			if( $page->getLanguage() === $lang && $page->hasTag($tag) )
 			{
@@ -377,14 +332,18 @@ class PageList
 	 */
     public function getPagesByTags( $tags, $lang )
     {
-		if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getPagesByTags() method', E_USER_ERROR );
+		if ( !$this->_initialised )
+		{
+			trigger_error( 'All pages must be initialised after use getPagesByTags() method', E_USER_ERROR );
+		}
 		
 		$pages = array();
         foreach ( $this->_pagesByUrl as $page )
         {
             foreach ( $tags as $tag )
             {
-                if( $page->getLanguage() === $lang && $page->hasTag($tag) )
+                if(		$page->getLanguage() === $lang &&
+						$page->hasTag($tag) )
                 {
                     array_push( $pages, $page );
                     break 1;
@@ -439,15 +398,14 @@ class PageList
         }
         
         // IS DEFAULT PAGE
-		$lang = $this->getLanguageByUrl( $url );
-        if( $url === '' || $url === '/' )
+		if( $url === '' || $url === '/' )
         {
 			$this->getDefaultPage()->setCall( Page::$CALL_PAGE );
 			return $this->getDefaultPage();
         }
         
         // IS ERROR 404
-		
+		$lang = $this->getLanguageByUrl( $url );
 		if ( !empty( $this->_error404PageId ) )
 		{
 			foreach ( $this->_pagesByUrl as $page )
@@ -463,9 +421,7 @@ class PageList
 			}
 		}
         
-        
-        /*if( !isset($this->_page) )
-        {*/
+        // CREATE PAGE ERROR 404
 			$page = new Page(0);
 			$page->setHeader( '<title>Error 404 - Not found</title>
 					<meta name="robots" content="noindex,nofollow" />
@@ -474,7 +430,7 @@ class PageList
 			$this->makeError404Page($page);
 			$page->setCall( Page::$CALL_PAGE );
 			return $page;
-        //}
+        //
     }
 	
 	/**
@@ -493,16 +449,13 @@ class PageList
         
         if ( $lang == '' )
 		{
-			$languages = LanguageList::getInstance();
-			$lang = $languages->getLangByNavigator();
+			$lang = LanguageList::getInstance()->getLangByNavigator();
 		}
 		
         foreach ( $this->_pagesByUrl as $page )
         {
-            $idTemp = $page->getId();
-            $langTemp = $page->getLanguage();
-			
-            if ( $idTemp == $id && $langTemp == $lang )
+			if (	$page->getId() == $id &&
+					$page->getLanguage() == $lang )
             {
                 return $page;
             }
@@ -511,10 +464,7 @@ class PageList
 		/* IF THE LANGUAGE OF THE DEFAULT PAGE DON'T EXIST */
 		foreach ( $this->_pagesByUrl as $page )
         {
-            $idTemp = $page->getId();
-            $langTemp = $page->getLanguage();
-			
-            if ( $idTemp == $id )
+            if ( $page->getId() == $id )
             {
                 return $page;
             }
@@ -523,9 +473,7 @@ class PageList
 		/* IF THE DEFAULT PAGE DON'T EXIST */
 		foreach ( $this->_pagesByUrl as $page )
         {
-            $langTemp = $page->getLanguage();
-			
-            if ( $langTemp == $lang )
+            if ( $page->getLanguage() == $lang )
             {
                 return $page;
             }
@@ -534,8 +482,7 @@ class PageList
 		/* ELSE */
 		foreach ( $this->_pagesByUrl as $page )
         {
-            $langTemp = $page->getLanguage();
-			return $page;
+            return $page;
         }
     }
     
@@ -546,14 +493,16 @@ class PageList
 	 */
     public function getAllPages( $lang )
     {
-        if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getAllPages() method', E_USER_ERROR );
+        if ( !$this->_initialised )
+		{
+			trigger_error( 'All pages must be initialised after use getAllPages() method', E_USER_ERROR );
+		}
 		
 		$pages = array();
         foreach ( $this->_pagesByUrl as $page )
         {
-            $langTemp = $page->getLanguage();
-            $visible = $page->getVisible();
-            if ( $visible && ($langTemp == $lang || $lang == 'all') )
+			if (	$page->getVisible() &&
+					($page->getLanguage() == $lang || $lang == 'all') )
             {
                 array_push( $pages, $page );
             }
@@ -569,13 +518,15 @@ class PageList
 	 */
     public function getPage( $id, $lang )
     {
-		if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getPage() method', E_USER_ERROR );
+		if ( !$this->_initialised )
+		{
+			trigger_error( 'All pages must be initialised after use getPage() method', E_USER_ERROR );
+		}
 		
 		foreach ( $this->_pagesByUrl as $page )
         {
-            $idTemp = $page->getId();
-            $langTemp = $page->getLanguage();
-            if ( $idTemp === $id && $langTemp === $lang )
+            if (	$page->getId() === $id &&
+					$page->getLanguage() === $lang )
             {
                 return $page;
             }
@@ -585,13 +536,15 @@ class PageList
     
 	public function getPages( $id )
     {
-		if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getPages() method', E_USER_ERROR );
+		if ( !$this->_initialised )
+		{
+			trigger_error( 'All pages must be initialised after use getPages() method', E_USER_ERROR );
+		}
 		
 		$pages = array();
 		foreach ( $this->_pagesByUrl as $page )
         {
-            $idTemp = $page->getId();
-            if ( $idTemp === $id )
+            if ( $page->getId() === $id )
             {
                 array_push($pages, $page);
             }
@@ -607,18 +560,20 @@ class PageList
 	 */
 	public function hasPage( $id, $lang )
     {
-		if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use hasPage() method', E_USER_ERROR );
+		if ( !$this->_initialised )
+		{
+			trigger_error( 'All pages must be initialised after use hasPage() method', E_USER_ERROR );
+		}
 		
 		foreach ( $this->_pagesByUrl as $page )
         {
-            $idTemp = $page->getId();
-            $langTemp = $page->getLanguage();
-            if ( $idTemp === $id && $langTemp === $lang )
+            if (	$page->getId() === $id &&
+					$page->getLanguage() === $lang )
             {
-                return TRUE;
+                return true;
             }
         }
-        return FALSE;
+        return false;
     }
 	
 	/**
@@ -648,7 +603,10 @@ class PageList
 	 */
     private function getLanguageByUrl( $url )
     {
-        if ( !$this->_initialised ) trigger_error( 'All pages must be initialised after use getLanguageByUrl() method', E_USER_ERROR );
+        if ( !$this->_initialised )
+		{
+			trigger_error( 'All pages must be initialised after use getLanguageByUrl() method', E_USER_ERROR );
+		}
 		
 		if ( isset( $this->_pagesByUrl[$url] ) )
         {
@@ -656,8 +614,7 @@ class PageList
             return $page->getLanguage();
         }
         
-        $languages = LanguageList::getInstance();
-        return $languages->getLangByNavigator();
+		return LanguageList::getInstance()->getLangByNavigator();
     }
 
 	/**

@@ -238,22 +238,7 @@ class Page
         return $this->_tags;
     }
 	
-	
 	protected $_requests;
-	/**
-	 * 
-	 * @param string $url
-	 * @param string $content
-	 */
-	/*public function initRequest( $url )
-	{
-		if ( $this->RequestIsInitialised( $url ) )
-		{
-			trigger_error( 'This request already exist: '.$url.' ('.$this->_id.', '.$this->_language.')', E_USER_ERROR );
-		}
-		$this->_requests[$url] = new RequestPage( $url );
-	}*/
-	
 	/**
 	 * 
 	 * @param RequestPage $requestPage
@@ -271,65 +256,13 @@ class Page
 	/**
 	 * 
 	 * @param string $url
-	 * @param string $content
-	 */
-	/*public function buildRequest( $url, $content )
-	{
-		if ( !$this->RequestIsInitialised( $url ) )
-		{
-			trigger_error( 'The request '.$url.' ('.$this->_id.', '.$this->_language.') must be initialized in first', E_USER_ERROR );
-		}
-		$this->_requests[$url]->setContent( $content );
-	}*/
-	
-	/**
-	 * 
-	 * @param array $arrayOfUrl
-	 */
-    /*public function initRequests( $arrayOfUrl )
-    {
-        foreach ( $arrayOfUrl as $url )
-        {
-            $this->initRequest( $url );
-        }
-    }*/
-	
-	/**
-	 * 
-	 * @param array $arrayOfContentByUrl
-	 */
-    /*public function buildRequests( $arrayOfContentByUrl )
-    {
-		foreach ( $arrayOfContentByUrl as $url => $content )
-        {
-            $this->buildRequest( $url, $content );
-        }
-    }*/
-	
-	/**
-	 * 
-	 * @param string $url
 	 * @return boolean
 	 */
     public function hasRequest( $url )
     {
         return array_key_exists( $url, $this->_requests );
     }
-	
-	/**
-	 * 
-	 * @param string $url
-	 * @return boolean
-	 */
-    /*public function RequestIsInitialised( $url )
-    {
-		if ( $this->hasRequest( $url ) )
-		{
-			return TRUE;
-		}
-        return FALSE;
-    }*/
-	
+		
 	/**
 	 * 
 	 * @param string $url
@@ -451,14 +384,13 @@ class Page
 	}
 	
 	
-	
 	public function __construct( $id )
     {
         $this->_id = $id;
         $this->_tags = array();
 		$this->_contents = array();
 		$this->_requests = array();
-        $this->_visible = TRUE;
+        $this->_visible = true;
         
         // DEFAULT
         $this->_linkTitle = $id;
@@ -466,7 +398,7 @@ class Page
 		$this->_description = $id;
         //$this->_template = 'default';
 		$this->_file2 = '';
-		$this->_cachable = TRUE;
+		$this->_cachable = true;
 		$this->_template = '';
 		$this->_phpHeader = '';
     }
