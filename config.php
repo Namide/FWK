@@ -28,13 +28,13 @@ define( '_CACHE_DIRECTORY', 'cache/' );
  */
 
 // URL rewriting activated => TRUE, deactivated => FALSE
-define( '_URL_REWRITING', FALSE );
+define( '_URL_REWRITING', false );
 
 // Debug mode activated => TRUE, deactivated => FALSE
-define( '_DEBUG', TRUE );
+define( '_DEBUG', true );
 
 // Cache activated => TRUE, deactivated => FALSE
-define( '_CACHE', FALSE );
+define( '_CACHE', false );
 
 // Maximum number of files in the cache directory
 // It is better to have 5 beyond the maximum number of cachable pages

@@ -2,9 +2,10 @@
 
 
 // CACHE THE INITIALISATION
+// inconclusive test
 if ( false )
 {
-	include_once _SYSTEM_DIRECTORY.'init/Cache.php';
+	include_once _SYSTEM_DIRECTORY.'helpers/Cache.php';
 	$cache = new Cache();
 	if ( !$cache->isInitCached() )
 	{
@@ -30,7 +31,5 @@ else
 
 
 // HELPERS FOR TEMPLATES
-// TemplateUtils crash if $pagesInitialised != TRUE
-define( 'pagesInitialised', TRUE );
 include_once _SYSTEM_DIRECTORY.'helpers/BuildUtil.php';
 BuildUtil::getInstance();

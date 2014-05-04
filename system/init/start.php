@@ -14,7 +14,7 @@ if ( _DEBUG )
 
 if ( _CACHE )
 {
-	include_once _SYSTEM_DIRECTORY.'init/Cache.php';
+	include_once _SYSTEM_DIRECTORY.'helpers/Cache.php';
 	$cache = new Cache( _CACHE_DIRECTORY.'pages/' );
 	
 	if( $cache->isCached() )

@@ -27,16 +27,16 @@ class BuildUtil extends InitUtil
 	
 	public function reset()
 	{
-		if ( defined(pagesInitialised) )
+		$pagesClass = PageList::getInstance();
+        if ( !$pagesClass->getInitialised() )
 		{
-			trigger_error( 'All pages must be initialised after use TemplateUtils class', E_USER_ERROR );
+			trigger_error( 'All pages must be initialised after use BuildUtil class', E_USER_ERROR );
 		}
 		
         $urlClass = UrlUtil::getInstance();
         $urlString = $urlClass->getUrl();
         
-        $pagesClass = PageList::getInstance();
-        
+       
         $page = $pagesClass->getPageByUrl( $urlString );
         $this->_page = $page;
         $this->_language = $page->getLanguage();

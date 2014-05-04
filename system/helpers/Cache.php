@@ -1,5 +1,7 @@
 <?php
 
+include_once _SYSTEM_DIRECTORY.'helpers/WriteUtil.php';
+
 /**
  * Cache managment.
  * Can be used for cache's pages and other save of files.
@@ -164,7 +166,14 @@ allow from all
 		$page = BuildUtil::getInstance()->getCurrentPage();
 		if ( $page->getCachable() )
 		{
-			$this->writesCacheFile( $pageContent, $file );
+			if ( count( explode( ".", $file ) ) < 2 )
+			{
+				if ( substr($file, -1, 1) !== '/' ) $file .= '/';
+				$file .= 'index.html';
+			}
+			
+			WriteUtil::writeFile($pageContent, $file);
+			//$this->writesCacheFile( $pageContent, $file );
 		}
 	}
 	
@@ -189,43 +198,7 @@ allow from all
 		return true;
 	}
 
-	/**
-	 * 
-	 * @param string $pageContent
-	 * @param string $fileName
-	 */
-	public function writesCacheFile( &$pageContent, $fileName = '' )
-	{
-		if( $fileName == '' )
-		{
-			$fileName = $this->rootDir.$this->pageFile;
-		}
-		
-		$path = explode( '/', $fileName );
-		
-		$dir = '';
-		while ( count($path) > 1 )
-		{
-			$dir .= $path[0].'/';
-			if ( !file_exists($dir) )
-			{
-				mkdir( $dir, 0777 );
-			}
-			array_shift($path);
-		}
-
-		$file = $path[0];
-		if ( count( explode( ".", $file ) ) > 1 )
-		{
-			$file = $dir.$file;
-		}
-		else
-		{
-			$file = $dir.'index.html';
-		}
-		
-		file_put_contents( $file, $pageContent );
-	}
+	
 	
 	/**
 	 * 
