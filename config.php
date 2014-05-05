@@ -21,6 +21,8 @@ define( '_TEMPLATE_DIRECTORY', 'template/' );
 // It is better to be outside of the www directory
 define( '_CACHE_DIRECTORY', 'cache/' );
 
+// Directory name of the temporaries files generated
+define( '_TEMP_DIRECTORY', 'temp-files/' );
 
 
 /*
@@ -39,5 +41,3 @@ define( '_CACHE', false );
 // Maximum number of files in the cache directory
 // It is better to have 5 beyond the maximum number of cachable pages
 define( '_MAX_PAGE_CACHE', 50 );
-
-

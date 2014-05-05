@@ -10,8 +10,10 @@ function generateHtml( &$pagesListDebug, $dirParent = '' )
 	foreach( $pagesListDebug as $pageDebugPage )
 	{
 
-		include_once _SYSTEM_DIRECTORY.'init/Cache.php';
-
+		include_once _SYSTEM_DIRECTORY.'helpers/Cache.php';
+		include_once _SYSTEM_DIRECTORY.'helpers/WriteUtil.php';
+		
+		
 		//_URL_REWRITING = TRUE;
 		$GLOBALS["_URL_REWRITING"] = TRUE;
 		
@@ -99,7 +101,8 @@ function generateHtml( &$pagesListDebug, $dirParent = '' )
 		$indexPage .= '"></head><body></body></html>';
 		$indexPage = str_replace( _ROOT_URL.UrlUtil::$BASE_PAGE_URL, $newRootRelativeUrl, $indexPage );
 		$indexPage = str_replace( _ROOT_URL, $newRootRelativeUrl, $indexPage );
-		$cache->writesCacheFile( $indexPage, $dirParent.'/index.html' );
+		//$cache->writesCacheFile( $indexPage, $dirParent.'/index.html' );
+		WriteUtil::writeFile( $indexPage, $dirParent.'/index.html' );
 	}
 	
 	

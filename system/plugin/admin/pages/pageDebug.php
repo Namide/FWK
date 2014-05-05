@@ -80,7 +80,7 @@
 	<?php		
 		if ( file_exists ( _CACHE_DIRECTORY ) )
 		{
-			include_once _SYSTEM_DIRECTORY.'init/Cache.php';
+			include_once _SYSTEM_DIRECTORY.'helpers/Cache.php';
 
 			$color = ( ( _MAX_PAGE_CACHE - Cache::getNumPages(_CACHE_DIRECTORY) ) < 1 ) ? 'style="color:red;"' : 'style="color:green;"';
 			echo '<tr><th>Pages cached</th><td><span '.$color.'>'.Cache::getNumPages(_CACHE_DIRECTORY).'/'._MAX_PAGE_CACHE.'&nbsp;&nbsp;&nbsp;<button onclick="location.reload();">refresh</button></span></td></tr>';

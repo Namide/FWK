@@ -15,9 +15,9 @@
 		}
 		elseif ( $_POST['csv'] === 'generate' && isset($_FILES['file']) && $_FILES['file']['error'] == 0 )
 		{
-			$rootDir = 'temp-init/';
+			$rootDir = _TEMP_DIRECTORY;
 			$uploadfile = $rootDir.basename($_FILES['file']['name']);
-			if(!is_dir($rootDir)) mkdir($rootDir);
+			if(!file_exists($rootDir)) mkdir($rootDir);
 
 			if ( !move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile) )
 			{

@@ -1,7 +1,7 @@
 <?php
 
 include_once _SYSTEM_DIRECTORY.'plugin/admin/pages/includes/zipRep.php';
-$rootDir = 'temp-init/';
+$rootDir = _TEMP_DIRECTORY;
 $zipName = 'contentInit.zip';
 if( zipper_repertoire_recursif( $zipName, $rootDir ) )
 {
