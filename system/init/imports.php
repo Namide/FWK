@@ -12,3 +12,5 @@ include_once _SYSTEM_DIRECTORY.'helpers/UrlUtil.php';
 include_once _SYSTEM_DIRECTORY.'helpers/InitUtil.php';
 include_once _SYSTEM_DIRECTORY.'helpers/SaveUtil.php';
 
+include_once _SYSTEM_DIRECTORY.'data/Element.php';
+include_once _SYSTEM_DIRECTORY.'data/list/ElementList.php';
