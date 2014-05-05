@@ -2,6 +2,7 @@
 ## FWK
 #################
 cache/
+temp-files/
 system/plugin/admin/logs/*.php
 content.zip
 html.zip

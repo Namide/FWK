@@ -5,10 +5,10 @@ function generateCsv( $csvName )
 	include_once _SYSTEM_DIRECTORY.'init/imports.php';
 	include_once _SYSTEM_DIRECTORY.'init/loadPages.php';
 	include_once _SYSTEM_DIRECTORY.'helpers/Cache.php';
-	include_once _SYSTEM_DIRECTORY.'helpers/WriteUtil.php';
+	include_once _SYSTEM_DIRECTORY.'helpers/FileUtil.php';
 	
 	$empty = '';
-	WriteUtil::writeFile($empty, $csvName);
+	FileUtil::writeFile($empty, $csvName);
 	
 	$i = 0;
 	$contentCsv = array();
