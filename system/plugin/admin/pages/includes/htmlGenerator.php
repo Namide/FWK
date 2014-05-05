@@ -1,17 +1,17 @@
 <?php
 
-function generateHtml( &$pagesListDebug, $dirParent = '' )
+function generateHtml( &$pagesListDebug, $dirParent )
 {
-	if ( $dirParent == '' )
+	/*if ( $dirParent == '' )
 	{
-		$dirParent = _CACHE_DIRECTORY.'standalone-html';
-	}
+		$dirParent = _TEMP_DIRECTORY.'standalone-html';
+	}*/
 	
 	foreach( $pagesListDebug as $pageDebugPage )
 	{
 
 		include_once _SYSTEM_DIRECTORY.'helpers/Cache.php';
-		include_once _SYSTEM_DIRECTORY.'helpers/WriteUtil.php';
+		include_once _SYSTEM_DIRECTORY.'helpers/FileUtil.php';
 		
 		
 		//_URL_REWRITING = TRUE;
@@ -102,12 +102,13 @@ function generateHtml( &$pagesListDebug, $dirParent = '' )
 		$indexPage = str_replace( _ROOT_URL.UrlUtil::$BASE_PAGE_URL, $newRootRelativeUrl, $indexPage );
 		$indexPage = str_replace( _ROOT_URL, $newRootRelativeUrl, $indexPage );
 		//$cache->writesCacheFile( $indexPage, $dirParent.'/index.html' );
-		WriteUtil::writeFile( $indexPage, $dirParent.'/index.html' );
+		FileUtil::writeFile( $indexPage, $dirParent.'/index.html' );
 	}
 	
-	
-	copyDir( _CONTENT_DIRECTORY, $dirParent.'/'._CONTENT_DIRECTORY );
-	copyDir( _TEMPLATE_DIRECTORY, $dirParent.'/'._TEMPLATE_DIRECTORY );
+	FileUtil::copyDirWithoutPhpFiles(_CONTENT_DIRECTORY, $dirParent.'/'._CONTENT_DIRECTORY);
+	FileUtil::copyDirWithoutPhpFiles(_TEMPLATE_DIRECTORY, $dirParent.'/'._TEMPLATE_DIRECTORY);
+	//copyDir(  );
+	//copyDir( _TEMPLATE_DIRECTORY, $dirParent.'/'._TEMPLATE_DIRECTORY );
 }
 
 function getHtmlPage( &$page )

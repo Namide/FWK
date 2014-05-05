@@ -48,7 +48,6 @@ if( !empty($_GET["p"]) )
 			<ul>
 				<li><a href="admin.php?p=page-debug">Debug</a></li>
 				<li><a href="admin.php?p=page-list">Pages list</a></li>
-				<li><a href="admin.php?p=page-edit">Edition</a></li>
 				<li><a href="admin.php?p=page-csv">CSV</a></li>
 				<li>
 					<form action="admin.php?p=page-save" method="get">
@@ -77,11 +76,6 @@ if( !empty($_GET["p"]) )
 					case 'page-list':
 
 						include _SYSTEM_DIRECTORY.'plugin/admin/pages/pageList.php';
-						break;
-
-					case 'page-edit':
-
-						include _SYSTEM_DIRECTORY.'plugin/admin/pages/pageEdit.php';
 						break;
 
 					case 'page-csv':

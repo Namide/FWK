@@ -1,6 +1,6 @@
 <?php
 
-include_once _SYSTEM_DIRECTORY.'helpers/WriteUtil.php';
+include_once _SYSTEM_DIRECTORY.'helpers/FileUtil.php';
 
 /**
  * Cache managment.
@@ -172,7 +172,7 @@ allow from all
 				$file .= 'index.html';
 			}
 			
-			WriteUtil::writeFile($pageContent, $file);
+			FileUtil::writeFile($pageContent, $file);
 			//$this->writesCacheFile( $pageContent, $file );
 		}
 	}

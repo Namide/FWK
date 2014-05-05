@@ -2,13 +2,18 @@
 
 include_once _SYSTEM_DIRECTORY.'plugin/admin/pages/includes/zipRep.php';
 include_once _SYSTEM_DIRECTORY.'plugin/admin/pages/includes/helpers.php';
+include_once _SYSTEM_DIRECTORY.'plugin/admin/pages/includes/htmlGenerator.php';
 
+$standaloneDir = _TEMP_DIRECTORY.'standalone-html';
+$pages = PageList::getInstance()->getPagesByUrl();
+generateHtml( $pages, $standaloneDir );
+		
 $zipName = _TEMP_DIRECTORY.'html.zip';
 
-cleanDirRecurs( _CACHE_DIRECTORY.'standalone-html' );
-if( zipper_repertoire_recursif( $zipName, _CACHE_DIRECTORY.'standalone-html', '' ) )
+FileUtil::delEmptyDirRecursively( $standaloneDir );
+if( zipper_repertoire_recursif( $zipName, $standaloneDir, '' ) )
 {
-	delTree( _CACHE_DIRECTORY.'standalone-html' );
+	FileUtil::delDirRecursively( $standaloneDir );
 	header( 'Location: '.$zipName );
 }
 else

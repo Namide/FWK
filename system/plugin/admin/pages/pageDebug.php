@@ -1,6 +1,7 @@
 <?php
 
 	include_once _SYSTEM_DIRECTORY.'plugin/admin/pages/includes/helpers.php';
+	include_once _SYSTEM_DIRECTORY.'helpers/FileUtil.php';
 
 	$ACTUAL_PAGE_URL = 'admin.php?p=page-debug';
 
@@ -10,8 +11,6 @@
 	
 	if( !empty($_POST['standaloneHtml']) && $_POST['standaloneHtml'] === 'ALL' )
 	{
-		include_once _SYSTEM_DIRECTORY.'plugin/admin/pages/includes/htmlGenerator.php';
-		generateHtml( $pagesDebugPage );
 		echo '<script>window.location.href = "admin.php?p=page-html-save";</script>';
 	}
 	
@@ -61,7 +60,7 @@
 			<?php
 				if ( file_exists ( _CACHE_DIRECTORY ) )
 				{
-					echo getFormatedSize( _CACHE_DIRECTORY, FALSE );
+					echo FileUtil::getFormatedSize( _CACHE_DIRECTORY, FALSE );
 				}
 				else
 				{
@@ -114,7 +113,7 @@
 	</tr>
 	<tr>
 		<th>Total weight of content</th>
-		<td><?php echo getFormatedSize( 'content', FALSE ); ?></span></td>
+		<td><?php echo FileUtil::getFormatedSize( 'content' ); ?></span></td>
 	</tr>
 	<tr>
 		<th>SEO</th>
@@ -167,7 +166,7 @@
 
 		<!-- weight -->
 		<td>
-			<?php echo getFormatedSize( 'content/'.$page->getId() ); ?>
+			<?php echo FileUtil::getFormatedSize( 'content/'.$page->getId() ); ?>
 		</td>
 
 		<!-- links -->
