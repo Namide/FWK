@@ -7,6 +7,8 @@
 	</header>
 	
 	<p>This page does not exist.</p>
+	<a href="{{idPageToAbsoluteUrl:basic/error404}}">error test</a>
+	<a href="{{idPageToAbsoluteUrl:basic/error404}}">error test</a>
 	
 </article>
 

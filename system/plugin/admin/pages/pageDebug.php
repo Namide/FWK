@@ -217,29 +217,39 @@
 	var errorsNum = 0;
 
 	var processor = new LinkChecker.LinkProcessor( document.querySelectorAll("a.checkURL") );
-	processor.on(LinkChecker.events.started, function(numberOfLinks) {
-		$("div#link-checker").html("Links to check: "+numberOfLinks)
-	});
+	processor.on(	
+					LinkChecker.events.started,
+					function(numberOfLinks)
+					{
+						$("div#link-checker").html("Links to check: " + numberOfLinks)
+					}
+				);
 
 
-	processor.on(LinkChecker.events.checked, function(link) {
+	processor.on(
+					LinkChecker.events.checked,
+					function(link)
+					{
+						$("div#link-checker").html( "Internal link checked: " + $(link.elem).html() );
 
-		$("div#link-checker").html( "Internal link checked: " + $(link.elem).html() );
+						if(link.broken)
+						{
+							$(link.elem).addClass("broken-link").css(
+							{
+								color: "red"
+							});
 
-		if(link.broken)
-		{
-			$(link.elem).addClass("broken-link").css({
-				color: "red"
-			});
-
-			errorsNum++;
-		}
-		else {
-			$(link.elem).css({
-				color: "green"
-			});
-		}
-	});
+							errorsNum++;
+						}
+						else
+						{
+							$(link.elem).css(
+							{
+								color: "green"
+							});
+						}
+					}
+				);
 	processor.on(LinkChecker.events.completed, function(link) {
 		var char = ( errorsNum < 1 ) ? "<strong style=\"color:green;\" >All urls ok</strong>" : "<strong style=\"color:red;\" >" + errorsNum + " links broken</strong>";
 		$("div#link-checker").html( char );

@@ -32,9 +32,10 @@ class UrlUtil
 	
 	public function reset()
 	{
+		
 		if( isset( $_GET[self::$_arg] ) )
         {
-            $this->url = htmlentities( $_GET[self::$_arg] );//filter_input('INPUT_GET', 'page', 'FILTER_SANITIZE_URL');
+			$this->url = $this->getCleanUrl();
         }
         // if no URL -> redirection to good url
         else
@@ -51,6 +52,31 @@ class UrlUtil
 				exit();
 			}
         }
+	}
+	
+	private function getCleanUrl()
+	{
+		$totalUrl = $_GET[self::$_arg];
+		
+		$urlParts = explode('?', $totalUrl);
+		$l = count( $urlParts );
+		for( $i = 1; $i < $l; $i++ )
+		{
+			$microParts = explode('&', $urlParts[$i]);
+			$l2 = count($microParts);
+			for( $j = 0; $j < $l2; $j++ )
+			{
+				$this->addGet( $microParts[$j] );
+			}
+		}
+		
+		return htmlentities($urlParts[0]);//filter_input('INPUT_GET', 'page', 'FILTER_SANITIZE_URL');
+	}
+	
+	private function addGet( $get )
+	{
+		$a = explode('=', $get);
+		$_GET[$a[0]] = $a[1];
 	}
 
 	/**
@@ -85,7 +111,7 @@ class UrlUtil
 	 * @param string $arg
 	 * @return boolean
 	 */
-	public static function hasArg( $label )
+	public static function hasGet( $label )
 	{
 		return isset( $_GET[$label] );
 	}
@@ -95,9 +121,9 @@ class UrlUtil
 	 * @param string $arg
 	 * @return string
 	 */
-	public static function getArg( $label )
+	public static function getGet( $label )
 	{
-		if( self::hasArg( $label ) ) return htmlentities( $_GET[$label] );
+		if( self::hasGet( $label ) ) return htmlentities( $_GET[$label] );
 		return NULL;
 	}
 
