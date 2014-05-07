@@ -19,6 +19,8 @@ class SearchEngine
 		}
 	}
 	
+	
+	
 	final public function __clone()
     {
         trigger_error( 'You can\'t clone.', E_USER_ERROR );

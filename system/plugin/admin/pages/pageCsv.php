@@ -9,8 +9,6 @@
 	{
 		if ( $_POST['csv'] === 'export' )
 		{
-			/*include_once _SYSTEM_DIRECTORY.'plugin/admin/pages/includes/csvGenerator.php';
-			generateHtml( $pagesDebugPage );*/
 			echo '<script>window.location.href = "admin.php?p=csv-export";</script>';
 		}
 		elseif ( $_POST['csv'] === 'generate' && isset($_FILES['file']) && $_FILES['file']['error'] == 0 )
@@ -25,7 +23,6 @@
 			}
 
 			createInit( $rootDir, $uploadfile );
-			
 			
 			echo '<script>window.location.href = "admin.php?p=download-init";</script>';
 		}
@@ -77,10 +74,11 @@
 
 function createInit( $rootDir, $file )
 {
-	include_once _SYSTEM_DIRECTORY.'init/Cache.php';
+	//include_once _SYSTEM_DIRECTORY.'helpers/Cache.php';
+	include_once _SYSTEM_DIRECTORY.'helpers/FileUtil.php';
 	
 	
-	$cache = new Cache();
+	//$cache = new Cache();
 	
 	
 	$pagesPHP = '<?php'."\n\n";
@@ -88,14 +86,12 @@ function createInit( $rootDir, $file )
 	
 	
 	$listPageId = array();
-	
 	$row = 1;
 	if (($handle = fopen($file, "r")) !== FALSE)
 	{
 		ini_set("auto_detect_line_endings", true);
 		while ( ($data = fgetcsv($handle, 1000, ";") ) !== FALSE)
 		{
-			
 			if ( !isset($listPageId[$data[1]]) )
 			{
 				if ( hackCsvAccent($data[0]) == 'static' )
@@ -128,6 +124,11 @@ function createInit( $rootDir, $file )
 				
 				if( count($data) > 14 )
 					$pagesPHP .= '\''.hackCsvAccent($data[14]).'\' ';
+				else
+					$pagesPHP .= '\'\', ';
+				
+				if( count($data) > 15 )
+					$pagesPHP .= '\''.hackCsvAccent($data[15]).'\' ';
 				else
 					$pagesPHP .= '\'\', ';
 				
@@ -183,7 +184,8 @@ function createInit( $rootDir, $file )
 				$id = hackCsvAccent($data[1]);
 				$lang = hackCsvAccent($data[2]);
 				
-				$cache->writesCacheFile( $pageInitPHP, $rootDir.$id.'/'.$lang.'-init.php' );
+				FileUtil::writeFile( $pageInitPHP, $rootDir.$id.'/'.$lang.'-init.php' );
+				//$cache->writesCacheFile( $pageInitPHP, $rootDir.$id.'/'.$lang.'-init.php' );
 			}
 			
 			/*$row++;
@@ -195,9 +197,13 @@ function createInit( $rootDir, $file )
 		}
 		fclose($handle);
 	}
+	else
+	{
+		echo 'load error';
+	}
 	//if ( file_exists($file) ) unlink($file);
-	$cache->writesCacheFile( $pagesPHP, $rootDir.'pages.php' );
-	
+	//$cache->writesCacheFile( $pagesPHP, $rootDir.'pages.php' );
+	FileUtil::writeFile( $pagesPHP, $rootDir.'pages.php' );
 	
 }
 

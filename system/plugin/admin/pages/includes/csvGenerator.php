@@ -27,7 +27,7 @@ function generateCsv( $csvName )
 
 function getCsvLineByPage( &$page )
 {
-	//type;!id;!lang;url;title;description;template;header;visible;cachable;tags;phpHeader;contents;requests;!vo
+	//type;!id;!lang;url;title;description;template;header;visible;cachable;tags;phpHeader;contents;requests;!vo;!name
 	include_once _SYSTEM_DIRECTORY.'core/Page.php';
 	include_once _SYSTEM_DIRECTORY.'core/DynamicPage.php';
 	
@@ -62,8 +62,16 @@ function getCsvLineByPage( &$page )
 	array_push( $output, writeField($page->getContents()) );
 	array_push( $output, writeField($page->getRequests()) );
 	
-	if ($type === 'dynamic')	array_push( $output, writeField($page->getVo()) );
-	else						array_push( $output, writeField('') );
+	if ($type === 'dynamic')
+	{
+		array_push( $output, writeField($page->getVo()) );
+		array_push( $output, writeField($page->getName()) );
+	}
+	else
+	{
+		array_push( $output, writeField('') );
+		array_push( $output, writeField('') );
+	}
 	
 	return $output;
 }
