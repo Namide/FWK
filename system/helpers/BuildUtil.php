@@ -25,6 +25,16 @@ class BuildUtil extends InitUtil
 		  $this->reset();
     }*/
 	
+	public function getPage( $pageId, $lang = '' )
+	{
+		if ( $lang === '' )
+		{
+			$lang = $this->_language;
+		}
+		return PageList::getInstance()->getPage($pageId, $lang);
+	}
+
+
 	public function reset()
 	{
 		$pagesClass = PageList::getInstance();

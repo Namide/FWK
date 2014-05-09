@@ -15,11 +15,30 @@ function generateCsv( $csvName )
 	
 	$csv = fopen($csvName, 'w');
 	
-	fputcsv($csv, array('type','!id','!lang','url','title','description','template','header','visible','cachable','tags','phpHeader','contents','requests','!vo'), ';' );
+	//fputcsv($csv, array('type','!id','!lang','url','title','description','template','header','visible','cachable','tags','phpHeader','contents','requests','!vo','!name'), ';' );
+	fwrite($csv, "\xEF\xBB\xBF"/*chr(255).chr(254)*/ );
+	fputcsv($csv, array(	writeField('type'),
+							writeField('!id'),
+							writeField('!lang'),
+							writeField('url'),
+							writeField('title'),
+							writeField('description'),
+							writeField('template'),
+							writeField('header'),
+							writeField('visible'),
+							writeField('cachable'),
+							writeField('tags'),
+							writeField('phpHeader'),
+							writeField('contents'),
+							writeField('requests'),
+							writeField('!vo'),
+							writeField('!name')
+					),
+			writeField(';') );
 	
 	foreach (PageList::getInstance()->getPagesByUrl() as $page)
 	{
-		fputcsv($csv, getCsvLineByPage( $page ), ';', '"');
+		fputcsv( $csv, getCsvLineByPage( $page ), writeField(';'), writeField('"') );
 	}
 	
 	fclose($csv);
@@ -93,7 +112,9 @@ function writeField( $content )
 
 function hackAccent($text)
 {
-	return $text;//mb_convert_encoding( $text, 'UTF-16LE', 'UTF-8');
+	//mb_convert_encoding( $text, 'UTF-8', 'ASCII//TRANSLIT');
+	//utf8_decode($text);//mb_convert_encoding( $text, 'UTF-16LE', 'UTF-8');
+	return $text;//mb_convert_encoding( $text, 'UTF-16LE', 'UTF-8');//utf8_decode($text);
 }
 	
 function generateConstructor( $data )
@@ -101,7 +122,7 @@ function generateConstructor( $data )
 	if (	gettype($data) != "array" &&
 			gettype($data) != "object" ) 
 	{
-		return '"'.escQuot($data).'"';
+		return '\''.escQuot($data).'\'';
 	}
 	
 	$output = 'array(';
@@ -112,7 +133,7 @@ function generateConstructor( $data )
 	foreach ($data as $key => $value)
 	{
 		if ( !$first ) $output .= ',';
-		if ( $isAssoc ) $output .= '"'.escQuot($key).'"=>';
+		if ( $isAssoc ) $output .= '\''.escQuot($key).'\'=>';
 		
 		if ( gettype ($value) === "array" )
 		{
@@ -131,14 +152,14 @@ function generateConstructor( $data )
 		}
 		elseif ( gettype ($value) === "string" )
 		{
-			$output	.= '"'.escQuot($value).'"';
+			$output	.= '\''.escQuot($value).'\'';
 		}
 		else
 		{
-			$output	.= '"'.$value.'"';
+			$output	.= '\''.$value.'\'';
 		}
 
-		if ( $first ) $first = FALSE;
+		if ( $first ) $first = false;
 	}
 	$output .= ')';
 	return $output;
@@ -146,7 +167,9 @@ function generateConstructor( $data )
 
 function escQuot( $text )
 {
-	return /*'"' .*/ str_replace('"', '\"', $text ) /*.'"'*/;
+	$text = str_replace( '\'', '\\\'', $text );
+	$text = str_replace( '\\\\\'', '\\\'', $text );
+	return $text;
 }
 
 function isAssoc($arr)
