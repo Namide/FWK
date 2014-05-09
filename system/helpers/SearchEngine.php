@@ -4,7 +4,8 @@ class SearchEngine
 {
 	
 	private static $_instances = null;
-
+	private static $_on_reset = false;
+	
 	private $_dir;
 	private $_pathSummary;
 	
@@ -19,7 +20,31 @@ class SearchEngine
 		}
 	}
 	
-	
+	public function reset()
+	{
+		if ( self::$_on_reset ) return;
+		
+		self::$_on_reset = true;
+		$pages = PageList::getInstance()->getPagesByUrl();
+		foreach ($pages as $pageTemp)
+		{
+			PageList::getInstance()->updatePage( $pageTemp );
+			$fileName = UrlUtil::getURICacheID( $pageTemp->getUrl() ).'.txt';
+			$body = $pageTemp->getBody();
+			
+			$body = preg_replace('/<[^>]*>/', ' ', $body);
+			$body = str_replace("\t", ' ', $body);
+			$body = str_replace("\n", ' ', $body);
+			$body = str_replace("\r", ' ', $body);
+			while( strpos($body, '  ') !== false )
+			{
+				$body = str_replace('  ', ' ', $body);
+			}
+			FileUtil::writeFile( $body, $this->_dir.$fileName );
+		}
+		self::$_on_reset = false;
+		
+	}
 	
 	final public function __clone()
     {

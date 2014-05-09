@@ -32,7 +32,7 @@ class UrlUtil
 	
 	public function reset()
 	{
-		
+		include_once _SYSTEM_DIRECTORY.'helpers/FileUtil.php';
 		if( isset( $_GET[self::$_arg] ) )
         {
 			$this->url = $this->getCleanUrl();
@@ -83,11 +83,15 @@ class UrlUtil
 	 * 
 	 * @return string
 	 */
-	public static function getURICacheID()
+	public static function getURICacheID( $pageUrl = -1 )
 	{
-		if( isset( $_GET[self::$_arg] ) )
+		$invalid = array( /*'/'=>'-',*/ '\\'=>'-', ':'=>'-', '?'=>'-', '"'=>'-', '*'=>'-', '<'=>'-', '>'=>'-', '|'=>'-' );
+		if( $pageUrl != -1 )
 		{
-			$invalid = array( /*'/'=>'-',*/ '\\'=>'-', ':'=>'-', '?'=>'-', '"'=>'-', '*'=>'-', '<'=>'-', '>'=>'-', '|'=>'-' );
+			$url = str_replace(array_keys($invalid), array_values($invalid), htmlentities( $pageUrl ) );
+		}
+		elseif( isset( $_GET[self::$_arg] ) )
+		{
 			$url = str_replace(array_keys($invalid), array_values($invalid), htmlentities( $_GET[self::$_arg] ) );
 		}
 		else

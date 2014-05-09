@@ -49,7 +49,7 @@ class FileUtil
 			$dir .= $path[0].'/';
 			if ( !file_exists($dir) )
 			{
-				mkdir( $dir, 0777 );
+				echomkdir( $dir, 0777 );
 			}
 			array_shift($path);
 		}
