@@ -241,8 +241,9 @@ class PageList
 		ob_start();
 		$page = $this->initPage( $page, $page->getBuildFile() );
 		$page->startBuild();
-		$body = ob_get_clean();
-		$page->setBody( InitUtil::getInstance()->mustache($body, $page) );
+		//$body = ob_get_clean();
+		//$page->setBody( InitUtil::getInstance()->mustache($body, $page) );
+		$page->setBody( ob_get_clean() );
 		
 		return $page;
 	}
@@ -268,17 +269,20 @@ class PageList
 
         if ( isset($body) )
 		{
-			$page->setBody ( InitUtil::getInstance()->mustache($body, $page) );
+			//$page->setBody ( InitUtil::getInstance()->mustache($body, $page) );
+			$page->setBody ( $body );
 		}
 		if ( isset($header) )
 		{
-			$page->setHeader ( InitUtil::getInstance()->mustache($header, $page) );
+			//$page->setHeader ( InitUtil::getInstance()->mustache($header, $page) );
+			$page->setHeader ( $header );
 		}
         if ( isset($contents) )
 		{
 			foreach( $contents as $label => $value )
 			{
-				$page->addContent( $label, InitUtil::getInstance()->mustache($value, $page) );
+				//$page->addContent( $label, InitUtil::getInstance()->mustache($value, $page) );
+				$page->addContent( $label, $value );
 			}
 		}
         
@@ -293,7 +297,8 @@ class PageList
 		{
 			foreach( $requestsContent as $url => $content )
 			{
-				$page->getRequest( $url )->setContent( InitUtil::getInstance()->mustache( $content, $page ) );
+				//$page->getRequest( $url )->setContent( InitUtil::getInstance()->mustache( $content, $page ) );
+				$page->getRequest( $url )->setContent( $content );
 			}
 		}
 		

@@ -73,12 +73,12 @@ function getCsvLineByPage( &$page )
 	array_push( $output, writeField($page->getTitle()) );
 	array_push( $output, writeField($page->getDescription()) );
 	array_push( $output, writeField($page->getTemplate()) );
-	array_push( $output, writeField($page->getHeader()) );
+	array_push( $output, writeField($page->getHeaderSrc()) );
 	array_push( $output, writeField($page->getVisible()) );
 	array_push( $output, writeField($page->getCachable()) );
 	array_push( $output, writeField($page->getTags()) );
 	array_push( $output, writeField($page->getPhpHeader()) );
-	array_push( $output, writeField($page->getContents()) );
+	array_push( $output, writeField($page->getContentsSrc()) );
 	array_push( $output, writeField($page->getRequests()) );
 	
 	if ($type === 'dynamic')

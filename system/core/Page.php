@@ -85,10 +85,17 @@ class Page
 	 */
     public function setHeader( $header ) { $this->_header = $header; }
 	/**
+	 * Header content with mustache's process
 	 * 
 	 * @return string
 	 */
-    public function getHeader() { return $this->_header; }
+    public function getHeader() { return InitUtil::getInstance()->mustache($this->_header, $this); }
+	/**
+	 * Header content without mustache's process
+	 * 
+	 * @return type
+	 */
+	public function getHeaderSrc() { return $this->_header; }
 
 	protected $_type;
 	/**
@@ -121,10 +128,17 @@ class Page
 	 */
     public function setBody( $body ) { $this->_body = $body; }
 	/**
+	 * Body content with mustache's process
 	 * 
 	 * @return string
 	 */
-    public function getBody() { return $this->_body; }
+    public function getBody() { return InitUtil::getInstance()->mustache($this->_body, $this); }
+	/**
+	 * Body content without mustache's process
+	 * 
+	 * @return type
+	 */
+	public function getBodySrc() { return $this->_body; }
 
     protected $_title;
 	/**
@@ -150,18 +164,6 @@ class Page
 	 */
     public function getDescription() { return $this->_description; }
 	
-    //protected $_preface;
-	/**
-	 * 
-	 * @param string $preface
-	 */
-    //public function setPreface( $preface ) { $this->_preface = $preface; }
-	/**
-	 * 
-	 * @return string
-	 */
-    //public function getPreface() { return $this->_preface; }
-
     protected $_template;
 	/**
 	 * 
@@ -274,7 +276,7 @@ class Page
 		{
 			trigger_error( 'This request don\'t exist: '.$url.' ('.$this->_id.', '.$this->_language.')', E_USER_ERROR );
 		}
-        return $this->_requests[$url];
+        return $this->_requests[ $url ];
     }
 	
 	/**
@@ -325,22 +327,49 @@ class Page
     }
 	
 	/**
+	 * Content with mustache's process
 	 * 
 	 * @param string $label
 	 * @return string
 	 */
 	public function getContent( $label )
     {
-        return $this->_contents[ $label ];
+        return InitUtil::getInstance()->mustache($this->_contents[ $label ], $this);
     }
 	
 	/**
+	 * Content without mustache's process
+	 * 
+	 * @param type $label
+	 * @return type
+	 */
+	public function getContentSrc( $label )
+    {
+		return $this->_contents[ $label ];
+	}
+	
+	/**
+	 * Contents (in array of string) with mustache's process
 	 * 
 	 * @return string
 	 */
 	public function getContents()
     {
-        return $this->_contents;
+		$contents = array();
+		foreach ($this->_contents as $label => $content)
+		{
+			$contents[$label] = InitUtil::getInstance()->mustache($content, $this) ;
+		}
+        return $contents;
+    }
+	/**
+	 * Contents (in array of string) without mustache's process
+	 * 
+	 * @return array
+	 */
+	public function getContentsSrc()
+    {
+		return $this->_contents;
     }
 	
 	/**

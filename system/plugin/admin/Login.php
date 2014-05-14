@@ -7,7 +7,6 @@ class Login
 	{		
 		session_start();
 		
-		
 		if ( isset( $_POST['disconnect'] ) )
 		{
 			$this->disconnect();
@@ -22,37 +21,21 @@ class Login
 				exit();
 			}
 		}
-		
-		
     }
 	
 	private function isLogged()
 	{
 		if( !isset( $_SESSION['userId'] ) ||
-			!isset( $_SESSION['userName'] ) ||
-			!isset( $_SESSION['userToken'] ) )
+			!isset( $_SESSION['userName'] ) )
 		{
 			return FALSE;
 		}
 		
 		$userId = (int) $_SESSION['userId'];
 		$userName = htmlentities( $_SESSION['userName'] );
-		$userToken = htmlentities( $_SESSION['userToken'] );
 		
 		global $_ADMIN_USERS;
 		if ( $_ADMIN_USERS[$userId][0] != $userName )
-		{
-			return FALSE;
-		}
-		
-		$tokenFile = $this->getFileToken( $userId, $userName );
-		if( !file_exists($tokenFile) )
-		{
-			return FALSE;
-		}
-		
-		include $tokenFile;
-		if ( $token != $userToken )
 		{
 			return FALSE;
 		}
@@ -103,22 +86,8 @@ class Login
 	
 	private function connect( $id, $name )
 	{
-		$token = htmlentities( sha1( rand( 0, 999999999 ) ) );
-		
 		$_SESSION['userId'] = $id;
 		$_SESSION['userName'] = $name;
-		$_SESSION['userToken'] = $token;
-		
-		$tokenFile = fopen( $this->getFileToken( $id, $name ), "w" );
-		$tokenFileContent = '<?php $token="'.$token.'";';
-		fwrite($tokenFile, $tokenFileContent);
-		fclose($tokenFile);
-		//chmod($tokenFile, 0777);
-	}
-	
-	private function getFileToken( $id, $name )
-	{
-		return _SYSTEM_DIRECTORY.'plugin/admin/logs/'.$id.'_'.$name.'.php';
 	}
 
 	public static function getLogoutForm()
@@ -137,12 +106,6 @@ class Login
 		{
 			$id = $_SESSION['userId'];
 			$name = $_SESSION['userName'];
-			
-			$tokenFile = $this->getFileToken( $id, $name );
-			if( file_exists ( $tokenFile ) )
-			{
-				unlink( $tokenFile );
-			}
 			
 			unset($_SESSION['userId']);
 			unset($_SESSION['userName']);
