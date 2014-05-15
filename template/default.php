@@ -1,12 +1,9 @@
 <?php
 
-include_once _TEMPLATE_DIRECTORY.'includes/menu.php';
-include_once _TEMPLATE_DIRECTORY.'includes/footer.php';
+	include_once _TEMPLATE_DIRECTORY.'includes/menu.php';
+	include_once _TEMPLATE_DIRECTORY.'includes/footer.php';
 
-?>
-
-
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="<?php echo BuildUtil::getInstance()->getLang(); ?>">
 
 <head>
