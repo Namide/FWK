@@ -89,13 +89,13 @@ class Page
 	 * 
 	 * @return string
 	 */
-    public function getHeader() { return InitUtil::getInstance()->mustache($this->_header, $this); }
+    public function getHeaderFinal() { return InitUtil::getInstance()->mustache($this->_header, $this); }
 	/**
 	 * Header content without mustache's process
 	 * 
 	 * @return type
 	 */
-	public function getHeaderSrc() { return $this->_header; }
+	public function getHeader() { return $this->_header; }
 
 	protected $_type;
 	/**
@@ -132,13 +132,13 @@ class Page
 	 * 
 	 * @return string
 	 */
-    public function getBody() { return InitUtil::getInstance()->mustache($this->_body, $this); }
+    public function getBodyFinal() { return InitUtil::getInstance()->mustache($this->_body, $this); }
 	/**
 	 * Body content without mustache's process
 	 * 
 	 * @return type
 	 */
-	public function getBodySrc() { return $this->_body; }
+	public function getBody() { return $this->_body; }
 
     protected $_title;
 	/**
@@ -332,7 +332,7 @@ class Page
 	 * @param string $label
 	 * @return string
 	 */
-	public function getContent( $label )
+	public function getContentFinal( $label )
     {
         return InitUtil::getInstance()->mustache($this->_contents[ $label ], $this);
     }
@@ -343,7 +343,7 @@ class Page
 	 * @param type $label
 	 * @return type
 	 */
-	public function getContentSrc( $label )
+	public function getContent( $label )
     {
 		return $this->_contents[ $label ];
 	}
@@ -353,7 +353,7 @@ class Page
 	 * 
 	 * @return string
 	 */
-	public function getContents()
+	public function getContentsFinal()
     {
 		$contents = array();
 		foreach ($this->_contents as $label => $content)
@@ -367,7 +367,7 @@ class Page
 	 * 
 	 * @return array
 	 */
-	public function getContentsSrc()
+	public function getContents()
     {
 		return $this->_contents;
     }

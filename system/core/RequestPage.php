@@ -67,14 +67,14 @@ class RequestPage
 	 * 
 	 * @return string
 	 */
-    public function getContent() { return InitUtil::getInstance()->mustache( $this->_content, $this ); }
+    public function getContentFinal() { return InitUtil::getInstance()->mustache( $this->_content, $this ); }
 	
 	/**
 	 * Content without mustache's process
 	 * 
 	 * @return string
 	 */
-	public function getContentSrc() { return $this->_content; }
+	public function getContent() { return $this->_content; }
 
 	
 	/**

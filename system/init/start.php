@@ -89,8 +89,8 @@ function echoPage( &$page )
 		else
 		{
 			echo '<!doctype html>';
-			echo '<html><head>' , $page->getHeader();
-			echo '</head><body>' , $page->getBody();
+			echo '<html><head>' , BuildUtil::getInstance()->mustache( $page->getHeader(), $page );
+			echo '</head><body>' , BuildUtil::getInstance()->mustache( $page->getBody(), $page );
 			echo '</body></html>';
 		}
 	}
@@ -105,8 +105,7 @@ function echoPage( &$page )
 			header( $request->getPhpHeader() );
 		}
 		
-		$content = $request->getContent();
-		echo $content;
+		echo BuildUtil::getInstance()->mustache($request->getContent(), $page);
 	}
 	
 }

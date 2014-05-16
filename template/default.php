@@ -24,7 +24,7 @@
     <meta name="viewport" content="width=device-width; height=device-height; maximum-scale=1.4; initial-scale=1.0; user-scalable=yes" />
 	
 	
-    <?php echo $page->getHeader(); ?>
+    <?php echo $page->getHeaderFinal(); ?>
     
 </head>
 
@@ -40,7 +40,7 @@
     <div id="content">
     
         <?php
-	        echo BuildUtil::getInstance()->getCurrentPage()->getBody();
+	        echo BuildUtil::getInstance()->getCurrentPage()->getBodyFinal();
         ?>
 		
     </div>

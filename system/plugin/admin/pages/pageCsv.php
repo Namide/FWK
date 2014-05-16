@@ -224,7 +224,7 @@ function hackCsvAccent($text)
 {
 	//$encod = mb_detect_encoding($text);
 	//$text = iconv( $encod, 'UTF-8//IGNORE', $text);
-	$text = utf8_encode($text);
+	//$text = utf8_encode($text);
 	
 	//echo '->'.$encod;
 	//$text = iconv('UTF-16LE', 'UTF-8//IGNORE', $text);// or die( '->'.print_r($text).'<-' );
@@ -236,8 +236,8 @@ function hackCsvAccent($text)
 	
 	return $text;//mb_convert_encoding( $text, 'UTF-16LE', 'UTF-8' );
 }
-
+/*
 function createPage(  )
 {
 	
-}
+}*/

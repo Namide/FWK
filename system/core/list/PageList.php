@@ -108,8 +108,7 @@ class PageList
 				
 				$page = new Page( $folderName );
 				$page->setLanguage( $lang );
-				//Gateway::getInstance()->clearPageVo();
-                $page = $this->initPage( $page, $filename );
+				$page = $this->initPage( $page, $filename );
 				
 				$buildFile = _CONTENT_DIRECTORY.$folderName.'/'.$lang.'-build.php';
 				if( file_exists ( $buildFile ) ) { $page->setBuildFile($buildFile); }
@@ -213,11 +212,14 @@ class PageList
 	 * @param array $listLang
 	 * @param array $listVo
 	 */
-	public function addDynamicPages( $folderName, $listUrl, $listLang, $listVo )
+	public function addDynamicPages( $folderName, $listUrl, $listLang, $listVo, $listNames = '' )
     {
 		foreach ( $listLang as $id => $lang )
 		{
-			$this->addDynamicPage( $folderName, $listUrl[$id], $lang, $listVo[$id] );
+			if ( $listNames === '' )	$name = '';
+			else						$name = $listNames[$id];
+			
+			$this->addDynamicPage( $folderName, $listUrl[$id], $lang, $listVo[$id], $name );
 		}
     }
 	
@@ -226,6 +228,14 @@ class PageList
 		$this->_initialised = TRUE;
 	}
 
+	private function tryInitialisedOrBroadcastMethodError( $methodName )
+	{
+		if ( !$this->_initialised )
+		{
+			trigger_error( 'All pages must be initialised after use '.$methodName.'() method', E_USER_ERROR );
+		}
+	}
+	
 	/**
 	 * 
 	 * @param Page $page
@@ -267,21 +277,12 @@ class PageList
         if ( isset($cachable) )		{ $page->setCachable($cachable); }
 		if ( isset($phpHeader) )	{ $page->setPhpHeader($phpHeader); }
 
-        if ( isset($body) )
-		{
-			//$page->setBody ( InitUtil::getInstance()->mustache($body, $page) );
-			$page->setBody ( $body );
-		}
-		if ( isset($header) )
-		{
-			//$page->setHeader ( InitUtil::getInstance()->mustache($header, $page) );
-			$page->setHeader ( $header );
-		}
+        if ( isset($body) )			{ $page->setBody ( $body ); }
+		if ( isset($header) )		{ $page->setHeader ( $header ); }
         if ( isset($contents) )
 		{
 			foreach( $contents as $label => $value )
 			{
-				//$page->addContent( $label, InitUtil::getInstance()->mustache($value, $page) );
 				$page->addContent( $label, $value );
 			}
 		}
@@ -297,7 +298,6 @@ class PageList
 		{
 			foreach( $requestsContent as $url => $content )
 			{
-				//$page->getRequest( $url )->setContent( InitUtil::getInstance()->mustache( $content, $page ) );
 				$page->getRequest( $url )->setContent( $content );
 			}
 		}
@@ -313,10 +313,7 @@ class PageList
 	 */
 	public function getPagesByTag( $tag, $lang )
     {
-		if ( !$this->_initialised )
-		{
-			trigger_error( 'All pages must be initialised after use getPagesByTag() method', E_USER_ERROR );
-		}
+		$this->tryInitialisedOrBroadcastMethodError( 'getPagesByTag' );
 		
 		$pages = array();
         foreach ( $this->_pagesByUrl as $page )
@@ -337,10 +334,7 @@ class PageList
 	 */
     public function getPagesByTags( $tags, $lang )
     {
-		if ( !$this->_initialised )
-		{
-			trigger_error( 'All pages must be initialised after use getPagesByTags() method', E_USER_ERROR );
-		}
+		$this->tryInitialisedOrBroadcastMethodError( 'getPagesByTags' );
 		
 		$pages = array();
         foreach ( $this->_pagesByUrl as $page )
@@ -365,10 +359,7 @@ class PageList
 	 */
     public function getPageByUrl( $url )
     {
-		 if ( !$this->_initialised ) 
-		{
-			trigger_error( 'All pages must be initialised after use getPageByUrl() method', E_USER_ERROR );
-		}
+		$this->tryInitialisedOrBroadcastMethodError( 'getPageByUrl' );
 		
 		// EXIST
 		if( $this->hasUrl( $url ) )
@@ -443,24 +434,21 @@ class PageList
 	 * @param string $lang
 	 * @return Page
 	 */
-    public function getDefaultPage( $lang = '' )
+    public function getDefaultPage( $lang = -1 )
     {
-        if ( !$this->_initialised )
-		{
-			trigger_error( 'All pages must be initialised after use getDefaultPage() method', E_USER_ERROR );
-		}
+        $this->tryInitialisedOrBroadcastMethodError( 'getDefaultPage' );
 		
 		$id = $this->_defaultPageId;
         
-        if ( $lang == '' )
+        if ( $lang === -1 )
 		{
 			$lang = LanguageList::getInstance()->getLangByNavigator();
 		}
 		
         foreach ( $this->_pagesByUrl as $page )
         {
-			if (	$page->getId() == $id &&
-					$page->getLanguage() == $lang )
+			if (	$page->getId() === $id &&
+					$page->getLanguage() === $lang )
             {
                 return $page;
             }
@@ -469,7 +457,7 @@ class PageList
 		/* IF THE LANGUAGE OF THE DEFAULT PAGE DON'T EXIST */
 		foreach ( $this->_pagesByUrl as $page )
         {
-            if ( $page->getId() == $id )
+            if ( $page->getId() === $id )
             {
                 return $page;
             }
@@ -478,13 +466,13 @@ class PageList
 		/* IF THE DEFAULT PAGE DON'T EXIST */
 		foreach ( $this->_pagesByUrl as $page )
         {
-            if ( $page->getLanguage() == $lang )
+            if ( $page->getLanguage() === $lang )
             {
                 return $page;
             }
         }
 		
-		/* ELSE */
+		/* ELSE: RANDOM PAGE (FIRST IN THE LIST) */
 		foreach ( $this->_pagesByUrl as $page )
         {
             return $page;
@@ -498,10 +486,7 @@ class PageList
 	 */
     public function getAllPages( $lang )
     {
-        if ( !$this->_initialised )
-		{
-			trigger_error( 'All pages must be initialised after use getAllPages() method', E_USER_ERROR );
-		}
+        $this->tryInitialisedOrBroadcastMethodError( 'getAllPages' );
 		
 		$pages = array();
         foreach ( $this->_pagesByUrl as $page )
@@ -523,10 +508,7 @@ class PageList
 	 */
     public function getPage( $id, $lang )
     {
-		if ( !$this->_initialised )
-		{
-			trigger_error( 'All pages must be initialised after use getPage() method', E_USER_ERROR );
-		}
+		$this->tryInitialisedOrBroadcastMethodError( 'getPage' );
 		
 		foreach ( $this->_pagesByUrl as $page )
         {
@@ -541,10 +523,7 @@ class PageList
     
 	public function getPages( $id )
     {
-		if ( !$this->_initialised )
-		{
-			trigger_error( 'All pages must be initialised after use getPages() method', E_USER_ERROR );
-		}
+		$this->tryInitialisedOrBroadcastMethodError( 'getPages' );
 		
 		$pages = array();
 		foreach ( $this->_pagesByUrl as $page )
@@ -565,10 +544,7 @@ class PageList
 	 */
 	public function hasPage( $id, $lang )
     {
-		if ( !$this->_initialised )
-		{
-			trigger_error( 'All pages must be initialised after use hasPage() method', E_USER_ERROR );
-		}
+		$this->tryInitialisedOrBroadcastMethodError( 'hasPage' );
 		
 		foreach ( $this->_pagesByUrl as $page )
         {
@@ -608,10 +584,7 @@ class PageList
 	 */
     private function getLanguageByUrl( $url )
     {
-        if ( !$this->_initialised )
-		{
-			trigger_error( 'All pages must be initialised after use getLanguageByUrl() method', E_USER_ERROR );
-		}
+        $this->tryInitialisedOrBroadcastMethodError( 'getLanguageByUrl' );
 		
 		if ( isset( $this->_pagesByUrl[$url] ) )
         {
