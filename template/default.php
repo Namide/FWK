@@ -13,16 +13,17 @@
     <meta name="description" content="<?php echo BuildUtil::getInstance()->getCurrentPage()->getDescription(); ?>" />
 	
 	
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="You" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=device-width; height=device-height; maximum-scale=1.4; initial-scale=1.0; user-scalable=yes" />
+	
+	<meta name="author" content="Namide" />
 
 	<link rel="stylesheet" media="screen" type="text/css" href="<?php echo InitUtil::getInstance()->getTemplateAbsUrl( 'css/default.css' ); ?>" />
     <link rel="stylesheet" media="print" type="text/css" href="<?php echo InitUtil::getInstance()->getTemplateAbsUrl( 'css/print.css' ); ?>" />
 	
     <link rel="icon" type="image/png" href="<?php echo InitUtil::getInstance()->getTemplateAbsUrl( 'img/favicon.png' ); ?>" /> 
     
-    <meta name="viewport" content="width=device-width; height=device-height; maximum-scale=1.4; initial-scale=1.0; user-scalable=yes" />
-	
+    
 	
     <?php echo $page->getHeaderFinal(); ?>
     
